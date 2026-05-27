@@ -1,0 +1,2860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enterprise Portal — Partners & Pricing</title>
+<style>
+/* ══════════════════════════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;font-size:14px;color:#1a2234;background:#f4f5f7;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ══════════════════════════════════════════════════════════
+   BANNER
+══════════════════════════════════════════════════════════ */
+.prod-banner{height:36px;background:#fff8eb;border-bottom:1px solid #fde68a;display:flex;align-items:center;padding:0 20px;gap:10px;font-size:12.5px;color:#92400e;font-weight:500;flex-shrink:0;}
+.prod-badge{background:#ef4444;color:#fff;font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;letter-spacing:.01em;}
+.banner-user{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12.5px;color:#92400e;font-weight:500;}
+
+/* ══════════════════════════════════════════════════════════
+   LAYOUT
+══════════════════════════════════════════════════════════ */
+.app-body{display:flex;flex:1;overflow:hidden;}
+.sidebar{width:220px;min-width:220px;background:#fff;border-right:1px solid #e5e7eb;display:flex;flex-direction:column;overflow-y:auto;padding-bottom:16px;flex-shrink:0;}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:16px 16px 14px;}
+.logo-text .main{display:block;font-size:13px;font-weight:600;color:#111;}
+.logo-text .sub{display:block;font-size:10px;color:#9ca3af;}
+.sidebar-label{font-size:11px;color:#9ca3af;padding:8px 16px 3px;text-transform:uppercase;letter-spacing:.04em;font-weight:500;}
+.sidebar-dd{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;margin:1px 8px;border-radius:7px;cursor:pointer;}
+.sidebar-dd:hover{background:#f9fafb;}
+.sidebar-dd-inner{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:#374151;}
+.sidebar-div{height:1px;background:#f3f4f6;margin:6px 0;}
+.nav-item{display:flex;align-items:center;gap:9px;padding:7px 12px;margin:1px 8px;border-radius:7px;cursor:pointer;font-size:13px;color:#4b5563;}
+.nav-item:hover{background:#f3f4f6;}
+.nav-item svg{color:#6b7280;flex-shrink:0;}
+
+/* ══════════════════════════════════════════════════════════
+   TOPBAR
+══════════════════════════════════════════════════════════ */
+.main-wrapper{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{height:44px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;padding:0 28px;flex-shrink:0;}
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:12.5px;}
+.bc-link{color:#6b7280;cursor:pointer;transition:color .12s;}
+.bc-link:hover{color:#111;}
+.bc-current{color:#111827;font-weight:500;}
+.bc-sep{color:#d1d5db;}
+.topbar-right{display:flex;align-items:center;gap:7px;font-size:13px;color:#374151;font-weight:500;}
+.main-content{flex:1;overflow-y:auto;}
+
+/* ══════════════════════════════════════════════════════════
+   BUTTONS
+   Note: border:1.5px solid transparent from source 1 (partners)
+         spread-plan overrides inline where needed
+══════════════════════════════════════════════════════════ */
+.btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;border-radius:8px;cursor:pointer;font-family:inherit;padding:8px 16px;border:1.5px solid transparent;transition:all .15s;text-decoration:none;}
+.btn-primary{background:#3CC13B;color:#fff;border-color:#3CC13B;}
+.btn-primary:hover{background:#2da82c;border-color:#2da82c;}
+.btn-outline{background:#fff;border-color:#d1d5db;color:#374151;}
+.btn-outline:hover{background:#f9fafb;}
+.btn-sm{padding:6px 14px;font-size:12.5px;}
+
+/* Dark pill save bar buttons */
+.btn-save-pill{background:#3CC13B;color:#fff;border:none;border-radius:20px;padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .15s;}
+.btn-save-pill:hover{background:#2da82c;}
+.btn-discard-pill{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.3);border-radius:20px;padding:7px 16px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;transition:all .15s;}
+.btn-discard-pill:hover{border-color:rgba(255,255,255,.6);}
+
+/* ── Delete tier confirmation modal ───────────────────────── */
+.modal-overlay{position:fixed;inset:0;background:rgba(39,48,54,.4);z-index:2000;display:none;align-items:center;justify-content:center;}
+.modal-overlay.visible{display:flex;}
+.modal-card{background:#fff;border-radius:16px;width:520px;max-width:calc(100vw - 32px);box-shadow:0 8px 24px rgba(132,148,165,.22);display:flex;flex-direction:column;}
+.modal-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:24px;border-bottom:1px solid #e1e3ef;}
+.modal-title{font-size:20px;font-weight:700;color:#1d2738;line-height:1.3;flex:1;}
+.modal-close-btn{width:32px;height:32px;border-radius:50%;background:rgba(165,176,207,.16);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#6b7280;flex-shrink:0;transition:background .15s;}
+.modal-close-btn:hover{background:rgba(165,176,207,.3);}
+.modal-body{padding:24px;font-size:15px;color:#35415f;line-height:1.55;}
+.modal-body p{margin:0 0 8px;}
+.modal-body p:last-child{margin:0;}
+.modal-ftr{display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:20px 24px;border-top:1px solid #e1e3ef;}
+.modal-btn-cancel{background:transparent;border:1.5px solid #49cc68;color:#39a854;border-radius:9999px;padding:8px 20px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;line-height:1.4;}
+.modal-btn-cancel:hover{background:rgba(73,204,104,.06);}
+.modal-btn-delete{background:#ff6e4c;border:none;color:#fff;border-radius:9999px;padding:9px 20px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .15s;line-height:1.4;}
+.modal-btn-delete:hover{background:#f05a39;}
+
+/* ══════════════════════════════════════════════════════════
+   SAVE BAR — dark pill (partners / pricing screens)
+   id="save-bar"  class=".save-bar-pill"
+══════════════════════════════════════════════════════════ */
+.save-bar-pill{position:fixed;bottom:20px;left:calc(220px + (100vw - 220px)/2);transform:translateX(-50%);background:#1e293b;border-radius:40px;padding:8px 8px 8px 20px;display:none;align-items:center;gap:8px;z-index:500;box-shadow:0 8px 32px rgba(0,0,0,.25);white-space:nowrap;}
+.save-bar-pill.visible{display:flex;}
+.save-bar-lbl{font-size:13px;color:#fff;font-weight:400;}
+
+/* save-bar-spread now reuses .save-bar-pill — no separate styles needed */
+
+/* ══════════════════════════════════════════════════════════
+   TOAST (unified)
+══════════════════════════════════════════════════════════ */
+.g-toast{position:fixed;top:20px;right:28px;background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:12px 18px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,.12);z-index:2000;font-size:13px;color:#111827;font-weight:500;transition:opacity .25s,transform .25s;opacity:0;transform:translateY(-8px);pointer-events:none;min-width:240px;}
+.g-toast.show{opacity:1;transform:translateY(0);}
+.toast-check{width:22px;height:22px;border-radius:50%;background:#22c55e;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+/* ══════════════════════════════════════════════════════════
+   BADGES
+══════════════════════════════════════════════════════════ */
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:500;white-space:nowrap;}
+.badge-kyb-pending{background:#fff8eb;color:#d97706;}
+.badge-kyb-completed{background:#f0fdf4;color:#16a34a;}
+.badge-kyb-declined{background:#fff1f2;color:#e11d48;}
+.badge-not-signed{background:#fff8eb;color:#d97706;}
+.badge-signed{background:#f0fdf4;color:#16a34a;}
+
+/* ══════════════════════════════════════════════════════════
+   SCREEN: PARTNERS LIST
+══════════════════════════════════════════════════════════ */
+.partners-page{padding:32px 40px;background:#fff;min-height:100%;}
+@media(max-width:900px){.partners-page{padding:24px 20px;}}
+.partners-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+.partners-title{font-size:22px;font-weight:700;color:#111827;}
+.search-wrap{display:flex;align-items:center;gap:10px;border:1.5px solid #e5e7eb;border-radius:10px;padding:0 16px;height:44px;background:#fff;margin-bottom:16px;transition:border-color .15s;}
+.search-wrap:focus-within{border-color:#9ca3af;}
+.search-wrap input{border:none;outline:none;flex:1;font-size:14px;font-family:inherit;color:#374151;}
+.search-wrap input::placeholder{color:#9ca3af;}
+.filters-row{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.filter-sel{display:flex;align-items:center;justify-content:space-between;gap:6px;border:1.5px solid #e5e7eb;border-radius:8px;padding:7px 12px;font-size:13px;color:#374151;background:#fff;cursor:pointer;min-width:130px;transition:border-color .15s;}
+.filter-sel:hover{border-color:#9ca3af;}
+.filter-lbl{font-size:11px;color:#9ca3af;font-weight:500;display:block;margin-bottom:2px;}
+.filter-val{font-size:13px;color:#374151;}
+.partners-count{font-size:13.5px;color:#697BAA;font-weight:500;margin-bottom:14px;}
+.table-scroll{overflow-x:auto;}
+.table-header{display:grid;grid-template-columns:1fr 200px 180px 130px;padding:6px 20px;margin-bottom:4px;min-width:720px;}
+.th{font-size:12px;font-weight:500;color:#697BAA;}
+.partner-row{display:grid;grid-template-columns:1fr 200px 180px 130px;padding:18px 20px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;cursor:pointer;align-items:center;transition:border-color .15s,box-shadow .15s;min-width:720px;}
+.partner-row:hover{border-color:#9ca3af;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.partner-name{font-size:14px;font-weight:600;color:#111827;line-height:1.45;}
+.products-link{font-size:13.5px;font-weight:500;color:#16a34a;}
+.pagination{display:flex;align-items:center;justify-content:center;gap:3px;margin-top:24px;padding-bottom:8px;}
+.pg-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;border:1.5px solid transparent;color:#6b7280;background:transparent;font-family:inherit;transition:all .15s;}
+.pg-btn:hover:not(.active):not(.ellipsis){background:#f3f4f6;}
+.pg-btn.active{background:#3CC13B;color:#fff;}
+.pg-btn.ellipsis{cursor:default;letter-spacing:.05em;}
+.pg-arrow{width:34px;height:34px;border:1.5px solid #e5e7eb;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#6b7280;transition:border-color .15s;}
+.pg-arrow:hover{border-color:#9ca3af;}
+
+/* ══════════════════════════════════════════════════════════
+   SCREENS: PARTNER DETAIL / PRICING — CONTENT CARD
+══════════════════════════════════════════════════════════ */
+.content-card{background:#fff;border-radius:12px;border:1px solid #e5e7eb;margin:24px 28px;padding:32px 40px 40px;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+@media(max-width:900px){.content-card{margin:16px;padding:24px 20px 28px;}}
+
+/* Partner header */
+.partner-page-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;gap:20px;flex-wrap:wrap;}
+.partner-title{font-size:22px;font-weight:700;color:#111827;line-height:1.3;margin-bottom:8px;max-width:540px;}
+.product-area{display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.product-select{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 14px;font-size:13.5px;color:#374151;background:#fff;cursor:pointer;min-width:180px;transition:border-color .15s;}
+.product-select:hover{border-color:#9ca3af;}
+
+/* Tabs — font-size:13.5px (spread plan value) */
+.tabs-bar{display:flex;border-bottom:1.5px solid #e5e7eb;margin-bottom:32px;}
+.tab-btn{padding:10px 18px;font-size:13.5px;color:#6b7280;cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1.5px;background:none;border-top:none;border-left:none;border-right:none;font-family:inherit;font-weight:400;transition:color .15s;}
+.tab-btn.active{color:#3CC13B;border-bottom-color:#3CC13B;font-weight:500;}
+.tab-btn:hover:not(.active){color:#374151;}
+
+/* Product details */
+.section-title{font-size:17px;font-weight:700;color:#111827;margin-bottom:20px;}
+.product-details-card{border:1.5px solid #e5e7eb;border-radius:12px;padding:24px 28px;margin-bottom:28px;}
+.pd-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:20px;}
+@media(max-width:900px){.pd-grid{grid-template-columns:repeat(2,1fr);}}
+.pd-label{font-size:11.5px;color:#6b7280;font-weight:500;margin-bottom:6px;}
+.pd-value{font-size:14px;color:#374151;font-weight:500;}
+.pd-sel{display:flex;align-items:center;justify-content:space-between;gap:6px;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 12px;font-size:13px;color:#374151;cursor:pointer;background:#fff;transition:border-color .15s;}
+.pd-sel:hover{border-color:#9ca3af;}
+
+/* Members */
+.members-section{margin-top:4px;}
+.members-title{font-size:16px;font-weight:700;color:#111827;margin-bottom:4px;}
+.members-sub{font-size:13px;color:#9ca3af;margin-bottom:16px;}
+.member-pills{display:flex;gap:8px;margin-bottom:14px;}
+.m-pill{padding:5px 14px;border-radius:20px;font-size:13px;cursor:pointer;transition:all .15s;border:1.5px solid #e5e7eb;background:#fff;color:#374151;font-family:inherit;}
+.m-pill.active{background:#3CC13B;color:#fff;border-color:#3CC13B;}
+.members-count{font-size:13px;color:#374151;margin-bottom:12px;}
+.members-table-hdr{display:grid;grid-template-columns:1fr 1fr 120px 100px 140px;padding:10px 20px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px 10px 0 0;border-bottom:none;}
+.mt-th{font-size:12px;font-weight:500;color:#6b7280;}
+.members-empty{border:1px solid #e5e7eb;border-radius:0 0 10px 10px;padding:48px 0;text-align:center;}
+.members-empty-text{font-size:13.5px;color:#9ca3af;margin-top:10px;}
+
+/* Pricing */
+.pricing-section{margin-bottom:24px;}
+.section-hdr-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.revenue-card{border:1.5px solid #e5e7eb;border-radius:12px;padding:20px 24px;margin-bottom:24px;}
+.revenue-option-hdr{font-size:12.5px;color:#9ca3af;font-weight:500;margin-bottom:16px;text-transform:uppercase;letter-spacing:.04em;}
+.revenue-option{display:flex;align-items:flex-start;gap:13px;padding:14px 0;cursor:pointer;}
+.revenue-option+.revenue-option{border-top:1px solid #f3f4f6;}
+.radio-outer{width:19px;height:19px;border:2px solid #d1d5db;border-radius:50%;flex-shrink:0;margin-top:1px;transition:border-color .15s;display:flex;align-items:center;justify-content:center;}
+.radio-outer.selected{border-color:#3CC13B;background:#3CC13B;}
+.radio-inner{width:7px;height:7px;background:#fff;border-radius:50%;display:none;}
+.radio-outer.selected .radio-inner{display:block;}
+.rev-opt-title{font-size:14px;font-weight:600;color:#111827;margin-bottom:3px;}
+.rev-opt-sub{font-size:13px;color:#6b7280;line-height:1.5;}
+
+/* Limits */
+.limits-section{border-top:1px solid #e5e7eb;padding-top:24px;margin-top:4px;}
+.limits-title{font-size:15px;font-weight:600;color:#111827;margin-bottom:4px;}
+.limits-sub{font-size:13px;color:#697BAA;margin-bottom:20px;line-height:1.5;}
+.limits-table{width:auto;border-collapse:collapse;}
+.limits-table th{font-size:12.5px;font-weight:500;color:#374151;padding:0 0 10px;text-align:left;}
+.limits-table td{padding-top:7px;padding-bottom:7px;vertical-align:middle;}
+.limits-table td:first-child{font-size:14px;color:#374151;font-weight:400;white-space:nowrap;}
+.limits-table th:nth-child(2),.limits-table td:nth-child(2){padding-left:32px;padding-right:0;white-space:nowrap;}
+.limits-table th:nth-child(3),.limits-table td:nth-child(3){padding-left:16px;white-space:nowrap;}
+.lim-inp-wrap{border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 13px;background:#fff;display:flex;align-items:center;gap:4px;max-width:200px;transition:border-color .15s,box-shadow .15s;}
+.lim-inp-wrap:focus-within{border-color:#3CC13B;box-shadow:0 0 0 3px rgba(60,193,59,.08);}
+.lim-inp{border:none;outline:none;font-family:inherit;font-size:13.5px;color:#374151;width:50px;background:transparent;}
+.lim-unit{font-size:13px;color:#9ca3af;}
+
+/* Standard plan */
+.std-plan-section{margin-top:32px;padding-top:28px;border-top:1px solid #f3f4f6;}
+.std-plan-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+.std-plan-title{font-size:17px;font-weight:700;color:#111827;}
+.std-plan-sub{font-size:13px;color:#697BAA;margin-bottom:18px;cursor:pointer;}
+.std-plan-card{border:1.5px solid #e5e7eb;border-radius:12px;padding:24px 28px;}
+.std-summary{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:24px;}
+.std-col-title{font-size:12px;font-weight:500;color:#6b7280;margin-bottom:10px;text-transform:uppercase;letter-spacing:.03em;}
+.std-row{display:flex;justify-content:space-between;margin-bottom:6px;}
+.std-row-lbl{font-size:13px;color:#374151;}
+.std-undef{font-size:13px;color:#697BAA;}
+/* Green outline pill — for "Edit spread plan" and similar */
+.btn-green-outline{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1.5px solid #49cc68;color:#2aa84a;border-radius:9999px;padding:7px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;}
+.btn-green-outline:hover{background:rgba(73,204,104,.07);}
+
+/* ── Deposits tab ─────────────────────────────────────────── */
+.dep-section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.dep-title{font-size:20px;font-weight:700;color:#111827;}
+.dep-table-outer{border:1.5px solid #e5e7eb;border-radius:12px;overflow:visible;background:#fff;}
+.dep-col-row{display:grid;padding:12px 20px 10px;column-gap:16px;border-bottom:1px solid #f3f4f6;}
+.dep-col-lbl{font-size:12px;font-weight:500;color:#697BAA;}
+.dep-data-row{display:grid;padding:12px 20px;column-gap:16px;align-items:center;position:relative;}
+.dep-row-sep{border-top:1px solid #f3f4f6;}
+/* Dropdown */
+.dep-dd-wrap{position:relative;}
+.dep-dd-trigger{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 12px;font-size:13.5px;color:#374151;background:#fff;cursor:pointer;font-family:inherit;width:100%;transition:border-color .15s;white-space:nowrap;overflow:hidden;}
+.dep-dd-trigger .dep-ph{color:#9ca3af;}
+.dep-dd-trigger.open{border-color:#3CC13B;box-shadow:0 0 0 3px rgba(60,193,59,.08);}
+.dep-dd-list{display:none;position:absolute;top:calc(100% + 4px);left:0;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.1);z-index:400;min-width:100%;overflow:hidden;}
+.dep-dd-list.open{display:block;}
+.dep-dd-opt{padding:10px 14px;font-size:13.5px;color:#374151;cursor:pointer;transition:background .1s;white-space:nowrap;}
+.dep-dd-opt:hover{background:#f9fafb;}
+/* Inputs */
+.dep-inp-box{display:flex;align-items:center;gap:4px;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 12px;background:#fff;transition:border-color .15s,box-shadow .15s;}
+.dep-inp-box:focus-within{border-color:#3CC13B;box-shadow:0 0 0 3px rgba(60,193,59,.08);}
+.dep-num-inp{border:none;outline:none;font-family:inherit;font-size:13.5px;color:#374151;width:44px;background:transparent;}
+.dep-bps-lbl{font-size:13px;color:#9ca3af;}
+/* Total & saved row */
+.dep-total-txt{font-size:14px;font-weight:600;color:#111827;}
+.dep-sv-method{font-size:14px;font-weight:700;color:#111827;}
+.dep-sv-juris{font-size:13.5px;color:#3b82f6;}
+.dep-sv-base{font-size:13.5px;color:#374151;}
+.dep-sv-adj{font-size:13.5px;color:#697BAA;}
+.dep-val-chip{display:inline-flex;align-items:center;background:#eff6ff;color:#1e40af;border-radius:6px;padding:3px 10px;font-size:13px;font-weight:600;}
+.dep-val-chip.neg{background:#fff7ed;color:#c2410c;}
+.dep-sv-total{font-size:14px;font-weight:700;color:#111827;}
+.dep-saved-row{position:relative;}
+.dep-saved-row:hover{background:#f9fafb;}
+/* Per-field Edit pill overlay (used for Jurisdiction, Base spread, Spread adjustment, Value) */
+.dep-field-wrap{position:relative;display:flex;align-items:center;min-width:0;}
+.dep-field-lbl{font-size:13.5px;color:#374151;white-space:nowrap;transition:opacity .12s;}
+.dep-edit-pill{display:none;position:absolute;left:0;top:50%;transform:translateY(-50%);background:#3CC13B;color:#fff;border:none;border-radius:20px;padding:5px 16px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;z-index:2;transition:background .15s;}
+.dep-edit-pill:hover{background:#2da82c;}
+.dep-saved-row:hover .dep-edit-pill{display:block;}
+.dep-saved-row:hover .dep-field-lbl{opacity:.2;}
+/* Keep label visible for editing row's static fields */
+.dep-row-editing .dep-field-lbl{opacity:.2;}
+/* Trash and delete buttons */
+.dep-row-trash{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:transparent;border:none;color:#9ca3af;cursor:pointer;transition:background .15s,color .15s;opacity:0;flex-shrink:0;}
+.dep-saved-row:hover .dep-row-trash{opacity:1;}
+.dep-row-trash:hover{background:#fee2e2;color:#ef4444;}
+.dep-del-btn{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:#ff6e4c;border:none;color:#fff;cursor:pointer;transition:background .15s;flex-shrink:0;}
+.dep-del-btn:hover{background:#f05a39;}
+
+/* ══════════════════════════════════════════════════════════
+   SCREEN: SPREAD PLAN — plan header
+══════════════════════════════════════════════════════════ */
+.plan-header{display:flex;align-items:center;gap:14px;margin-bottom:24px;}
+.plan-icon{width:42px;height:42px;background:#f1f5f9;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid #e2e8f0;}
+.plan-name{font-size:22px;font-weight:700;color:#111827;line-height:1.2;}
+.plan-meta{font-size:12.5px;color:#9ca3af;margin-top:3px;}
+
+/* Spread plan tabs (inner plan tabs, not app screen tabs) */
+.plan-tabs{display:flex;border-bottom:1.5px solid #e5e7eb;margin-bottom:28px;}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* Section heading */
+.section-heading{font-size:17px;font-weight:700;color:#111827;margin-bottom:6px;}
+.section-subtitle{font-size:13px;color:#6b7280;margin-bottom:20px;line-height:1.5;}
+
+/* ══════════════════════════════════════════════════════════
+   CUSTOM SELECT (spread plan)
+══════════════════════════════════════════════════════════ */
+.custom-select{position:relative;width:220px;}
+.cs-trigger{display:flex;align-items:center;justify-content:space-between;padding:9px 13px;border:1.5px solid #d1d5db;border-radius:8px;font-size:13.5px;color:#374151;background:#fff;cursor:pointer;user-select:none;transition:border-color .15s;}
+.cs-trigger:hover{border-color:#9ca3af;}
+.cs-trigger.open{border-color:#3CC13B;box-shadow:0 0 0 3px rgba(60,193,59,.08);}
+.cs-placeholder{color:#9ca3af;}
+.cs-chevron{flex-shrink:0;transition:transform .15s;color:#9ca3af;}
+.cs-trigger.open .cs-chevron{transform:rotate(180deg);}
+.cs-dropdown{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1.5px solid #e5e7eb;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.1);z-index:200;overflow:hidden;}
+.cs-dropdown.open{display:block;}
+.cs-option{padding:10px 14px;font-size:13.5px;color:#374151;cursor:pointer;transition:background .1s;display:flex;align-items:center;justify-content:space-between;}
+.cs-option:hover{background:#f9fafb;}
+.cs-option.selected{color:#111827;font-weight:500;}
+
+/* ══════════════════════════════════════════════════════════
+   SPREAD ADJUSTMENT ROW
+══════════════════════════════════════════════════════════ */
+.spread-adj-row{display:flex;align-items:flex-end;gap:16px;margin-bottom:0;}
+.form-field{display:flex;flex-direction:column;gap:6px;}
+.field-label{font-size:12px;font-weight:500;color:#6b7280;}
+
+/* Value field — always visible */
+.value-field-wrap{display:flex;flex-direction:column;gap:6px;}
+.vib-prefix{display:none;}
+.vib-prefix.visible{display:inline;}
+.value-input-box{display:flex;align-items:center;border:1.5px solid #d1d5db;border-radius:8px;background:#fff;padding:0 12px;height:40px;transition:border-color .15s,box-shadow .15s;width:200px;}
+.value-input-box:focus-within{border-color:#3CC13B;box-shadow:0 0 0 3px rgba(60,193,59,.08);}
+.vib-prefix{font-size:14px;font-weight:500;color:#9ca3af;flex-shrink:0;margin-right:4px;}
+.vib-input{border:none;outline:none;font-size:13.5px;font-weight:500;color:#111827;font-family:inherit;width:60px;background:transparent;}
+.vib-input::placeholder{color:#9ca3af;font-weight:400;}
+.vib-unit{font-size:13px;color:#9ca3af;margin-left:4px;flex-shrink:0;}
+.vib-clear{background:none;border:none;cursor:pointer;color:#9ca3af;padding:0;margin-left:auto;display:none;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;flex-shrink:0;transition:all .15s;}
+.vib-clear:hover{background:#f3f4f6;color:#374151;}
+.vib-clear.visible{display:flex;}
+
+/* Absorb toggle */
+.absorb-wrap{display:none;align-items:center;gap:8px;align-self:flex-end;padding-bottom:10px;}
+.absorb-wrap.visible{display:flex;}
+.absorb-label{font-size:13px;color:#374151;}
+.toggle-switch{position:relative;width:36px;height:20px;flex-shrink:0;cursor:pointer;}
+.toggle-switch input{opacity:0;width:0;height:0;position:absolute;}
+.toggle-track{position:absolute;inset:0;background:#d1d5db;border-radius:20px;transition:background .2s;}
+.toggle-switch input:checked + .toggle-track{background:#3CC13B;}
+.toggle-thumb{position:absolute;top:2px;left:2px;width:16px;height:16px;background:#fff;border-radius:50%;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s;}
+.toggle-switch input:checked ~ .toggle-thumb{transform:translateX(16px);}
+
+/* Helper text */
+.spread-helper{font-size:13px;color:#6b7280;margin-top:12px;display:none;line-height:1.55;}
+.spread-helper.visible{display:block;}
+
+/* ══════════════════════════════════════════════════════════
+   ASSETS SECTION
+══════════════════════════════════════════════════════════ */
+.assets-section-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;}
+.assets-hdr-left .assets-title{font-size:15px;font-weight:600;color:#111827;margin-bottom:4px;}
+.assets-hdr-left .assets-sub{font-size:13px;color:#9ca3af;}
+
+/* ══════════════════════════════════════════════════════════
+   SPREAD TABLE
+══════════════════════════════════════════════════════════ */
+.spread-table{margin-top:20px;width:100%;}
+.spread-table-outer{overflow-x:auto;position:relative;}
+.spread-table-outer.scrolled .asset-col,
+.spread-table-outer.scrolled .fallback-col{box-shadow:4px 0 10px rgba(0,0,0,.08);}
+.spread-table-outer.scrolled .col-hdr-assets-select{box-shadow:4px 0 10px rgba(0,0,0,.06);}
+
+/* Grid */
+.col-headers{display:grid;grid-template-columns:148px repeat(5,minmax(140px,1fr));margin-bottom:6px;min-width:700px;}
+.asset-row{display:grid;grid-template-columns:148px repeat(5,minmax(140px,1fr));min-width:700px;}
+.col-hdr{padding:8px 12px;font-size:11.5px;color:#9ca3af;line-height:1.45;}
+.col-hdr .tier-name{display:block;color:#6b7280;font-weight:600;font-size:11.5px;}
+.col-hdr .tier-range{display:block;color:#9ca3af;font-weight:400;font-size:11px;margin-top:1px;}
+
+/* Sticky assets column header — dropdown style */
+.col-hdr-assets-select{position:sticky;left:0;z-index:3;background:#f4f5f7;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;gap:6px;cursor:pointer;user-select:none;transition:background .15s;}
+.col-hdr-assets-select:hover{background:#eeeff1;}
+.col-hdr-assets-select .cas-label{font-size:11.5px;color:#374151;font-weight:600;}
+.col-hdr-assets-select .cas-chevron{flex-shrink:0;color:#6b7280;}
+.asset-col{display:flex;align-items:center;gap:10px;padding:20px 16px;border-right:1px solid #f3f4f6;position:sticky;left:0;z-index:2;background:#fff;}
+/* Asset row delete hover */
+.asset-col-overlay{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(255,255,255,.88);}
+.asset-card:hover .asset-col-overlay{display:flex;}
+.asset-del-btn{width:32px;height:32px;border-radius:50%;background:#fee2e2;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#ef4444;flex-shrink:0;transition:background .15s;}
+.asset-del-btn:hover{background:#fecaca;}
+.fallback-col{display:flex;align-items:center;gap:7px;padding:20px 16px;border-right:1px solid #f3f4f6;position:sticky;left:0;z-index:2;background:#fff;}
+/* No asset empty state */
+.no-asset-col{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 12px;border-right:1px solid #f3f4f6;position:sticky;left:0;z-index:2;background:#fff;gap:7px;min-height:96px;}
+.no-asset-lbl{font-size:11.5px;color:#9ca3af;font-weight:500;white-space:nowrap;}
+
+/* ── Asset selection dropdown ────────────────────────────── */
+.col-hdr-assets-select.open{background:#eeeff1;}
+.col-hdr-assets-select .cas-chevron{transition:transform .15s;}
+.col-hdr-assets-select.open .cas-chevron{transform:rotate(180deg);}
+.asset-dropdown{position:absolute;top:calc(100% + 4px);left:0;z-index:400;background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.13);width:256px;display:flex;flex-direction:column;overflow:hidden;}
+.asset-dd-search{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid #f3f4f6;}
+.asset-dd-search-ico{color:#9ca3af;flex-shrink:0;}
+.asset-dd-search input{border:none;outline:none;font-size:13px;color:#111827;background:transparent;flex:1;font-family:inherit;}
+.asset-dd-search input::placeholder{color:#9ca3af;}
+.asset-dd-hdr{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;border-bottom:1px solid #f3f4f6;}
+.asset-dd-count{font-size:11.5px;color:#9ca3af;font-weight:500;}
+.asset-dd-all{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:#374151;font-weight:600;user-select:none;}
+.asset-dd-list{overflow-y:auto;max-height:220px;}
+.asset-dd-list::-webkit-scrollbar{width:4px;}
+.asset-dd-list::-webkit-scrollbar-thumb{background:#e5e7eb;border-radius:2px;}
+.asset-dd-item{display:flex;align-items:center;gap:10px;padding:8px 12px;cursor:pointer;transition:background .1s;}
+.asset-dd-item:hover{background:#f9fafb;}
+.asset-dd-item.checked{background:#f0fdf4;}
+.asset-dd-icon{width:24px;height:24px;flex-shrink:0;overflow:hidden;border-radius:50%;}
+.asset-dd-icon svg{display:block;width:24px !important;height:24px !important;}
+.asset-dd-name{font-size:13px;font-weight:600;color:#111827;flex:1;}
+.adc-check{width:16px;height:16px;border-radius:3px;border:1.5px solid #d1d5db;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:#fff;transition:all .12s;}
+.adc-check.checked{background:#3CC13B;border-color:#3CC13B;}
+
+/* Asset cards */
+.asset-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;margin-bottom:8px;}
+.asset-card:last-child{margin-bottom:0;}
+.asset-icon{width:32px;height:32px;border-radius:50%;flex-shrink:0;overflow:hidden;}
+.asset-name{font-size:13.5px;font-weight:600;color:#111827;}
+.fallback-lbl{font-size:13.5px;font-weight:600;color:#f59e0b;}
+
+/* Tier column header — base */
+.col-hdr-tier{position:relative;padding:8px 12px;min-height:52px;display:flex;flex-direction:column;justify-content:center;}
+/* Normal display */
+.tier-hdr-content{display:flex;flex-direction:column;gap:3px;}
+.tier-hdr-label{font-size:11px;font-weight:500;color:#6b7280;}
+.tier-hdr-val{font-size:12px;font-weight:700;color:#111827;}
+/* Hover actions overlay */
+.tier-hdr-actions{position:absolute;inset:0;display:none;align-items:center;justify-content:center;gap:6px;background:rgba(244,245,247,.93);border-radius:4px;}
+.col-hdr-tier:hover:not(.editing) .tier-hdr-actions{display:flex;}
+.tier-edit-pill{background:#3CC13B;color:#fff;border:none;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .15s;}
+.tier-edit-pill:hover{background:#2da82c;}
+.tier-delete-btn{width:28px;height:28px;border-radius:50%;background:#fee2e2;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#ef4444;transition:background .15s;flex-shrink:0;}
+.tier-delete-btn:hover{background:#fecaca;}
+.tier-add-btn-new{width:28px;height:28px;border-radius:50%;background:#dcfce7;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#22c55e;transition:background .15s;flex-shrink:0;}
+.tier-add-btn-new:hover{background:#bbf7d0;}
+/* Edit state */
+.col-hdr-tier.editing{background:#fff;}
+.col-hdr-tier.editing .tier-hdr-content{display:none;}
+.tier-hdr-edit-label{font-size:11px;font-weight:500;color:#6b7280;margin-bottom:5px;display:block;}
+.tier-hdr-input-row{display:flex;align-items:center;border:1.5px solid #3CC13B;border-radius:7px;padding:3px 8px;background:#fff;box-shadow:0 0 0 3px rgba(60,193,59,.08);gap:3px;height:32px;}
+.tier-hdr-inp-dollar{font-size:12.5px;color:#374151;font-weight:500;flex-shrink:0;}
+.tier-hdr-inp{border:none;outline:none;font-size:12.5px;font-weight:600;color:#111827;font-family:inherit;flex:1;min-width:0;width:55px;background:transparent;}
+.tier-hdr-inp::-webkit-outer-spin-button,.tier-hdr-inp::-webkit-inner-spin-button{-webkit-appearance:none;}
+.tier-hdr-inp-clear{background:none;border:none;cursor:pointer;color:#9ca3af;padding:0;display:flex;align-items:center;transition:color .15s;flex-shrink:0;}
+.tier-hdr-inp-clear:hover{color:#374151;}
+/* Tier edit — error state */
+.tier-hdr-input-row.error{border-color:#ef4444 !important;box-shadow:0 0 0 3px rgba(239,68,68,.1) !important;}
+.tier-err-msg{display:flex;align-items:flex-start;gap:4px;margin-top:6px;font-size:11.5px;color:#ef4444;line-height:1.35;}
+.col-hdr-tier.has-error .tier-hdr-label{color:#ef4444;}
+.col-hdr-tier.has-error .tier-hdr-val{color:#ef4444;}
+.col-hdr-tier.has-error .tier-hdr-edit-label{color:#ef4444;}
+/* Greater than column */
+.col-hdr-gt{position:relative;padding:8px 12px;min-height:52px;display:flex;flex-direction:column;justify-content:center;}
+.tier-gt-lbl-row{display:flex;align-items:center;gap:3px;margin-bottom:3px;}
+.tier-gt-lbl{font-size:11px;font-weight:500;color:#6b7280;}
+.tier-gt-val{font-size:12px;font-weight:700;color:#111827;}
+
+/* Tier cell — base */
+.tier-cell{padding:16px 12px;border-right:1px solid #f3f4f6;position:relative;min-height:108px;display:flex;align-items:center;transition:background .12s;}
+.tier-cell:last-child{border-right:none;}
+.tier-cell:not(.editing):hover{background:#fafafa;}
+.tier-cell.editing{background:#f9fafb;}
+.tc-inner{display:flex;flex-direction:column;gap:3px;width:100%;}
+.tc-label{font-size:11px;color:#9ca3af;margin-bottom:1px;}
+.tc-spread-row{display:flex;align-items:center;gap:5px;flex-wrap:nowrap;}
+.tc-base{font-size:13px;font-weight:600;color:#1a2234;}
+.tc-chip{display:inline-flex;align-items:center;background:#f1f5f9;color:#64748b;font-size:11px;font-weight:600;padding:2px 7px;border-radius:5px;white-space:nowrap;}
+.tc-chip.green{background:#dcfce7;color:#15803d;}
+.tc-chip.orange{background:#fff7ed;color:#ea580c;}
+.tc-eq{font-size:11px;color:#d1d5db;margin:1px 0;}
+.tc-total-row{display:flex;align-items:baseline;gap:4px;margin-top:1px;}
+.tc-total-lbl{font-size:11px;color:#9ca3af;}
+.tc-total-val{font-size:13.5px;font-weight:700;color:#111827;}
+
+/* Hover overlay — "Edit spread" button */
+.tc-hover-overlay{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(255,255,255,.88);border-radius:0;cursor:pointer;}
+.tier-cell:not(.editing):hover .tc-hover-overlay{display:flex;}
+.edit-spread-btn{background:#3CC13B;color:#fff;border:none;border-radius:20px;padding:6px 15px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;transition:background .15s;}
+.edit-spread-btn:hover{background:#2da82c;}
+
+/* Inline edit input */
+.tc-edit-row{display:flex;align-items:center;gap:4px;border:1.5px solid #3CC13B;border-radius:7px;padding:5px 9px;background:#fff;box-shadow:0 0 0 3px rgba(60,193,59,.08);margin-bottom:3px;width:fit-content;}
+.tc-edit-input{border:none;outline:none;font-size:13px;font-weight:600;color:#111827;width:44px;font-family:inherit;background:transparent;}
+.tc-edit-unit{font-size:12px;color:#9ca3af;flex-shrink:0;}
+
+/* Info icon + tooltip */
+.info-icon{display:inline-flex;align-items:center;color:#9ca3af;cursor:pointer;}
+.tooltip-wrap{position:relative;display:inline-flex;align-items:center;}
+.tooltip-wrap .tooltip{display:none;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;font-size:11.5px;padding:6px 10px;border-radius:7px;white-space:nowrap;z-index:300;font-weight:400;}
+.tooltip-wrap:hover .tooltip{display:block;}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     PRODUCTION BANNER
+══════════════════════════════════════════════════════════ -->
+<div class="prod-banner">
+  <span class="prod-badge">Production environment</span>
+  Explore Enterprise Portal live environment.
+  <div class="banner-user">
+    <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="5" r="3" stroke="#92400e" stroke-width="1.3"/><path d="M1.5 13.5c0-3.31 2.69-6 6-6s6 2.69 6 6" stroke="#92400e" stroke-width="1.3" stroke-linecap="round"/></svg>
+    John Doe
+  </div>
+</div>
+
+<div class="app-body">
+  <!-- ══════════════════════════════════════════════════════
+       SIDEBAR (source 1 version)
+  ══════════════════════════════════════════════════════ -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><rect width="30" height="30" rx="8" fill="#f0fdf4"/><path d="M9 15.5l4 4 8-9" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="logo-text"><span class="main">enterprise portal</span><span class="sub">by uphold</span></div>
+    </div>
+    <div class="sidebar-label">Product</div>
+    <div class="sidebar-dd">
+      <div class="sidebar-dd-inner">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1.5" y="1.5" width="5" height="5" rx="1" fill="#6b7280"/><rect x="8.5" y="1.5" width="5" height="5" rx="1" fill="#6b7280"/><rect x="1.5" y="8.5" width="5" height="5" rx="1" fill="#6b7280"/><rect x="8.5" y="8.5" width="5" height="5" rx="1" fill="#6b7280"/></svg>
+        Partners
+      </div>
+      <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>
+    </div>
+    <div class="sidebar-label">Environment</div>
+    <div class="sidebar-dd">
+      <div class="sidebar-dd-inner">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4" stroke="#ef4444" stroke-width="1.4"/><circle cx="6" cy="6" r="1.8" fill="#ef4444"/></svg>
+        <span style="color:#ef4444;">Production</span>
+      </div>
+      <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>
+    </div>
+    <div class="sidebar-div"></div>
+    <div style="padding:2px 8px;">
+      <div class="nav-item" onclick="goToPartners()">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1.5 6L7.5 1.5 13.5 6V13.5a.75.75 0 01-.75.75H2.25A.75.75 0 011.5 13.5V6z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M5.5 14.25V8.5h4v5.75" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Home
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════════════════════════
+       MAIN WRAPPER
+  ══════════════════════════════════════════════════════ -->
+  <div class="main-wrapper">
+    <div class="topbar" id="topbar"></div>
+    <div class="main-content" id="main-content"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SAVE BAR — dark pill (partners / pricing screens)
+══════════════════════════════════════════════════════════ -->
+<div class="save-bar-pill" id="save-bar">
+  <span class="save-bar-lbl" id="save-bar-lbl">1 unsaved change</span>
+  <button class="btn-discard-pill" onclick="discardChanges()">Discard</button>
+  <button class="btn-save-pill" onclick="saveChanges()">Save</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SAVE BAR — floating pill (spread-plan screen)
+══════════════════════════════════════════════════════════ -->
+<div class="save-bar-pill" id="save-bar-spread">
+  <span class="save-bar-lbl" id="save-bar-changes">1 unsaved change</span>
+  <button class="btn-discard-pill" onclick="discardSpreadChanges()">Discard</button>
+  <button class="btn-save-pill" id="spread-save-btn" onclick="saveSpreadChanges()">Save</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     TOAST (unified — one element, dynamic message)
+══════════════════════════════════════════════════════════ -->
+<div class="g-toast" id="g-toast">
+  <div class="toast-check"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6.5l3 3 5-6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <span id="toast-msg">Changes successfully updated.</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     DELETE TIER CONFIRMATION MODAL
+══════════════════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════════════════════════
+     DELETE ASSET CONFIRMATION MODAL
+══════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="delete-asset-modal" onclick="closeAssetDeleteModal()">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <div class="modal-hdr">
+      <span class="modal-title">Delete asset</span>
+      <button class="modal-close-btn" onclick="closeAssetDeleteModal()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>Are you sure you want to delete [<strong id="delete-asset-name"></strong>]?</p>
+      <p>This action cannot be retrieved.</p>
+    </div>
+    <div class="modal-ftr">
+      <button class="modal-btn-cancel" onclick="closeAssetDeleteModal()">Cancel</button>
+      <button class="modal-btn-delete" onclick="confirmDeleteAsset()">Delete asset</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="delete-tier-modal" onclick="closeDeleteModal()">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <div class="modal-hdr">
+      <span class="modal-title">Delete ticket size tier</span>
+      <button class="modal-close-btn" onclick="closeDeleteModal()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>Are you sure you want to delete the <strong id="delete-tier-range"></strong> tier? Range values will be distributed among the other tiers.</p>
+      <p>This action cannot be retrieved.</p>
+    </div>
+    <div class="modal-ftr">
+      <button class="modal-btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+      <button class="modal-btn-delete" onclick="confirmDeleteTier()">Delete tier</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="dep-delete-modal" onclick="depositsCloseDeleteModal()">
+  <div class="modal-card" style="width:560px" onclick="event.stopPropagation()">
+    <div class="modal-hdr">
+      <span class="modal-title">Delete method</span>
+      <button class="modal-close-btn" onclick="depositsCloseDeleteModal()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>By deleting <strong id="dep-delete-method-name"></strong>, it will no longer be able to execute transactions through this method.</p>
+      <p>This action is irreversible. Are you sure you want to continue?</p>
+    </div>
+    <div class="modal-ftr">
+      <button class="modal-btn-cancel" onclick="depositsCloseDeleteModal()">Cancel</button>
+      <button class="modal-btn-delete" onclick="depositsConfirmDelete()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="wdr-delete-modal" onclick="withdrawalsCloseDeleteModal()">
+  <div class="modal-card" style="width:560px" onclick="event.stopPropagation()">
+    <div class="modal-hdr">
+      <span class="modal-title">Delete method</span>
+      <button class="modal-close-btn" onclick="withdrawalsCloseDeleteModal()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>By deleting <strong id="wdr-delete-method-name"></strong>, it will no longer be able to execute transactions through this method.</p>
+      <p>This action is irreversible. Are you sure you want to continue?</p>
+    </div>
+    <div class="modal-ftr">
+      <button class="modal-btn-cancel" onclick="withdrawalsCloseDeleteModal()">Cancel</button>
+      <button class="modal-btn-delete" onclick="withdrawalsConfirmDelete()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   APP STATE
+   appScreen replaces 'screen' to avoid shadowing window.screen
+══════════════════════════════════════════════════════════════ */
+let appScreen   = 'partners'; // 'partners' | 'partner-detail' | 'pricing' | 'spread-plan'
+let activeTab   = 'product-details';
+
+// ── Partners / pricing state ──────────────────────────────
+let pricingModel = null;   // null | 'wholesale' | 'revenue-share'
+let savedModel   = null;
+let pricingSaved = false;
+
+// ── Spread plan state ─────────────────────────────────────
+let spreadType  = '';
+let spreadValue = '';
+let savedType   = '';
+let savedValue  = '';
+
+let pendingCellEdits = {};
+let savedCellEdits   = {};
+let openCells        = new Set();
+
+let tierThresholds      = [0, 0, 0, 0];
+let savedTierThresholds = [0, 0, 0, 0];
+let pendingTierEdits      = {};
+let pendingTierDeletions  = new Set(); // threshold indices staged for deletion (confirmed on Save)
+let editingTierIdx        = null;  // index of tier header currently in edit mode
+let deletingTierIdx       = null;  // index currently shown in delete confirmation modal
+
+const MAX_TIERS = 5;
+let TIERS = 5;  // current tier count; updated on add/remove
+
+// ── Asset catalog (alphabetical) ──────────────────────────
+const ALL_ASSETS_CATALOG = [
+  { key: 'ADA',  name: 'ADA',  baseBps: 6 },
+  { key: 'BTC',  name: 'BTC',  baseBps: 6 },
+  { key: 'CSPR', name: 'CSPR', baseBps: 6 },
+  { key: 'ETH',  name: 'ETH',  baseBps: 6 },
+  { key: 'SOL',  name: 'SOL',  baseBps: 6 },
+  { key: 'XRP',  name: 'XRP',  baseBps: 6 },
+];
+
+let savedAssetKeys    = new Set();   // committed asset selection
+let pendingAssetKeys  = null;        // null = no pending; Set = user is editing selection
+let assetDropdownOpen = false;
+let assetSearchQuery  = '';
+
+// ── Deposits tab state ─────────────────────────────────────
+const DEPOSIT_METHODS = ['Bank transfer (ACH)', 'Bank transfer (FPS)', 'Cards', 'Pix', 'Venmo'];
+const DEPOSIT_JURIS   = ['All', 'EEA', 'UK', 'US', 'RoW'];
+const DEPOSIT_ADJ     = ['Markup', 'Markdown'];
+let depositsRows           = [];    // committed rows: [{method,jurisdiction,baseSpread,adjustment,value}]
+let depositsEdit           = { method: null, jurisdiction: null, baseSpread: '', adjustment: null, value: '' };
+let depositsHasEdit        = true;  // show edit row by default (empty state)
+let depositsOpenDD         = null;  // null | 'method' | 'jurisdiction' | 'adjustment'
+let depositsDeletePendingIdx = null; // index of row pending deletion confirmation
+let depositsRowEdit = null; // { idx, jurisdiction, baseSpread, adjustment, value, openDD } — full row inline edit
+
+const WITHDRAWAL_METHODS = ['Bank transfer (ACH)', 'Bank transfer (FPS)', 'Bank transfer (SEPA)', 'Cards', 'PayPal'];
+const WITHDRAWAL_JURIS   = ['All', 'EEA', 'UK', 'US', 'RoW'];
+const WITHDRAWAL_ADJ     = ['Markup', 'Markdown'];
+let withdrawalsRows           = [];
+let withdrawalsEdit           = { method: null, jurisdiction: null, baseSpread: '', adjustment: null, value: '' };
+let withdrawalsHasEdit        = true;
+let withdrawalsOpenDD         = null;
+let withdrawalsDeletePendingIdx = null;
+let withdrawalsRowEdit = null; // { idx, jurisdiction, baseSpread, adjustment, value, openDD }
+
+function assetIcon(key) {
+  switch(key) {
+    case 'ADA':  return adaIcon();
+    case 'BTC':  return btcIcon();
+    case 'CSPR': return csprIcon();
+    case 'ETH':  return ethIcon();
+    case 'SOL':  return solIcon();
+    case 'XRP':  return xrpIcon();
+    default: return `<svg width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="#e5e7eb"/></svg>`;
+  }
+}
+
+function activeAssets() {
+  const keys = pendingAssetKeys ?? savedAssetKeys;
+  return ALL_ASSETS_CATALOG.filter(a => keys.has(a.key));
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ASSET ICONS
+══════════════════════════════════════════════════════════════ */
+function btcIcon(){return`<svg width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="#f7931a"/><path d="M20.5 14.2c.3-1.8-1.2-2.8-3.3-3.4l.7-2.7-1.6-.4-.7 2.7-1.3-.3.7-2.7-1.6-.4-.7 2.7-2.6-.6-.4 1.7s1.2.3 1.1.3c.6.1.8.5.7.9l-1.7 6.8c-.1.3-.4.7-1 .6 0 0-1.1-.3-1.1-.3L9 21.1l2.5.6 1.4.4-.7 2.7 1.6.4.7-2.7 1.3.3-.7 2.7 1.6.4.7-2.7c2.8.5 4.9.3 5.8-2.1.7-1.9-.1-3-1.5-3.7.9-.2 1.6-.8 1.8-2zm-3.2 4.6c-.5 1.9-3.8.9-4.9.6l.9-3.4c1.1.3 4.5.9 4 2.8zm.5-4.6c-.5 1.7-3.3.8-4.2.6l.8-3.1c.9.2 3.9.6 3.4 2.5z" fill="white"/></svg>`;}
+function ethIcon(){return`<svg width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="#627eea"/><path d="M16 5.5L9.5 16.5 16 20.2l6.5-3.7L16 5.5zM9.5 17.7L16 26.5l6.5-8.8L16 21.4l-6.5-3.7z" fill="white" fill-opacity="0.9"/></svg>`;}
+function xrpIcon(){return`<svg width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="#346aa9"/><path d="M21 9h2.5l-5 5c-1.4 1.4-3.6 1.4-5 0L8.5 9H11l3.5 3.5c.8.8 2.2.8 3 0L21 9zM11 23H8.5l5-5c1.4-1.4 3.6-1.4 5 0l5 5H21l-3.5-3.5c-.8-.8-2.2-.8-3 0L11 23z" fill="white"/></svg>`;}
+function solIcon(){return`<svg width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="#9945ff"/><path d="M10 20.5h12.5l-2 2H10l2-2zm0-5.5h10.5l-2 2H10l2-2zm2-5.5h10.5L21 11.5H10l2-1.5z" fill="white"/></svg>`;}
+function adaIcon(){return`<svg width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="#0d1e3c"/><circle cx="16" cy="16" r="1.5" fill="white"/><circle cx="16" cy="10" r="1.2" fill="white"/><circle cx="16" cy="22" r="1.2" fill="white"/><circle cx="10.8" cy="13" r="1.2" fill="white"/><circle cx="21.2" cy="13" r="1.2" fill="white"/><circle cx="10.8" cy="19" r="1.2" fill="white"/><circle cx="21.2" cy="19" r="1.2" fill="white"/></svg>`;}
+function csprIcon(){return`<svg width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="#e5303b"/><path d="M20 9.5H12.5c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2H20c1.1 0 2-.9 2-2v-9c0-1.1-.9-2-2-2zm-3.8 8.8l-2.5-2.5 2.5-2.5 1.1 1.1-1.4 1.4 1.4 1.4-1.1 1.1zm3.6 0l-1.1-1.1 1.4-1.4-1.4-1.4 1.1-1.1 2.5 2.5-2.5 2.5z" fill="white"/></svg>`;}
+
+/* ══════════════════════════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════════════════════════ */
+function goToPartners() {
+  appScreen = 'partners';
+  render();
+}
+
+function goToPartner() {
+  appScreen = 'partner-detail';
+  activeTab = 'product-details';
+  render();
+}
+
+function goToTab(tab) {
+  activeTab = tab;
+  appScreen = (tab === 'pricing') ? 'pricing' : 'partner-detail';
+  render();
+}
+
+function goToSpreadPlan() {
+  appScreen = 'spread-plan';
+  render();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   UNIFIED SAVE / DISCARD
+   Routes to the correct handler based on appScreen
+══════════════════════════════════════════════════════════════ */
+function saveChanges() {
+  if (appScreen === 'spread-plan') {
+    saveSpreadChanges();
+  } else {
+    savePartnerChanges();
+  }
+}
+
+function discardChanges() {
+  if (appScreen === 'spread-plan') {
+    discardSpreadChanges();
+  } else {
+    discardPartnerChanges();
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PARTNERS / PRICING — ACTIONS
+══════════════════════════════════════════════════════════════ */
+function selectModel(model) {
+  pricingModel = model;
+  render();
+  updateSaveBar();
+}
+
+function savePartnerChanges() {
+  savedModel   = pricingModel;
+  pricingSaved = true;
+  hideSaveBar();
+  render();
+  showToast();
+}
+
+function discardPartnerChanges() {
+  pricingModel = savedModel;
+  hideSaveBar();
+  render();
+}
+
+/* ── Partner save bar ────────────────────────────────────── */
+function updateSaveBar() {
+  // Never show the pill bar on the spread-plan screen
+  if (appScreen === 'spread-plan') {
+    hideSaveBar();
+    return;
+  }
+  const bar     = document.getElementById('save-bar');
+  const lbl     = document.getElementById('save-bar-lbl');
+  const changed = pricingModel !== savedModel;
+  if (changed) {
+    lbl.textContent = '1 unsaved change';
+    bar.classList.add('visible');
+  } else {
+    bar.classList.remove('visible');
+  }
+}
+
+function hideSaveBar() {
+  document.getElementById('save-bar').classList.remove('visible');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SPREAD PLAN — ACTIONS
+══════════════════════════════════════════════════════════════ */
+function saveSpreadChanges() {
+  savedType  = spreadType;
+  savedValue = spreadValue;
+  Object.assign(savedCellEdits, pendingCellEdits);
+  pendingCellEdits = {};
+  openCells.clear();
+  // Commit tier edits first (before deletions shift indices)
+  for (let i = 0; i < tierThresholds.length; i++) {
+    if (pendingTierEdits[i] !== undefined) tierThresholds[i] = pendingTierEdits[i];
+  }
+  pendingTierEdits = {};
+  // Commit pending deletions — splice in reverse order to preserve indices
+  const toDelete = Array.from(pendingTierDeletions).sort((a, b) => b - a);
+  for (const idx of toDelete) {
+    tierThresholds.splice(idx, 1);
+    // Also purge saved cell edits for the deleted tier column
+    for (const key of Object.keys(savedCellEdits)) {
+      if (key.endsWith('-' + idx)) delete savedCellEdits[key];
+    }
+  }
+  pendingTierDeletions = new Set();
+  savedTierThresholds = [...tierThresholds];
+  TIERS = tierThresholds.length + 1;
+  editingTierIdx = null;
+  // Commit asset selection
+  if (pendingAssetKeys !== null) {
+    savedAssetKeys = new Set(pendingAssetKeys);
+    pendingAssetKeys = null;
+  }
+  assetDropdownOpen = false;
+  assetSearchQuery  = '';
+  // Commit deposits edit row if it has at least a method set
+  if (depositsHasEdit && depositsEdit && depositsEdit.method) {
+    depositsRows.push({
+      method:       depositsEdit.method,
+      jurisdiction: depositsEdit.jurisdiction || '—',
+      baseSpread:   parseInt(depositsEdit.baseSpread) || 0,
+      adjustment:   depositsEdit.adjustment || '—',
+      value:        parseInt(depositsEdit.value) || 0,
+    });
+    depositsEdit    = { method: null, jurisdiction: null, baseSpread: '', adjustment: null, value: '' };
+    depositsHasEdit = false;
+  }
+  depositsOpenDD = null;
+  // Commit deposits inline row edit
+  if (depositsRowEdit && depositsRows[depositsRowEdit.idx]) {
+    const r = depositsRows[depositsRowEdit.idx];
+    r.jurisdiction = depositsRowEdit.jurisdiction;
+    r.baseSpread   = parseInt(depositsRowEdit.baseSpread) || 0;
+    r.adjustment   = depositsRowEdit.adjustment;
+    r.value        = parseInt(depositsRowEdit.value) || 0;
+  }
+  depositsRowEdit = null;
+  // Commit withdrawals edit row if it has at least a method set
+  if (withdrawalsHasEdit && withdrawalsEdit && withdrawalsEdit.method) {
+    withdrawalsRows.push({
+      method:       withdrawalsEdit.method,
+      jurisdiction: withdrawalsEdit.jurisdiction || '—',
+      baseSpread:   parseInt(withdrawalsEdit.baseSpread) || 0,
+      adjustment:   withdrawalsEdit.adjustment || '—',
+      value:        parseInt(withdrawalsEdit.value) || 0,
+    });
+    withdrawalsEdit    = { method: null, jurisdiction: null, baseSpread: '', adjustment: null, value: '' };
+    withdrawalsHasEdit = false;
+  }
+  withdrawalsOpenDD = null;
+  // Commit withdrawals inline row edit
+  if (withdrawalsRowEdit && withdrawalsRows[withdrawalsRowEdit.idx]) {
+    const r = withdrawalsRows[withdrawalsRowEdit.idx];
+    r.jurisdiction = withdrawalsRowEdit.jurisdiction;
+    r.baseSpread   = parseInt(withdrawalsRowEdit.baseSpread) || 0;
+    r.adjustment   = withdrawalsRowEdit.adjustment;
+    r.value        = parseInt(withdrawalsRowEdit.value) || 0;
+  }
+  withdrawalsRowEdit = null;
+  document.getElementById('save-bar-spread').classList.remove('visible');
+  renderHeaders();
+  renderTable();
+  renderDepositsTab();
+  renderWithdrawalsTab();
+  showToast();
+}
+
+function discardSpreadChanges() {
+  spreadType  = savedType;
+  spreadValue = savedValue;
+  pendingCellEdits = {};
+  openCells.clear();
+  pendingTierEdits    = {};
+  pendingTierDeletions = new Set();
+  editingTierIdx      = null;
+  pendingAssetKeys    = null;
+  assetDropdownOpen   = false;
+  assetSearchQuery    = '';
+  // Reset deposits edit row
+  depositsEdit    = { method: null, jurisdiction: null, baseSpread: '', adjustment: null, value: '' };
+  depositsOpenDD  = null;
+  depositsHasEdit = (depositsRows.length === 0);
+  depositsRowEdit = null;
+  renderDepositsTab();
+  // Reset withdrawals edit row
+  withdrawalsEdit    = { method: null, jurisdiction: null, baseSpread: '', adjustment: null, value: '' };
+  withdrawalsOpenDD  = null;
+  withdrawalsHasEdit = (withdrawalsRows.length === 0);
+  withdrawalsRowEdit = null;
+  renderWithdrawalsTab();
+  renderHeaders();
+
+  const label  = document.getElementById('cs-label');
+  const prefix = document.getElementById('vib-prefix');
+  if (!savedType) {
+    label.textContent = 'Select an option';
+    label.classList.add('cs-placeholder');
+    if (prefix) { prefix.textContent = ''; prefix.classList.remove('visible'); }
+    document.getElementById('spread-helper').classList.remove('visible');
+    document.getElementById('absorb-wrap').classList.remove('visible');
+  } else {
+    label.textContent = savedType === 'markup' ? 'Markup' : 'Markdown';
+    label.classList.remove('cs-placeholder');
+    document.getElementById('check-markup').style.display   = savedType === 'markup'   ? 'block' : 'none';
+    document.getElementById('check-markdown').style.display = savedType === 'markdown' ? 'block' : 'none';
+    if (prefix) { prefix.textContent = savedType === 'markup' ? '+' : '−'; prefix.classList.add('visible'); }
+    document.getElementById('absorb-wrap').classList.toggle('visible', savedType === 'markdown');
+  }
+
+  const inp = document.getElementById('spread-value');
+  if (inp) {
+    inp.value = savedValue;
+    document.getElementById('vib-clear').classList.toggle('visible', savedValue !== '');
+  }
+  document.getElementById('save-bar-spread').classList.remove('visible');
+  renderTable();
+}
+
+/* ── Spread changes UI / bar ─────────────────────────────── */
+function countSpreadChanges() {
+  let n = 0;
+  if (spreadType  !== savedType)  n++;
+  if (spreadValue !== savedValue) n++;
+  for (const key in pendingCellEdits) {
+    const asset       = ALL_ASSETS_CATALOG.find(a => key.startsWith(a.key + '-'));
+    const defaultBase = asset ? asset.baseBps : 6;
+    const saved       = savedCellEdits[key] ?? defaultBase;
+    if (pendingCellEdits[key] !== saved) n++;
+  }
+  for (let i = 0; i < tierThresholds.length; i++) {
+    if (pendingTierEdits[i] !== undefined && pendingTierEdits[i] !== savedTierThresholds[i]) n++;
+  }
+  n += pendingTierDeletions.size;
+  // Asset selection change
+  if (pendingAssetKeys !== null) {
+    const p = pendingAssetKeys, s = savedAssetKeys;
+    if (p.size !== s.size || [...p].some(k => !s.has(k)) || [...s].some(k => !p.has(k))) n++;
+  }
+  // Deposits dirty fields
+  n += depositsDirtyCount();
+  // Withdrawals dirty fields
+  n += withdrawalsDirtyCount();
+  return n;
+}
+
+function updateChangesUI() {
+  // Only relevant when on spread-plan screen
+  if (appScreen !== 'spread-plan') return;
+  updateSpreadBar();
+}
+
+function updateSpreadBar() {
+  const n       = countSpreadChanges();
+  const errors  = hasTierErrors();
+  const bar     = document.getElementById('save-bar-spread');
+  const lbl     = document.getElementById('save-bar-changes');
+  const saveBtn = document.getElementById('spread-save-btn');
+  if (n > 0 || errors) {
+    bar.classList.add('visible');
+    lbl.textContent = n + ' unsaved change' + (n !== 1 ? 's' : '');
+  } else {
+    bar.classList.remove('visible');
+  }
+  if (saveBtn) {
+    saveBtn.disabled      = errors;
+    saveBtn.style.opacity = errors ? '0.45' : '';
+    saveBtn.style.cursor  = errors ? 'not-allowed' : '';
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   UNIFIED TOAST
+══════════════════════════════════════════════════════════════ */
+let toastTimer;
+function showToast(msg) {
+  if (msg === undefined) msg = 'Changes successfully updated.';
+  const t = document.getElementById('g-toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   MAIN RENDER
+══════════════════════════════════════════════════════════════ */
+function render() {
+  renderTopbar();
+  renderContent();
+  // Refresh correct save bar for current screen
+  if (appScreen === 'spread-plan') {
+    hideSaveBar();       // hide pill bar
+    updateSpreadBar();   // refresh spread bar
+  } else {
+    // Hide spread bar when leaving spread-plan
+    document.getElementById('save-bar-spread').classList.remove('visible');
+    updateSaveBar();
+  }
+}
+
+/* ── Topbar / breadcrumbs ─────────────────────────────────── */
+function renderTopbar() {
+  const el      = document.getElementById('topbar');
+  const userHTML = `<div class="topbar-right"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="5" r="3" stroke="#6b7280" stroke-width="1.3"/><path d="M1.5 13.5c0-3.31 2.69-6 6-6s6 2.69 6 6" stroke="#6b7280" stroke-width="1.3" stroke-linecap="round"/></svg>John Doe</div>`;
+
+  if (appScreen === 'partners') {
+    el.innerHTML = `<div></div>${userHTML}`;
+
+  } else if (appScreen === 'partner-detail') {
+    el.innerHTML = `
+      <div class="breadcrumb">
+        <span class="bc-link" onclick="goToPartners()">Partners</span>
+        <span class="bc-sep">›</span>
+        <span class="bc-current">(Partner name)</span>
+      </div>
+      ${userHTML}`;
+
+  } else if (appScreen === 'pricing') {
+    el.innerHTML = `
+      <div class="breadcrumb">
+        <span class="bc-link" onclick="goToPartners()">Partners</span>
+        <span class="bc-sep">›</span>
+        <span class="bc-link" onclick="goToPartner()">(Partner name)</span>
+        <span class="bc-sep">›</span>
+        <span class="bc-current">Pricing</span>
+      </div>
+      ${userHTML}`;
+
+  } else if (appScreen === 'spread-plan') {
+    el.innerHTML = `
+      <div class="breadcrumb">
+        <span class="bc-link" onclick="goToPartners()">Partners</span>
+        <span class="bc-sep">›</span>
+        <span class="bc-link" onclick="goToPartner()">(Partner name)</span>
+        <span class="bc-sep">›</span>
+        <span class="bc-link" onclick="goToTab('pricing')">Pricing</span>
+        <span class="bc-sep">›</span>
+        <span class="bc-current">Spread plan</span>
+      </div>
+      ${userHTML}`;
+  }
+}
+
+/* ── Content area ────────────────────────────────────────── */
+function renderContent() {
+  const el = document.getElementById('main-content');
+
+  if (appScreen === 'partners') {
+    el.style.background = '#fff';
+    el.style.padding    = '';
+    el.innerHTML        = renderPartners();
+
+  } else if (appScreen === 'spread-plan') {
+    el.style.background = '#f4f5f7';
+    el.style.padding    = '24px 32px 80px';
+    el.innerHTML        = spreadPlanHTML();
+    // Now that the DOM is live, attach render + scroll listener
+    renderHeaders();
+    renderTable();
+    renderDepositsTab();
+    renderWithdrawalsTab();
+    document.getElementById('spread-table-outer').addEventListener('scroll', function() {
+      this.classList.toggle('scrolled', this.scrollLeft > 4);
+    });
+
+  } else {
+    el.style.background = '#f4f5f7';
+    el.style.padding    = '';
+    const tab   = (appScreen === 'pricing') ? 'pricing' : 'product-details';
+    const inner = (tab === 'pricing') ? renderPricingContent() : renderProductDetails();
+    el.innerHTML = `
+      <div class="content-card">
+        ${renderPartnerHeader()}
+        ${renderTabs(tab)}
+        ${inner}
+      </div>`;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PARTNERS LIST
+══════════════════════════════════════════════════════════════ */
+function renderPartners() {
+  const rows = [
+    { kyb:'pending',   contract:'not-signed', products:5 },
+    { kyb:'completed', contract:'signed',     products:1 },
+    { kyb:'declined',  contract:'not-signed', products:5 },
+    { kyb:'pending',   contract:'not-signed', products:5 },
+    { kyb:'pending',   contract:'signed',     products:5 },
+    { kyb:'completed', contract:'signed',     products:5 },
+    { kyb:'pending',   contract:'not-signed', products:5 },
+    { kyb:'pending',   contract:'not-signed', products:5 },
+    { kyb:'pending',   contract:'not-signed', products:5 },
+    { kyb:'pending',   contract:'not-signed', products:5 },
+  ];
+
+  const kybBadge = k => ({
+    pending:   `<span class="badge badge-kyb-pending">KYB pending</span>`,
+    completed: `<span class="badge badge-kyb-completed">KYB completed</span>`,
+    declined:  `<span class="badge badge-kyb-declined">KYB declined</span>`,
+  }[k]);
+
+  const contractBadge = c => c === 'signed'
+    ? `<span class="badge badge-signed">Signed</span>`
+    : `<span class="badge badge-not-signed">1 not signed</span>`;
+
+  const rowsHTML = rows.map(r => `
+    <div class="partner-row" onclick="goToPartner()">
+      <div class="partner-name">Partner name organization<br>example in 2 lines</div>
+      <div>${kybBadge(r.kyb)}</div>
+      <div>${contractBadge(r.contract)}</div>
+      <div class="products-link">${r.products} product${r.products !== 1 ? 's' : ''}</div>
+    </div>`).join('');
+
+  const filterLabel = (lbl, val) => `
+    <div class="filter-sel">
+      <div><div class="filter-lbl">${lbl}</div><div class="filter-val">${val}</div></div>
+      <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>
+    </div>`;
+
+  return `
+    <div class="partners-page">
+      <div class="partners-hdr">
+        <h1 class="partners-title">Partners</h1>
+        <button class="btn btn-primary">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Add partner
+        </button>
+      </div>
+
+      <div class="search-wrap">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="color:#9ca3af;flex-shrink:0"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.4"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <input placeholder="Search by legal business name or user email">
+      </div>
+
+      <div class="filters-row">
+        ${filterLabel('Uphold agent','All')}
+        ${filterLabel('Product','All')}
+        ${filterLabel('Integration','All')}
+        ${filterLabel('KYB','All')}
+        ${filterLabel('Contract','All')}
+      </div>
+
+      <p class="partners-count">1761 partners</p>
+
+      <div class="table-scroll">
+        <div class="table-header">
+          <div class="th">Account</div>
+          <div class="th">KYB</div>
+          <div class="th">Contract</div>
+          <div class="th">Products</div>
+        </div>
+        ${rowsHTML}
+      </div>
+
+      <div class="pagination">
+        <div class="pg-arrow">
+          <svg width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M7 1L1 6l6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <button class="pg-btn active">1</button>
+        <button class="pg-btn">2</button>
+        <button class="pg-btn">3</button>
+        <button class="pg-btn">4</button>
+        <button class="pg-btn">5</button>
+        <button class="pg-btn ellipsis">…</button>
+        <button class="pg-btn">10</button>
+        <div class="pg-arrow">
+          <svg width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M1 1l6 5-6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PARTNER HEADER (shared across partner-detail / pricing)
+══════════════════════════════════════════════════════════════ */
+function renderPartnerHeader() {
+  return `
+    <div class="partner-page-hdr">
+      <div>
+        <div class="partner-title">Partner name organization example in a long line</div>
+        <span class="badge badge-kyb-pending">KYB Pending</span>
+      </div>
+      <div class="product-area">
+        <div>
+          <div style="font-size:12px;color:#6b7280;margin-bottom:6px;font-weight:500;">Select a product</div>
+          <div class="product-select">
+            <span style="font-size:13.5px;color:#374151;">B2B Payments</span>
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+        <div style="margin-top:22px;">
+          <button class="btn btn-primary">Add product</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   TABS BAR
+══════════════════════════════════════════════════════════════ */
+function renderTabs(active) {
+  return `
+    <div class="tabs-bar">
+      <button class="tab-btn ${active === 'product-details' ? 'active' : ''}" onclick="goToTab('product-details')">Product details</button>
+      <button class="tab-btn ${active === 'pricing' ? 'active' : ''}" onclick="goToTab('pricing')">Pricing</button>
+    </div>`;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PRODUCT DETAILS TAB
+══════════════════════════════════════════════════════════════ */
+function renderProductDetails() {
+  return `
+    <div class="section-title">B2B Payments</div>
+    <div class="product-details-card">
+      <div class="pd-grid">
+        <div>
+          <div class="pd-label">Product type</div>
+          <div class="pd-value">B2B Payments</div>
+        </div>
+        <div>
+          <div class="pd-label">Integration</div>
+          <div class="pd-value" style="color:#6b7280;">In progress</div>
+        </div>
+        <div>
+          <div class="pd-label">Contract</div>
+          <div><span class="badge badge-signed">Signed</span></div>
+        </div>
+        <div>
+          <div class="pd-label">Sales account email</div>
+          <div class="pd-sel">
+            <span style="font-size:13px;">tc0078@uphold.com</span>
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+        <div>
+          <div class="pd-label">Account manager email</div>
+          <div class="pd-sel">
+            <span style="font-size:13px;">tc0078@uphold.com</span>
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="members-section">
+      <div class="members-title">Members</div>
+      <div class="members-sub">All members listed on this product.</div>
+      <div class="member-pills">
+        <button class="m-pill active">All <strong>0</strong></button>
+        <button class="m-pill">Active 0</button>
+        <button class="m-pill">Deactivated 0</button>
+      </div>
+      <div class="members-count">0 members</div>
+      <div class="members-table-hdr">
+        <div class="mt-th">Name</div>
+        <div class="mt-th">Email</div>
+        <div class="mt-th">Role</div>
+        <div class="mt-th">Status</div>
+        <div class="mt-th">Last access</div>
+      </div>
+      <div class="members-empty">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="#d1d5db" stroke-width="1.3"/><path d="M9 8v4M9 6.5v.5" stroke="#d1d5db" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <div class="members-empty-text">You don't have members.</div>
+      </div>
+    </div>`;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PRICING TAB
+══════════════════════════════════════════════════════════════ */
+function renderPricingContent() {
+  const isWholesale   = pricingModel === 'wholesale';
+  const savedWholesale = savedModel  === 'wholesale';
+
+  const revenueCard = `
+    <div class="revenue-card">
+      <div class="revenue-option-hdr">Select an option</div>
+      <div class="revenue-option" onclick="selectModel('wholesale')">
+        <div class="radio-outer ${isWholesale ? 'selected' : ''}">
+          <div class="radio-inner"></div>
+        </div>
+        <div>
+          <div class="rev-opt-title">Wholesale model</div>
+          <div class="rev-opt-sub">Uphold provides a base price. The partner adds their own markup on top, keeping the difference as revenue.</div>
+        </div>
+      </div>
+      <div class="revenue-option" onclick="selectModel('revenue-share')">
+        <div class="radio-outer ${pricingModel === 'revenue-share' ? 'selected' : ''}">
+          <div class="radio-inner"></div>
+        </div>
+        <div>
+          <div class="rev-opt-title">Revenue share model</div>
+          <div class="rev-opt-sub">The partner earns a percentage of Uphold's take rate rather than controlling their own markup directly.</div>
+        </div>
+      </div>
+    </div>`;
+
+  const limitsSection = isWholesale ? `
+    <div class="limits-section">
+      <div class="limits-title">Limits</div>
+      <div class="limits-sub">Per-transaction fee limits applied regardless of markup, across deposits, withdrawals, receives, and sends.</div>
+      <table class="limits-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Min</th>
+            <th>Max</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${['Trade','Deposits','Withdrawals'].map(lbl => `
+          <tr>
+            <td>${lbl}</td>
+            <td><div class="lim-inp-wrap"><input class="lim-inp" type="number" min="0" placeholder="0"><span class="lim-unit">bps</span></div></td>
+            <td><div class="lim-inp-wrap"><input class="lim-inp" type="number" min="0" placeholder="0"><span class="lim-unit">bps</span></div></td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>` : '';
+
+  const standardPlan = isWholesale ? `
+    <div class="std-plan-section">
+      <div class="std-plan-hdr">
+        <div class="std-plan-title">Standard plan</div>
+        <button class="btn-green-outline" onclick="goToSpreadPlan()">Edit spread plan</button>
+      </div>
+      <div class="std-plan-sub">View spread and fees plan's detail.</div>
+      <div class="std-plan-card">
+        <div class="std-summary">
+          <div>
+            <div class="std-col-title">Adjustment</div>
+            <div class="std-row"><span class="std-row-lbl">Trade</span><span class="std-undef">Not defined yet.</span></div>
+            <div class="std-row"><span class="std-row-lbl">Deposits</span><span class="std-undef">Not defined yet.</span></div>
+            <div class="std-row"><span class="std-row-lbl">Withdrawals</span><span class="std-undef">Not defined yet.</span></div>
+          </div>
+          <div>
+            <div class="std-col-title">Trade ticket size</div>
+            <div class="std-undef">Not defined yet.</div>
+          </div>
+          <div>
+            <div class="std-col-title">Deposits</div>
+            <div class="std-undef">Not defined yet.</div>
+          </div>
+          <div>
+            <div class="std-col-title">Withdrawals</div>
+            <div class="std-undef">Not defined yet.</div>
+          </div>
+        </div>
+      </div>
+    </div>` : '';
+
+  const viewLogsBtn = (pricingSaved && savedWholesale)
+    ? `<button class="btn btn-outline btn-sm">View logs</button>` : '';
+
+  return `
+    <div class="pricing-section">
+      <div class="section-hdr-row">
+        <div class="section-title" style="margin-bottom:0;">Pricing</div>
+        ${viewLogsBtn}
+      </div>
+      <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:4px;">Revenue model</div>
+      <div style="font-size:13px;color:#6b7280;margin-bottom:20px;">Defines how this partner earns on transactions.</div>
+      ${revenueCard}
+      ${limitsSection}
+      ${standardPlan}
+    </div>`;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SPREAD PLAN — HTML TEMPLATE
+   Injected by renderContent() when appScreen === 'spread-plan'.
+   renderHeaders() and renderTable() are called immediately after.
+══════════════════════════════════════════════════════════════ */
+function spreadPlanHTML() {
+  return `
+    <!-- PLAN HEADER -->
+    <div class="plan-header">
+      <div class="plan-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="2" width="18" height="18" rx="5" stroke="#94a3b8" stroke-width="1.5"/><path d="M7 11h8M7 7.5h5M7 14.5h8" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div>
+        <div class="plan-name">Standard plan</div>
+        <div class="plan-meta">Last updated at September 26, 2025.</div>
+      </div>
+    </div>
+
+    <!-- PLAN TABS (trade / deposits / withdrawals) -->
+    <div class="plan-tabs">
+      <button class="tab-btn active" onclick="switchPlanTab('trade')">Trade</button>
+      <button class="tab-btn" onclick="switchPlanTab('deposits')">Deposits</button>
+      <button class="tab-btn" onclick="switchPlanTab('withdrawals')">Withdrawals</button>
+    </div>
+
+    <!-- TRADE TAB -->
+    <div class="tab-panel active" id="tab-trade">
+      <div class="section-heading">Trade</div>
+      <div class="section-subtitle">Define a spread adjustment and value according to the partner's contract.</div>
+
+      <!-- SPREAD ADJUSTMENT -->
+      <div class="spread-adj-row">
+        <div class="form-field">
+          <span class="field-label">Spread adjustment</span>
+          <div class="custom-select" id="spread-type-cs">
+            <div class="cs-trigger" id="cs-trigger" onclick="toggleDropdown(event)">
+              <span id="cs-label" class="cs-placeholder">Select an option</span>
+              <svg class="cs-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>
+            </div>
+            <div class="cs-dropdown" id="cs-dropdown">
+              <div class="cs-option" data-value="markup" onclick="selectType('markup')">
+                Markup
+                <svg id="check-markup" width="14" height="14" viewBox="0 0 14 14" fill="none" style="display:none"><path d="M2.5 7l3.5 3.5 6-7" stroke="#3CC13B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="cs-option" data-value="markdown" onclick="selectType('markdown')">
+                Markdown
+                <svg id="check-markdown" width="14" height="14" viewBox="0 0 14 14" fill="none" style="display:none"><path d="M2.5 7l3.5 3.5 6-7" stroke="#3CC13B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-field value-field-wrap" id="value-field-wrap">
+          <span class="field-label">Value</span>
+          <div class="value-input-box">
+            <span class="vib-prefix" id="vib-prefix"></span>
+            <input class="vib-input" type="number" id="spread-value" placeholder="0" min="0" oninput="onValueInput()" onfocus="onValueFocus()">
+            <span class="vib-unit">bps</span>
+            <button class="vib-clear" id="vib-clear" onclick="clearValue()" tabindex="-1">
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 1.5l7 7M8.5 1.5l-7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="absorb-wrap" id="absorb-wrap">
+          <label class="toggle-switch">
+            <input type="checkbox" id="absorb-toggle" onchange="onAbsorbChange()">
+            <div class="toggle-track"></div>
+            <div class="toggle-thumb"></div>
+          </label>
+          <span class="absorb-label">Absorb all spreads</span>
+          <span class="tooltip-wrap">
+            <svg class="info-icon" width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.8" stroke="#9ca3af" stroke-width="1.2"/><path d="M7 6.5v3M7 5v.5" stroke="#9ca3af" stroke-width="1.3" stroke-linecap="round"/></svg>
+            <span class="tooltip">Partner absorbs the full spread cost</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="spread-helper" id="spread-helper"></div>
+
+      <!-- ASSETS PER TICKET SIZE -->
+      <div class="assets-section-hdr" style="margin-top:28px;">
+        <div class="assets-hdr-left">
+          <div class="assets-title">Assets per ticket size</div>
+          <div class="assets-sub">Set the Uphold base spread per asset per tier.</div>
+        </div>
+      </div>
+
+      <!-- TABLE -->
+      <div class="spread-table">
+        <div class="spread-table-outer" id="spread-table-outer">
+          <div class="col-headers" id="col-headers-row"></div>
+          <div id="asset-rows"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-deposits"><div id="deposits-content"></div></div>
+    <div class="tab-panel" id="tab-withdrawals"><div id="withdrawals-content"></div></div>`;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SPREAD PLAN — TAB SWITCHING (inner plan tabs)
+══════════════════════════════════════════════════════════════ */
+function switchPlanTab(id) {
+  document.querySelectorAll('.plan-tabs .tab-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', ['trade','deposits','withdrawals'][i] === id);
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (id === 'deposits')    renderDepositsTab();
+  if (id === 'withdrawals') renderWithdrawalsTab();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   DEPOSITS TAB
+══════════════════════════════════════════════════════════════ */
+function depositsRowEditDirty() {
+  if (!depositsRowEdit) return 0;
+  const orig = depositsRows[depositsRowEdit.idx];
+  if (!orig) return 0;
+  let n = 0;
+  if (depositsRowEdit.jurisdiction !== orig.jurisdiction) n++;
+  if ((parseInt(depositsRowEdit.baseSpread) || 0) !== (orig.baseSpread || 0)) n++;
+  if (depositsRowEdit.adjustment !== orig.adjustment) n++;
+  if ((parseInt(depositsRowEdit.value) || 0) !== (orig.value || 0)) n++;
+  return n;
+}
+
+function depositsDirtyCount() {
+  let n = depositsRowEditDirty();
+  // New method row
+  if (depositsHasEdit) {
+    if (depositsRows.length > 0) { n++; }
+    else {
+      if (depositsEdit.method)       n++;
+      if (depositsEdit.jurisdiction) n++;
+      if (depositsEdit.baseSpread)   n++;
+      if (depositsEdit.adjustment)   n++;
+      if (depositsEdit.value)        n++;
+    }
+  }
+  return n;
+}
+
+function depositsComputeTotal(e) {
+  const b = parseInt(e.baseSpread) || 0;
+  const v = parseInt(e.value)      || 0;
+  if (e.adjustment === 'Markup')   return b + v;
+  if (e.adjustment === 'Markdown') return Math.max(0, b - v);
+  return b;
+}
+
+function depositsTotalForRow(row) {
+  const b = row.baseSpread || 0;
+  const v = row.value      || 0;
+  if (row.adjustment === 'Markup')   return b + v;
+  if (row.adjustment === 'Markdown') return Math.max(0, b - v);
+  return b;
+}
+
+function depositsToggleDD(which, e) {
+  e.stopPropagation();
+  depositsOpenDD = (depositsOpenDD === which) ? null : which;
+  renderDepositsTab();
+}
+
+function depositsSelectDD(which, val, e) {
+  if (e) e.stopPropagation();
+  if (which === 'method')       depositsEdit.method       = val;
+  if (which === 'jurisdiction') depositsEdit.jurisdiction = val;
+  if (which === 'adjustment')   depositsEdit.adjustment   = val;
+  depositsOpenDD = null;
+  renderDepositsTab();
+  updateSpreadBar();
+}
+
+function depositsBaseInput(val) {
+  depositsEdit.baseSpread = val;
+  const el = document.getElementById('dep-total');
+  if (el) el.textContent = depositsComputeTotal(depositsEdit) + ' bps';
+  updateSpreadBar();
+}
+
+function depositsValueInput(val) {
+  depositsEdit.value = val;
+  const el = document.getElementById('dep-total');
+  if (el) el.textContent = depositsComputeTotal(depositsEdit) + ' bps';
+  updateSpreadBar();
+}
+
+function depositsAddMethod() {
+  depositsEdit    = { method: null, jurisdiction: null, baseSpread: '', adjustment: null, value: '' };
+  depositsHasEdit = true;
+  depositsOpenDD  = null;
+  depositsRowEdit = null;
+  renderDepositsTab();
+  updateSpreadBar();
+}
+
+function depositsStartRowEdit(idx, e) {
+  if (e) e.stopPropagation();
+  const row = depositsRows[idx];
+  if (!row) return;
+  depositsRowEdit = { idx, jurisdiction: row.jurisdiction, baseSpread: String(row.baseSpread), adjustment: row.adjustment, value: String(row.value), openDD: null };
+  renderDepositsTab();
+  updateSpreadBar();
+}
+
+function depositsRowToggleDD(which, e) {
+  if (e) e.stopPropagation();
+  if (!depositsRowEdit) return;
+  depositsRowEdit.openDD = depositsRowEdit.openDD === which ? null : which;
+  renderDepositsTab();
+}
+
+function depositsRowSelectDD(which, val, e) {
+  if (e) e.stopPropagation();
+  if (!depositsRowEdit) return;
+  depositsRowEdit[which]  = val;
+  depositsRowEdit.openDD  = null;
+  renderDepositsTab();
+  updateSpreadBar();
+}
+
+function depositsRowLiveTotal() {
+  if (!depositsRowEdit) return;
+  const b = parseInt(depositsRowEdit.baseSpread) || 0;
+  const v = parseInt(depositsRowEdit.value) || 0;
+  const adj = depositsRowEdit.adjustment;
+  const t = adj === 'Markup' ? b + v : adj === 'Markdown' ? Math.max(0, b - v) : b;
+  const el = document.getElementById('dep-row-total-' + depositsRowEdit.idx);
+  if (el) el.textContent = t + ' bps';
+}
+
+function depositsRowBaseInput(val) {
+  if (!depositsRowEdit) return;
+  depositsRowEdit.baseSpread = val;
+  depositsRowLiveTotal();
+  updateSpreadBar();
+}
+
+function depositsRowValueInput(val) {
+  if (!depositsRowEdit) return;
+  depositsRowEdit.value = val;
+  depositsRowLiveTotal();
+  updateSpreadBar();
+}
+
+function depositsDiscardNewRow(e) {
+  if (e) e.stopPropagation();
+  depositsEdit    = { method: null, jurisdiction: null, baseSpread: '', adjustment: null, value: '' };
+  depositsHasEdit = false;
+  depositsOpenDD  = null;
+  renderDepositsTab();
+  updateSpreadBar();
+}
+
+function depositsDeleteRow(idx, e) {
+  if (e) e.stopPropagation();
+  depositsDeletePendingIdx = idx;
+  const row = depositsRows[idx];
+  document.getElementById('dep-delete-method-name').textContent = row ? row.method : '';
+  document.getElementById('dep-delete-modal').classList.add('visible');
+}
+
+function depositsCloseDeleteModal() {
+  depositsDeletePendingIdx = null;
+  document.getElementById('dep-delete-modal').classList.remove('visible');
+}
+
+function depositsConfirmDelete() {
+  const idx = depositsDeletePendingIdx;
+  depositsCloseDeleteModal();
+  if (idx === null || idx === undefined) return;
+  depositsRows.splice(idx, 1);
+  if (depositsRows.length === 0) {
+    depositsHasEdit = true;
+    depositsEdit    = { method: null, jurisdiction: null, baseSpread: '', adjustment: null, value: '' };
+  }
+  renderDepositsTab();
+  updateSpreadBar();
+}
+
+function renderDepositsTab() {
+  const el = document.getElementById('deposits-content');
+  if (!el) return;
+
+  // 7 columns: method | jurisdiction | base spread | spread adjustment | value | total | delete
+  const COLS      = '200px 170px 1fr 190px 150px 80px 40px';
+  const COLS_HDR  = '200px 170px 1fr 190px 150px 80px 40px';
+  const chev = `<svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>`;
+  const trashSvg = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M1.75 3.5h10.5M5.25 3.5V2.333a.583.583 0 0 1 .583-.583h2.334a.583.583 0 0 1 .583.583V3.5M2.917 3.5l.583 7.583a.583.583 0 0 0 .583.584h5.834a.583.583 0 0 0 .583-.584L11.083 3.5M5.833 6.417v3.5M8.167 6.417v3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`;
+
+  function buildDD(which, value, placeholder, options) {
+    const isOpen = depositsOpenDD === which;
+    return `<div class="dep-dd-wrap">
+      <button class="dep-dd-trigger${isOpen ? ' open' : ''}" onclick="depositsToggleDD('${which}',event)">
+        ${value ? `<span>${value}</span>` : `<span class="dep-ph">${placeholder}</span>`}
+        ${chev}
+      </button>
+      <div class="dep-dd-list${isOpen ? ' open' : ''}">
+        ${options.map(o => `<div class="dep-dd-opt" onclick="depositsSelectDD('${which}','${o.replace(/'/g,"\\'")}',event)">${o}</div>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  // Saved rows — each editable field has hover Edit pill; click any starts full row edit
+  function buildRowEditDD(id, which, value, options, rowEdit) {
+    const isOpen = rowEdit?.openDD === which;
+    return `<div class="dep-dd-wrap">
+      <button class="dep-dd-trigger${isOpen ? ' open' : ''}" onclick="depositsRowToggleDD('${which}',event)" style="min-width:120px">
+        <span>${value}</span>${chev}
+      </button>
+      <div class="dep-dd-list${isOpen ? ' open' : ''}">
+        ${options.map(o=>`<div class="dep-dd-opt" onclick="depositsRowSelectDD('${which}','${o.replace(/'/g,"\\'")}',event)">${o}</div>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  const savedRowsHTML = depositsRows.map((row, idx) => {
+    const isEditing = depositsRowEdit?.idx === idx;
+    const re = isEditing ? depositsRowEdit : null;
+    const total = isEditing
+      ? (() => { const b=parseInt(re.baseSpread)||0, v=parseInt(re.value)||0, adj=re.adjustment;
+                 return adj==='Markup'? b+v : adj==='Markdown'? Math.max(0,b-v) : b; })()
+      : depositsTotalForRow(row);
+    // Chips use current (or pending) values
+    const adjDisplay = isEditing ? re.adjustment : row.adjustment;
+    const valDisplay = isEditing ? (parseInt(re.value)||0) : row.value;
+    const isUp    = adjDisplay === 'Markup';
+    const chipCls = isUp ? 'dep-val-chip' : 'dep-val-chip neg';
+    const chipTxt = adjDisplay === 'Markup'   ? `+ ${valDisplay} bps` :
+                    adjDisplay === 'Markdown' ? `− ${valDisplay} bps` : `${valDisplay} bps`;
+
+    if (isEditing) {
+      const showPlus  = re.adjustment === 'Markup';
+      const showMinus = re.adjustment === 'Markdown';
+      const pfx = showPlus  ? `<span style="font-size:13px;font-weight:600;color:#374151;margin-right:2px">+</span>`
+                : showMinus ? `<span style="font-size:13px;font-weight:600;color:#374151;margin-right:2px">−</span>` : '';
+      return `<div class="dep-data-row dep-row-sep dep-saved-row dep-row-editing" style="grid-template-columns:${COLS}">
+        <span class="dep-sv-method">${row.method}</span>
+        ${buildRowEditDD(idx,'jurisdiction', re.jurisdiction, DEPOSIT_JURIS, re)}
+        <div class="dep-inp-box">
+          <input class="dep-num-inp" type="number" min="0" id="dep-row-base-${idx}"
+                 value="${re.baseSpread}" oninput="depositsRowBaseInput(this.value)">
+          <span class="dep-bps-lbl">bps</span>
+        </div>
+        ${buildRowEditDD(idx,'adjustment', re.adjustment, DEPOSIT_ADJ, re)}
+        <div class="dep-inp-box">
+          ${pfx}<input class="dep-num-inp" type="number" min="0" id="dep-row-val-${idx}"
+                 value="${re.value}" oninput="depositsRowValueInput(this.value)">
+          <span class="dep-bps-lbl">bps</span>
+        </div>
+        <span class="dep-sv-total" id="dep-row-total-${idx}">${total} bps</span>
+        <button class="dep-row-trash" onclick="depositsDeleteRow(${idx},event)" title="Delete row">${trashSvg}</button>
+      </div>`;
+    }
+
+    return `<div class="dep-data-row dep-row-sep dep-saved-row" style="grid-template-columns:${COLS}">
+      <span class="dep-sv-method">${row.method}</span>
+      <div class="dep-field-wrap"><span class="dep-field-lbl dep-sv-juris">${row.jurisdiction}</span>
+        <button class="dep-edit-pill" onclick="depositsStartRowEdit(${idx},event)">Edit</button></div>
+      <div class="dep-field-wrap"><span class="dep-field-lbl">${row.baseSpread} bps</span>
+        <button class="dep-edit-pill" onclick="depositsStartRowEdit(${idx},event)">Edit</button></div>
+      <div class="dep-field-wrap"><span class="dep-field-lbl dep-sv-adj">${row.adjustment}</span>
+        <button class="dep-edit-pill" onclick="depositsStartRowEdit(${idx},event)">Edit</button></div>
+      <div class="dep-field-wrap"><span class="${chipCls}">${chipTxt}</span>
+        <button class="dep-edit-pill" onclick="depositsStartRowEdit(${idx},event)">Edit</button></div>
+      <span class="dep-sv-total" id="dep-row-total-${idx}">${total} bps</span>
+      <button class="dep-row-trash" onclick="depositsDeleteRow(${idx},event)" title="Delete row">${trashSvg}</button>
+    </div>`;
+  }).join('');
+
+  // Edit row — with red delete button in last column (only when there are saved rows)
+  let editRowHTML = '';
+  if (depositsHasEdit && depositsEdit) {
+    const e = depositsEdit;
+    const total = depositsComputeTotal(e);
+    const showPrefix = e.adjustment === 'Markup';
+    const showMinus  = e.adjustment === 'Markdown';
+    const prefixHtml = showPrefix
+      ? `<span style="font-size:13px;color:#374151;font-weight:600;margin-right:2px">+</span>`
+      : showMinus
+        ? `<span style="font-size:13px;color:#374151;font-weight:600;margin-right:2px">−</span>`
+        : '';
+    const deleteBtn = depositsRows.length > 0
+      ? `<button class="dep-del-btn" onclick="depositsDiscardNewRow(event)" title="Cancel new row">
+           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+             <path d="M1.75 3.5h10.5M5.25 3.5V2.333a.583.583 0 0 1 .583-.583h2.334a.583.583 0 0 1 .583.583V3.5M2.917 3.5l.583 7.583a.583.583 0 0 0 .583.584h5.834a.583.583 0 0 0 .583-.584L11.083 3.5M5.833 6.417v3.5M8.167 6.417v3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+           </svg>
+         </button>`
+      : `<span></span>`;
+    editRowHTML = `<div class="dep-data-row${depositsRows.length > 0 ? ' dep-row-sep' : ''}" style="grid-template-columns:${COLS}">
+      ${buildDD('method', e.method, 'Select', DEPOSIT_METHODS)}
+      ${buildDD('jurisdiction', e.jurisdiction, 'Select', DEPOSIT_JURIS)}
+      <div class="dep-inp-box">
+        <input class="dep-num-inp" type="number" min="0" placeholder="0"
+               value="${e.baseSpread}"
+               oninput="depositsBaseInput(this.value)">
+        <span class="dep-bps-lbl">bps</span>
+      </div>
+      ${buildDD('adjustment', e.adjustment, 'Select', DEPOSIT_ADJ)}
+      <div class="dep-inp-box">
+        ${prefixHtml}
+        <input class="dep-num-inp" type="number" min="0" placeholder="0"
+               value="${e.value}"
+               oninput="depositsValueInput(this.value)">
+        <span class="dep-bps-lbl">bps</span>
+      </div>
+      <span class="dep-total-txt" id="dep-total">${total} bps</span>
+      ${deleteBtn}
+    </div>`;
+  }
+
+  const addBtn = depositsHasEdit
+    ? `<button class="btn-green-outline" onclick="depositsAddMethod()" style="opacity:.45;cursor:default" disabled>+ Add method</button>`
+    : `<button class="btn-green-outline" onclick="depositsAddMethod()">+ Add method</button>`;
+
+  el.innerHTML = `
+    <div class="dep-section-hdr">
+      <span class="dep-title">Deposits</span>
+      ${addBtn}
+    </div>
+    <div class="dep-table-outer">
+      <div class="dep-col-row" style="grid-template-columns:${COLS_HDR}">
+        <span class="dep-col-lbl">Method</span>
+        <span class="dep-col-lbl">Jurisdiction</span>
+        <span class="dep-col-lbl">Base spread</span>
+        <span class="dep-col-lbl">Spread adjustment</span>
+        <span class="dep-col-lbl">Value</span>
+        <span class="dep-col-lbl">Total</span>
+        <span></span>
+      </div>
+      ${savedRowsHTML}
+      ${editRowHTML}
+    </div>`;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   WITHDRAWALS TAB
+══════════════════════════════════════════════════════════════ */
+function withdrawalsRowEditDirty() {
+  if (!withdrawalsRowEdit) return 0;
+  const orig = withdrawalsRows[withdrawalsRowEdit.idx];
+  if (!orig) return 0;
+  let n = 0;
+  if (withdrawalsRowEdit.jurisdiction !== orig.jurisdiction) n++;
+  if ((parseInt(withdrawalsRowEdit.baseSpread) || 0) !== (orig.baseSpread || 0)) n++;
+  if (withdrawalsRowEdit.adjustment !== orig.adjustment) n++;
+  if ((parseInt(withdrawalsRowEdit.value) || 0) !== (orig.value || 0)) n++;
+  return n;
+}
+
+function withdrawalsDirtyCount() {
+  let n = withdrawalsRowEditDirty();
+  if (withdrawalsHasEdit) {
+    if (withdrawalsRows.length > 0) { n++; }
+    else {
+      if (withdrawalsEdit.method)       n++;
+      if (withdrawalsEdit.jurisdiction) n++;
+      if (withdrawalsEdit.baseSpread)   n++;
+      if (withdrawalsEdit.adjustment)   n++;
+      if (withdrawalsEdit.value)        n++;
+    }
+  }
+  return n;
+}
+
+function withdrawalsComputeTotal(e) {
+  const b = parseInt(e.baseSpread) || 0;
+  const v = parseInt(e.value)      || 0;
+  if (e.adjustment === 'Markup')   return b + v;
+  if (e.adjustment === 'Markdown') return Math.max(0, b - v);
+  return b;
+}
+
+function withdrawalsTotalForRow(row) {
+  const b = row.baseSpread || 0;
+  const v = row.value      || 0;
+  if (row.adjustment === 'Markup')   return b + v;
+  if (row.adjustment === 'Markdown') return Math.max(0, b - v);
+  return b;
+}
+
+function withdrawalsToggleDD(which, e) {
+  e.stopPropagation();
+  withdrawalsOpenDD = (withdrawalsOpenDD === which) ? null : which;
+  renderWithdrawalsTab();
+}
+
+function withdrawalsSelectDD(which, val, e) {
+  if (e) e.stopPropagation();
+  if (which === 'method')       withdrawalsEdit.method       = val;
+  if (which === 'jurisdiction') withdrawalsEdit.jurisdiction = val;
+  if (which === 'adjustment')   withdrawalsEdit.adjustment   = val;
+  withdrawalsOpenDD = null;
+  renderWithdrawalsTab();
+  updateSpreadBar();
+}
+
+function withdrawalsBaseInput(val) {
+  withdrawalsEdit.baseSpread = val;
+  const el = document.getElementById('wdr-total');
+  if (el) el.textContent = withdrawalsComputeTotal(withdrawalsEdit) + ' bps';
+  updateSpreadBar();
+}
+
+function withdrawalsValueInput(val) {
+  withdrawalsEdit.value = val;
+  const el = document.getElementById('wdr-total');
+  if (el) el.textContent = withdrawalsComputeTotal(withdrawalsEdit) + ' bps';
+  updateSpreadBar();
+}
+
+function withdrawalsAddMethod() {
+  withdrawalsEdit    = { method: null, jurisdiction: null, baseSpread: '', adjustment: null, value: '' };
+  withdrawalsHasEdit = true;
+  withdrawalsOpenDD  = null;
+  withdrawalsRowEdit = null;
+  renderWithdrawalsTab();
+  updateSpreadBar();
+}
+
+function withdrawalsStartRowEdit(idx, e) {
+  if (e) e.stopPropagation();
+  const row = withdrawalsRows[idx];
+  if (!row) return;
+  withdrawalsRowEdit = { idx, jurisdiction: row.jurisdiction, baseSpread: String(row.baseSpread), adjustment: row.adjustment, value: String(row.value), openDD: null };
+  renderWithdrawalsTab();
+  updateSpreadBar();
+}
+
+function withdrawalsRowToggleDD(which, e) {
+  if (e) e.stopPropagation();
+  if (!withdrawalsRowEdit) return;
+  withdrawalsRowEdit.openDD = withdrawalsRowEdit.openDD === which ? null : which;
+  renderWithdrawalsTab();
+}
+
+function withdrawalsRowSelectDD(which, val, e) {
+  if (e) e.stopPropagation();
+  if (!withdrawalsRowEdit) return;
+  withdrawalsRowEdit[which]  = val;
+  withdrawalsRowEdit.openDD  = null;
+  renderWithdrawalsTab();
+  updateSpreadBar();
+}
+
+function withdrawalsRowLiveTotal() {
+  if (!withdrawalsRowEdit) return;
+  const b = parseInt(withdrawalsRowEdit.baseSpread) || 0;
+  const v = parseInt(withdrawalsRowEdit.value) || 0;
+  const adj = withdrawalsRowEdit.adjustment;
+  const t = adj === 'Markup' ? b + v : adj === 'Markdown' ? Math.max(0, b - v) : b;
+  const el = document.getElementById('wdr-row-total-' + withdrawalsRowEdit.idx);
+  if (el) el.textContent = t + ' bps';
+}
+
+function withdrawalsRowBaseInput(val) {
+  if (!withdrawalsRowEdit) return;
+  withdrawalsRowEdit.baseSpread = val;
+  withdrawalsRowLiveTotal();
+  updateSpreadBar();
+}
+
+function withdrawalsRowValueInput(val) {
+  if (!withdrawalsRowEdit) return;
+  withdrawalsRowEdit.value = val;
+  withdrawalsRowLiveTotal();
+  updateSpreadBar();
+}
+
+function withdrawalsDiscardNewRow(e) {
+  if (e) e.stopPropagation();
+  withdrawalsEdit    = { method: null, jurisdiction: null, baseSpread: '', adjustment: null, value: '' };
+  withdrawalsHasEdit = false;
+  withdrawalsOpenDD  = null;
+  renderWithdrawalsTab();
+  updateSpreadBar();
+}
+
+function withdrawalsDeleteRow(idx, e) {
+  if (e) e.stopPropagation();
+  withdrawalsDeletePendingIdx = idx;
+  const row = withdrawalsRows[idx];
+  document.getElementById('wdr-delete-method-name').textContent = row ? row.method : '';
+  document.getElementById('wdr-delete-modal').classList.add('visible');
+}
+
+function withdrawalsCloseDeleteModal() {
+  withdrawalsDeletePendingIdx = null;
+  document.getElementById('wdr-delete-modal').classList.remove('visible');
+}
+
+function withdrawalsConfirmDelete() {
+  const idx = withdrawalsDeletePendingIdx;
+  withdrawalsCloseDeleteModal();
+  if (idx === null || idx === undefined) return;
+  withdrawalsRows.splice(idx, 1);
+  if (withdrawalsRows.length === 0) {
+    withdrawalsHasEdit = true;
+    withdrawalsEdit    = { method: null, jurisdiction: null, baseSpread: '', adjustment: null, value: '' };
+  }
+  renderWithdrawalsTab();
+  updateSpreadBar();
+}
+
+function renderWithdrawalsTab() {
+  const el = document.getElementById('withdrawals-content');
+  if (!el) return;
+
+  const COLS     = '200px 170px 1fr 190px 150px 80px 40px';
+  const COLS_HDR = '200px 170px 1fr 190px 150px 80px 40px';
+  const chev = `<svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>`;
+  const trashSvg = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M1.75 3.5h10.5M5.25 3.5V2.333a.583.583 0 0 1 .583-.583h2.334a.583.583 0 0 1 .583.583V3.5M2.917 3.5l.583 7.583a.583.583 0 0 0 .583.584h5.834a.583.583 0 0 0 .583-.584L11.083 3.5M5.833 6.417v3.5M8.167 6.417v3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`;
+
+  function buildDD(which, value, placeholder, options) {
+    const isOpen = withdrawalsOpenDD === which;
+    return `<div class="dep-dd-wrap">
+      <button class="dep-dd-trigger${isOpen ? ' open' : ''}" onclick="withdrawalsToggleDD('${which}',event)">
+        ${value ? `<span>${value}</span>` : `<span class="dep-ph">${placeholder}</span>`}
+        ${chev}
+      </button>
+      <div class="dep-dd-list${isOpen ? ' open' : ''}">
+        ${options.map(o => `<div class="dep-dd-opt" onclick="withdrawalsSelectDD('${which}','${o.replace(/'/g,"\\'")}',event)">${o}</div>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  function buildWdrRowEditDD(idx, which, value, options, rowEdit) {
+    const isOpen = rowEdit?.openDD === which;
+    return `<div class="dep-dd-wrap">
+      <button class="dep-dd-trigger${isOpen ? ' open' : ''}" onclick="withdrawalsRowToggleDD('${which}',event)" style="min-width:120px">
+        <span>${value}</span>${chev}
+      </button>
+      <div class="dep-dd-list${isOpen ? ' open' : ''}">
+        ${options.map(o=>`<div class="dep-dd-opt" onclick="withdrawalsRowSelectDD('${which}','${o.replace(/'/g,"\\'")}',event)">${o}</div>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  const savedRowsHTML = withdrawalsRows.map((row, idx) => {
+    const isEditing = withdrawalsRowEdit?.idx === idx;
+    const re = isEditing ? withdrawalsRowEdit : null;
+    const total = isEditing
+      ? (() => { const b=parseInt(re.baseSpread)||0, v=parseInt(re.value)||0, adj=re.adjustment;
+                 return adj==='Markup'? b+v : adj==='Markdown'? Math.max(0,b-v) : b; })()
+      : withdrawalsTotalForRow(row);
+    const adjDisplay = isEditing ? re.adjustment : row.adjustment;
+    const valDisplay = isEditing ? (parseInt(re.value)||0) : row.value;
+    const isUp    = adjDisplay === 'Markup';
+    const chipCls = isUp ? 'dep-val-chip' : 'dep-val-chip neg';
+    const chipTxt = adjDisplay === 'Markup'   ? `+ ${valDisplay} bps` :
+                    adjDisplay === 'Markdown' ? `− ${valDisplay} bps` : `${valDisplay} bps`;
+
+    if (isEditing) {
+      const showPlus  = re.adjustment === 'Markup';
+      const showMinus = re.adjustment === 'Markdown';
+      const pfx = showPlus  ? `<span style="font-size:13px;font-weight:600;color:#374151;margin-right:2px">+</span>`
+                : showMinus ? `<span style="font-size:13px;font-weight:600;color:#374151;margin-right:2px">−</span>` : '';
+      return `<div class="dep-data-row dep-row-sep dep-saved-row dep-row-editing" style="grid-template-columns:${COLS}">
+        <span class="dep-sv-method">${row.method}</span>
+        ${buildWdrRowEditDD(idx,'jurisdiction', re.jurisdiction, WITHDRAWAL_JURIS, re)}
+        <div class="dep-inp-box">
+          <input class="dep-num-inp" type="number" min="0" id="wdr-row-base-${idx}"
+                 value="${re.baseSpread}" oninput="withdrawalsRowBaseInput(this.value)">
+          <span class="dep-bps-lbl">bps</span>
+        </div>
+        ${buildWdrRowEditDD(idx,'adjustment', re.adjustment, WITHDRAWAL_ADJ, re)}
+        <div class="dep-inp-box">
+          ${pfx}<input class="dep-num-inp" type="number" min="0" id="wdr-row-val-${idx}"
+                 value="${re.value}" oninput="withdrawalsRowValueInput(this.value)">
+          <span class="dep-bps-lbl">bps</span>
+        </div>
+        <span class="dep-sv-total" id="wdr-row-total-${idx}">${total} bps</span>
+        <button class="dep-row-trash" onclick="withdrawalsDeleteRow(${idx},event)" title="Delete row">${trashSvg}</button>
+      </div>`;
+    }
+
+    return `<div class="dep-data-row dep-row-sep dep-saved-row" style="grid-template-columns:${COLS}">
+      <span class="dep-sv-method">${row.method}</span>
+      <div class="dep-field-wrap"><span class="dep-field-lbl dep-sv-juris">${row.jurisdiction}</span>
+        <button class="dep-edit-pill" onclick="withdrawalsStartRowEdit(${idx},event)">Edit</button></div>
+      <div class="dep-field-wrap"><span class="dep-field-lbl">${row.baseSpread} bps</span>
+        <button class="dep-edit-pill" onclick="withdrawalsStartRowEdit(${idx},event)">Edit</button></div>
+      <div class="dep-field-wrap"><span class="dep-field-lbl dep-sv-adj">${row.adjustment}</span>
+        <button class="dep-edit-pill" onclick="withdrawalsStartRowEdit(${idx},event)">Edit</button></div>
+      <div class="dep-field-wrap"><span class="${chipCls}">${chipTxt}</span>
+        <button class="dep-edit-pill" onclick="withdrawalsStartRowEdit(${idx},event)">Edit</button></div>
+      <span class="dep-sv-total" id="wdr-row-total-${idx}">${total} bps</span>
+      <button class="dep-row-trash" onclick="withdrawalsDeleteRow(${idx},event)" title="Delete row">${trashSvg}</button>
+    </div>`;
+  }).join('');
+
+  let editRowHTML = '';
+  if (withdrawalsHasEdit && withdrawalsEdit) {
+    const e           = withdrawalsEdit;
+    const total       = withdrawalsComputeTotal(e);
+    const showPrefix  = e.adjustment === 'Markup';
+    const showMinus   = e.adjustment === 'Markdown';
+    const prefixHtml  = showPrefix
+      ? `<span style="font-size:13px;color:#374151;font-weight:600;margin-right:2px">+</span>`
+      : showMinus
+        ? `<span style="font-size:13px;color:#374151;font-weight:600;margin-right:2px">−</span>`
+        : '';
+    const deleteBtn = withdrawalsRows.length > 0
+      ? `<button class="dep-del-btn" onclick="withdrawalsDiscardNewRow(event)" title="Cancel new row">
+           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+             <path d="M1.75 3.5h10.5M5.25 3.5V2.333a.583.583 0 0 1 .583-.583h2.334a.583.583 0 0 1 .583.583V3.5M2.917 3.5l.583 7.583a.583.583 0 0 0 .583.584h5.834a.583.583 0 0 0 .583-.584L11.083 3.5M5.833 6.417v3.5M8.167 6.417v3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+           </svg>
+         </button>`
+      : `<span></span>`;
+    editRowHTML = `<div class="dep-data-row${withdrawalsRows.length > 0 ? ' dep-row-sep' : ''}" style="grid-template-columns:${COLS}">
+      ${buildDD('method', e.method, 'Select', WITHDRAWAL_METHODS)}
+      ${buildDD('jurisdiction', e.jurisdiction, 'Select', WITHDRAWAL_JURIS)}
+      <div class="dep-inp-box">
+        <input class="dep-num-inp" type="number" min="0" placeholder="0"
+               value="${e.baseSpread}"
+               oninput="withdrawalsBaseInput(this.value)">
+        <span class="dep-bps-lbl">bps</span>
+      </div>
+      ${buildDD('adjustment', e.adjustment, 'Select', WITHDRAWAL_ADJ)}
+      <div class="dep-inp-box">
+        ${prefixHtml}
+        <input class="dep-num-inp" type="number" min="0" placeholder="0"
+               value="${e.value}"
+               oninput="withdrawalsValueInput(this.value)">
+        <span class="dep-bps-lbl">bps</span>
+      </div>
+      <span class="dep-total-txt" id="wdr-total">${total} bps</span>
+      ${deleteBtn}
+    </div>`;
+  }
+
+  const addBtn = withdrawalsHasEdit
+    ? `<button class="btn-green-outline" onclick="withdrawalsAddMethod()" style="opacity:.45;cursor:default" disabled>+ Add method</button>`
+    : `<button class="btn-green-outline" onclick="withdrawalsAddMethod()">+ Add method</button>`;
+
+  el.innerHTML = `
+    <div class="dep-section-hdr">
+      <span class="dep-title">Withdrawals</span>
+      ${addBtn}
+    </div>
+    <div class="dep-table-outer">
+      <div class="dep-col-row" style="grid-template-columns:${COLS_HDR}">
+        <span class="dep-col-lbl">Method</span>
+        <span class="dep-col-lbl">Jurisdiction</span>
+        <span class="dep-col-lbl">Base spread</span>
+        <span class="dep-col-lbl">Spread adjustment</span>
+        <span class="dep-col-lbl">Value</span>
+        <span class="dep-col-lbl">Total</span>
+        <span></span>
+      </div>
+      ${savedRowsHTML}
+      ${editRowHTML}
+    </div>`;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SPREAD PLAN — CHIP & TOTAL HELPERS
+══════════════════════════════════════════════════════════════ */
+function chipFor(adjustBps, isMarkup, isMarkdown, typeActive) {
+  if (!typeActive) return { label:'0 bps', cls:'tc-chip' };
+  if (isMarkup)   return { label:'+ ' + adjustBps + ' bps', cls:'tc-chip green' };
+  return { label:'− ' + adjustBps + ' bps', cls:'tc-chip orange' };
+}
+
+function totalFor(baseBps, adjustBps, isMarkup, isMarkdown, typeActive) {
+  if (!typeActive) return baseBps;
+  if (isMarkup)    return baseBps + adjustBps;
+  if (isMarkdown)  return baseBps - adjustBps;
+  return baseBps;
+}
+
+function formatMoney(n) {
+  return '$' + Number(n).toLocaleString('en-US');
+}
+
+function effectiveThreshold(i) {
+  return pendingTierEdits[i] !== undefined ? pendingTierEdits[i] : tierThresholds[i];
+}
+
+function isTierConflicting(thIdx) {
+  const val     = effectiveThreshold(thIdx);
+  const visible = visibleTierIndices();
+  const vi      = visible.indexOf(thIdx);
+  if (vi < 0) return false; // pending deletion — not rendered
+  if (val <= 0) return true; // must be > 0
+  if (vi > 0) return val <= effectiveThreshold(visible[vi - 1]); // must be > previous tier
+  return false;
+}
+
+// A tier counts as "touched" (and can show errors) if the user
+// has either edited it (pendingTierEdits) or is currently editing it.
+function isTierTouched(thIdx) {
+  return editingTierIdx === thIdx || pendingTierEdits[thIdx] !== undefined;
+}
+
+function hasTierErrors() {
+  return visibleTierIndices().some(i => isTierTouched(i) && isTierConflicting(i));
+}
+
+/* Returns the threshold indices that are NOT pending deletion, in order */
+function visibleTierIndices() {
+  const result = [];
+  for (let i = 0; i < tierThresholds.length; i++) {
+    if (!pendingTierDeletions.has(i)) result.push(i);
+  }
+  return result;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SPREAD PLAN — RENDER TIER HEADERS
+══════════════════════════════════════════════════════════════ */
+function renderHeaders() {
+  const container = document.getElementById('col-headers-row');
+  if (!container) return;
+
+  const visible = visibleTierIndices();
+  const n       = visible.length + 1; // visible editable tiers + GT
+  const gridTpl = `148px repeat(${n},minmax(140px,1fr))`;
+  container.style.gridTemplateColumns = gridTpl;
+  container.style.minWidth = (148 + n * 140) + 'px';
+
+  // Show add button only when no pending deletions and below max tiers
+  const canAdd = pendingTierDeletions.size === 0 && visible.length < MAX_TIERS - 1;
+  const gtVal  = visible.length > 0
+    ? Math.max(...visible.map(i => effectiveThreshold(i)))
+    : 0;
+
+  let html = `<div class="col-hdr-assets-select${assetDropdownOpen ? ' open' : ''}" onclick="toggleAssetDropdown()">
+    <span class="cas-label">Assets</span>
+    <svg class="cas-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#6b7280" stroke-width="1.4" stroke-linecap="round"/></svg>
+    ${assetDropdownOpen ? buildAssetDropdownHtml() : ''}
+  </div>`;
+
+  // ── Editable tier columns (visible only) ──
+  for (let vi = 0; vi < visible.length; vi++) {
+    const thIdx      = visible[vi];
+    const val        = effectiveThreshold(thIdx);
+    const label      = vi === 0 ? 'Less than' : 'Tier ' + vi;
+    const prevThIdx  = vi > 0 ? visible[vi - 1] : null;
+    const displayVal = vi === 0
+      ? formatMoney(val)
+      : `${formatMoney(effectiveThreshold(prevThIdx))} – ${formatMoney(val)}`;
+    const isEditing  = editingTierIdx === thIdx;
+    const hasError   = isTierTouched(thIdx) && isTierConflicting(thIdx);
+    const errorMsg   = effectiveThreshold(thIdx) <= 0
+      ? 'Enter an amount higher than zero.'
+      : 'Adjust conflicting amount.';
+    const errIcon    = `<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="6.5" fill="#ef4444"/><path d="M6.5 3.5v4M6.5 9v.5" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg>`;
+
+    html += `<div class="col-hdr-tier${isEditing ? ' editing' : ''}${hasError ? ' has-error' : ''}" id="col-hdr-${thIdx}">
+      <div class="tier-hdr-content">
+        <span class="tier-hdr-label">${label}</span>
+        <span class="tier-hdr-val">${displayVal}</span>
+      </div>
+      <div class="tier-hdr-actions">
+        <button class="tier-edit-pill" onclick="editTier(${thIdx},event)">Edit</button>
+        <button class="tier-delete-btn" onclick="deleteTier(${thIdx},event)" title="Remove tier">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 3.5h9M5 3.5V2h3v1.5M4.5 3.5l.5 7.5h3l.5-7.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        ${canAdd ? `<button class="tier-add-btn-new" onclick="addTierAt(${thIdx},event)" title="Add tier">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.3"/><path d="M6.5 4v5M4 6.5h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>` : ''}
+      </div>
+      ${isEditing ? `
+        <span class="tier-hdr-edit-label">${label}</span>
+        <div class="tier-hdr-input-row${hasError ? ' error' : ''}">
+          <span class="tier-hdr-inp-dollar">$</span>
+          <input class="tier-hdr-inp" type="number" min="0"
+            id="tier-inp-${thIdx}"
+            value="${val}"
+            oninput="onTierInput(${thIdx},this.value)"
+            onblur="onTierInputBlur(${thIdx})">
+          <button class="tier-hdr-inp-clear" onmousedown="clearTierInputNew(${thIdx},event)" tabindex="-1">
+            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 2l7 7M9 2l-7 7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        ${hasError ? `<div class="tier-err-msg">${errIcon}<span>${errorMsg}</span></div>` : ''}
+      ` : ''}
+    </div>`;
+  }
+
+  // ── Greater than — read-only, auto-computed ──
+  html += `<div class="col-hdr-gt" id="col-hdr-gt">
+    <div class="tier-gt-lbl-row">
+      <span class="tier-gt-lbl">Greater than</span>
+      <span class="tooltip-wrap">
+        <svg class="info-icon" width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="#9ca3af" stroke-width="1.2"/><path d="M6.5 6v3.5M6.5 4.5v.5" stroke="#9ca3af" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <span class="tooltip">Updates automatically to cover all amounts above your highest tier.</span>
+      </span>
+    </div>
+    <span class="tier-gt-val" id="gt-val">${formatMoney(gtVal)}</span>
+  </div>`;
+
+  container.innerHTML = html;
+
+  if (editingTierIdx !== null) {
+    const inp = document.getElementById('tier-inp-' + editingTierIdx);
+    if (inp) { inp.focus(); inp.select(); }
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SPREAD PLAN — TIER EDITING (per-tier inline edit)
+══════════════════════════════════════════════════════════════ */
+
+function editTier(thIdx, e) {
+  e.stopPropagation();
+  editingTierIdx = thIdx;
+  renderHeaders();
+}
+
+function onTierInput(thIdx, raw) {
+  const n = parseInt(raw);
+  if (!isNaN(n) && n >= 0) pendingTierEdits[thIdx] = n;
+  else delete pendingTierEdits[thIdx];
+  updateGtHeader();
+  updateTierErrorUI(thIdx);
+  updateChangesUI();
+}
+
+// Patches only the error-related DOM on the editing tier — avoids full
+// re-render so the cursor position in the input isn't disturbed.
+function updateTierErrorUI(thIdx) {
+  const hdr = document.getElementById('col-hdr-' + thIdx);
+  if (!hdr) return;
+  const hasError = isTierTouched(thIdx) && isTierConflicting(thIdx);
+  hdr.classList.toggle('has-error', hasError);
+  const inputRow = hdr.querySelector('.tier-hdr-input-row');
+  if (inputRow) inputRow.classList.toggle('error', hasError);
+
+  const errIcon = `<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="6.5" fill="#ef4444"/><path d="M6.5 3.5v4M6.5 9v.5" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg>`;
+  let msgEl = hdr.querySelector('.tier-err-msg');
+  if (hasError) {
+    const val  = effectiveThreshold(thIdx);
+    const text = val <= 0 ? 'Enter an amount higher than zero.' : 'Adjust conflicting amount.';
+    if (!msgEl) {
+      msgEl = document.createElement('div');
+      msgEl.className = 'tier-err-msg';
+      hdr.appendChild(msgEl);
+    }
+    msgEl.innerHTML = `${errIcon}<span>${text}</span>`;
+  } else if (msgEl) {
+    msgEl.remove();
+  }
+}
+
+function onTierInputBlur(thIdx) {
+  editingTierIdx = null;
+  renderHeaders();
+  updateChangesUI();
+}
+
+function clearTierInputNew(thIdx, e) {
+  e.preventDefault(); // prevent blur before clearing
+  delete pendingTierEdits[thIdx];
+  const inp = document.getElementById('tier-inp-' + thIdx);
+  if (inp) { inp.value = tierThresholds[thIdx]; inp.focus(); }
+  updateGtHeader();
+  updateChangesUI();
+}
+
+function deleteTier(thIdx, e) {
+  e.stopPropagation();
+  const visible = visibleTierIndices();
+  if (visible.length <= 1) { showToast('Minimum 1 tier required'); return; }
+
+  // Build the display range label for this tier
+  const vi = visible.indexOf(thIdx);
+  let rangeLabel;
+  if (vi === 0) {
+    rangeLabel = 'Less than ' + formatMoney(effectiveThreshold(thIdx));
+  } else {
+    const prevThIdx = visible[vi - 1];
+    rangeLabel = formatMoney(effectiveThreshold(prevThIdx)) + ' – ' + formatMoney(effectiveThreshold(thIdx));
+  }
+
+  deletingTierIdx = thIdx;
+  document.getElementById('delete-tier-range').textContent = rangeLabel;
+  document.getElementById('delete-tier-modal').classList.add('visible');
+}
+
+/* ── Asset row deletion ──────────────────────────────────── */
+let deletingAssetKey = null;
+
+function promptDeleteAsset(key, e) {
+  e.stopPropagation();
+  deletingAssetKey = key;
+  const asset = ALL_ASSETS_CATALOG.find(a => a.key === key);
+  document.getElementById('delete-asset-name').textContent = asset ? asset.name : key;
+  document.getElementById('delete-asset-modal').classList.add('visible');
+}
+
+function confirmDeleteAsset() {
+  if (!deletingAssetKey) return;
+  const key = deletingAssetKey;
+  deletingAssetKey = null;
+  document.getElementById('delete-asset-modal').classList.remove('visible');
+  // Immediate commit — remove from saved and any in-progress pending selection
+  savedAssetKeys.delete(key);
+  if (pendingAssetKeys !== null) pendingAssetKeys.delete(key);
+  renderHeaders();
+  renderTable();
+  showToast();
+}
+
+function closeAssetDeleteModal() {
+  deletingAssetKey = null;
+  document.getElementById('delete-asset-modal').classList.remove('visible');
+}
+
+function confirmDeleteTier() {
+  if (deletingTierIdx === null) return;
+  pendingTierDeletions.add(deletingTierIdx);
+  deletingTierIdx = null;
+  document.getElementById('delete-tier-modal').classList.remove('visible');
+  editingTierIdx = null;
+  renderHeaders();
+  renderTable();
+  updateChangesUI();
+}
+
+function closeDeleteModal() {
+  deletingTierIdx = null;
+  document.getElementById('delete-tier-modal').classList.remove('visible');
+}
+
+function addTierAt(beforeIdx, e) {
+  e.stopPropagation();
+  if (tierThresholds.length >= MAX_TIERS - 1) { showToast('Maximum 5 tiers reached'); return; }
+  tierThresholds.splice(beforeIdx, 0, 0);
+  savedTierThresholds.splice(beforeIdx, 0, 0);
+  // Shift pending edits at/above insert position
+  const shiftedEdits = {};
+  for (const k in pendingTierEdits) {
+    const idx = parseInt(k);
+    shiftedEdits[idx < beforeIdx ? idx : idx + 1] = pendingTierEdits[k];
+  }
+  pendingTierEdits = shiftedEdits;
+  // Shift pending deletions at/above insert position
+  const shiftedDels = new Set();
+  for (const idx of pendingTierDeletions) {
+    shiftedDels.add(idx < beforeIdx ? idx : idx + 1);
+  }
+  pendingTierDeletions = shiftedDels;
+  TIERS = tierThresholds.length + 1;
+  editingTierIdx = null;
+  renderHeaders();
+  renderTable();
+}
+
+function updateGtHeader() {
+  const visible = visibleTierIndices();
+  const gtVal = visible.length > 0 ? Math.max(...visible.map(i => effectiveThreshold(i))) : 0;
+  const el = document.getElementById('gt-val');
+  if (el) el.textContent = formatMoney(gtVal);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SPREAD PLAN — RENDER TABLE
+══════════════════════════════════════════════════════════════ */
+function renderTable() {
+  const container = document.getElementById('asset-rows');
+  if (!container) return;
+
+  const adjustBps  = parseInt(spreadValue) || 0;
+  const isMarkup   = spreadType === 'markup';
+  const isMarkdown = spreadType === 'markdown';
+  const typeActive = isMarkup || isMarkdown;
+
+  let html = '';
+
+  const displayAssets = activeAssets();
+  if (displayAssets.length === 0) {
+    // Empty state — no assets configured yet
+    html += `<div class="asset-card"><div class="asset-row">
+      <div class="no-asset-col">
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+          <path d="M13 2.5L22.5 7.75v10.5L13 23.5 3.5 18.25V7.75L13 2.5z" stroke="#d1d5db" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M13 2.5v21M3.5 7.75L13 13l9.5-5.25M13 13v10.5" stroke="#d1d5db" stroke-width="1.2" stroke-linejoin="round"/>
+        </svg>
+        <span class="no-asset-lbl">No asset selected</span>
+      </div>
+      ${buildCells('EMPTY', 6, adjustBps, isMarkup, isMarkdown, typeActive)}
+    </div></div>`;
+  } else {
+    displayAssets.forEach(asset => {
+      html += `<div class="asset-card"><div class="asset-row">
+        <div class="asset-col">
+          <div class="asset-icon">${assetIcon(asset.key)}</div>
+          <span class="asset-name">${asset.name}</span>
+          <div class="asset-col-overlay">
+            <button class="asset-del-btn" onclick="promptDeleteAsset('${asset.key}',event)" title="Remove ${asset.name}">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 4h9M5.5 4V2.5h3V4M5 4l.5 8h3l.5-8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+        ${buildCells(asset.key, asset.baseBps, adjustBps, isMarkup, isMarkdown, typeActive)}
+      </div></div>`;
+    });
+  }
+
+  // Fallback row — always +4 bps markup, independent of global setting
+  html += `<div class="asset-card"><div class="asset-row">
+    <div class="fallback-col">
+      <span class="fallback-lbl">Fallback</span>
+      <span class="tooltip-wrap">
+        <svg class="info-icon" width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.8" stroke="#d1d5db" stroke-width="1.2"/><path d="M7 6.5v3M7 5v.5" stroke="#d1d5db" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <span class="tooltip">Applied when no specific asset rule matches</span>
+      </span>
+    </div>
+    ${buildCells('FALLBACK', 6, 4, true, false, typeActive)}
+  </div></div>`;
+
+  container.innerHTML = html;
+
+  // Apply dynamic grid template to all asset rows (use visible tier count)
+  const n = visibleTierIndices().length + 1;
+  const gridTpl = `148px repeat(${n},minmax(140px,1fr))`;
+  const minW    = (148 + n * 140) + 'px';
+  container.querySelectorAll('.asset-row').forEach(row => {
+    row.style.gridTemplateColumns = gridTpl;
+    row.style.minWidth = minW;
+  });
+}
+
+function buildCells(assetKey, defaultBaseBps, adjustBps, isMarkup, isMarkdown, typeActive) {
+  let html = '';
+  const chip = chipFor(adjustBps, isMarkup, isMarkdown, typeActive);
+  const visibleCount = visibleTierIndices().length + 1; // editable tiers + GT
+
+  for (let i = 0; i < visibleCount; i++) {
+    const cellKey   = `${assetKey}-${i}`;
+    const isEditing = openCells.has(cellKey);
+    const baseBps   = pendingCellEdits[cellKey] ?? savedCellEdits[cellKey] ?? defaultBaseBps;
+    const total     = totalFor(baseBps, adjustBps, isMarkup, isMarkdown, typeActive);
+
+    if (isEditing) {
+      html += `<div class="tier-cell editing" data-key="${cellKey}">
+        <div class="tc-inner">
+          <span class="tc-label">Base spread</span>
+          <div class="tc-edit-row">
+            <input class="tc-edit-input" type="number" value="${baseBps}" min="0"
+              id="inp-${cellKey}"
+              oninput="onCellInput('${cellKey}', this.value)">
+            <span class="tc-edit-unit">bps</span>
+          </div>
+          <span class="${chip.cls}">${chip.label}</span>
+          <span class="tc-eq">=</span>
+          <div class="tc-total-row">
+            <span class="tc-total-lbl">Total</span>
+            <span class="tc-total-val" id="tot-${cellKey}">${total} bps</span>
+          </div>
+        </div>
+      </div>`;
+    } else {
+      html += `<div class="tier-cell" data-key="${cellKey}">
+        <div class="tc-inner">
+          <span class="tc-label">Base spread</span>
+          <div class="tc-spread-row">
+            <span class="tc-base">${baseBps} bps</span>
+            <span class="${chip.cls}">${chip.label}</span>
+          </div>
+          <span class="tc-eq">=</span>
+          <div class="tc-total-row">
+            <span class="tc-total-lbl">Total</span>
+            <span class="tc-total-val">${total} bps</span>
+          </div>
+        </div>
+        <div class="tc-hover-overlay" onclick="openCell('${cellKey}')">
+          <button class="edit-spread-btn">Edit spread</button>
+        </div>
+      </div>`;
+    }
+  }
+  return html;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SPREAD PLAN — CELL EDITING
+══════════════════════════════════════════════════════════════ */
+function openCell(cellKey) {
+  if (cellKey.startsWith('FALLBACK')) return;
+  openCells.add(cellKey);
+  renderTable();
+  requestAnimationFrame(() => {
+    const inp = document.getElementById('inp-' + cellKey);
+    if (inp) { inp.focus(); inp.select(); }
+  });
+}
+
+function onCellInput(cellKey, raw) {
+  const n           = parseInt(raw);
+  const asset       = ALL_ASSETS_CATALOG.find(a => cellKey.startsWith(a.key + '-'));
+  const defaultBase = asset ? asset.baseBps : 6;
+
+  if (!isNaN(n) && n >= 0) {
+    pendingCellEdits[cellKey] = n;
+  } else {
+    delete pendingCellEdits[cellKey];
+  }
+
+  const adjustBps  = parseInt(spreadValue) || 0;
+  const isMarkup   = spreadType === 'markup';
+  const isMarkdown = spreadType === 'markdown';
+  const baseBps    = pendingCellEdits[cellKey] ?? savedCellEdits[cellKey] ?? defaultBase;
+  const total      = totalFor(baseBps, adjustBps, isMarkup, isMarkdown);
+  const totEl      = document.getElementById('tot-' + cellKey);
+  if (totEl) totEl.textContent = total + ' bps';
+
+  updateChangesUI();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SPREAD PLAN — ASSET SELECTION DROPDOWN
+══════════════════════════════════════════════════════════════ */
+function buildAssetDropdownHtml() {
+  const pendingKeys = pendingAssetKeys ?? new Set(savedAssetKeys);
+  const filtered    = assetSearchQuery
+    ? ALL_ASSETS_CATALOG.filter(a => a.name.toLowerCase().includes(assetSearchQuery.toLowerCase()))
+    : ALL_ASSETS_CATALOG;
+  const total         = ALL_ASSETS_CATALOG.length;
+  const selectedCount = pendingKeys.size;
+  const allChecked    = selectedCount === total;
+  const checkSvg = `<svg width="10" height="7" viewBox="0 0 10 7" fill="none"><path d="M1 3.5l3 3 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+  const itemsHtml = filtered.length
+    ? filtered.map(a => {
+        const isChecked = pendingKeys.has(a.key);
+        return `<div class="asset-dd-item${isChecked ? ' checked' : ''}" onclick="toggleAssetInPending('${a.key}')">
+          <div class="asset-dd-icon">${assetIcon(a.key)}</div>
+          <span class="asset-dd-name">${a.name}</span>
+          <div class="adc-check${isChecked ? ' checked' : ''}">${isChecked ? checkSvg : ''}</div>
+        </div>`;
+      }).join('')
+    : `<div style="padding:20px 12px;text-align:center;font-size:12px;color:#9ca3af;">No assets found</div>`;
+
+  return `<div class="asset-dropdown" onclick="event.stopPropagation()">
+    <div class="asset-dd-search">
+      <svg class="asset-dd-search-ico" width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.4"/><path d="M10 10l2.5 2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <input type="text" placeholder="Search for asset" value="${assetSearchQuery}"
+        id="asset-search-inp"
+        oninput="onAssetSearch(this.value)"
+        onclick="event.stopPropagation()">
+    </div>
+    <div class="asset-dd-hdr">
+      <span class="asset-dd-count">${selectedCount}/${total}</span>
+      <label class="asset-dd-all" onclick="event.stopPropagation();toggleAllAssets()">
+        <div class="adc-check${allChecked ? ' checked' : ''}">${allChecked ? checkSvg : ''}</div>
+        All
+      </label>
+    </div>
+    <div class="asset-dd-list">${itemsHtml}</div>
+  </div>`;
+}
+
+function toggleAssetDropdown() {
+  assetDropdownOpen = !assetDropdownOpen;
+  if (assetDropdownOpen) {
+    // Mirror saved state into pending so user edits from current state
+    if (pendingAssetKeys === null) pendingAssetKeys = new Set(savedAssetKeys);
+    assetSearchQuery = '';
+  }
+  renderHeaders();
+  if (assetDropdownOpen) {
+    requestAnimationFrame(() => {
+      const inp = document.getElementById('asset-search-inp');
+      if (inp) inp.focus();
+    });
+  }
+}
+
+function closeAssetDropdown() {
+  if (!assetDropdownOpen) return;
+  assetDropdownOpen = false;
+  assetSearchQuery  = '';
+  renderHeaders();
+}
+
+function toggleAssetInPending(key) {
+  if (pendingAssetKeys === null) pendingAssetKeys = new Set(savedAssetKeys);
+  if (pendingAssetKeys.has(key)) pendingAssetKeys.delete(key);
+  else pendingAssetKeys.add(key);
+  renderHeaders();
+  renderTable();
+  updateChangesUI();
+}
+
+function toggleAllAssets() {
+  if (pendingAssetKeys === null) pendingAssetKeys = new Set(savedAssetKeys);
+  const allSelected = ALL_ASSETS_CATALOG.every(a => pendingAssetKeys.has(a.key));
+  pendingAssetKeys  = allSelected ? new Set() : new Set(ALL_ASSETS_CATALOG.map(a => a.key));
+  renderHeaders();
+  renderTable();
+  updateChangesUI();
+}
+
+function onAssetSearch(val) {
+  assetSearchQuery = val;
+  renderHeaders();
+  requestAnimationFrame(() => {
+    const inp = document.getElementById('asset-search-inp');
+    if (inp) { inp.focus(); inp.setSelectionRange(val.length, val.length); }
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SPREAD PLAN — SPREAD ADJUSTMENT DROPDOWN
+══════════════════════════════════════════════════════════════ */
+function toggleDropdown(e) {
+  e.stopPropagation();
+  const trigger  = document.getElementById('cs-trigger');
+  const dropdown = document.getElementById('cs-dropdown');
+  const isOpen   = dropdown.classList.contains('open');
+  closeDropdown();
+  if (!isOpen) { trigger.classList.add('open'); dropdown.classList.add('open'); }
+}
+
+/**
+ * closeDropdown — safe with null checks because these elements only
+ * exist when appScreen === 'spread-plan'.
+ */
+function closeDropdown() {
+  const t = document.getElementById('cs-trigger');
+  const d = document.getElementById('cs-dropdown');
+  if (t) t.classList.remove('open');
+  if (d) d.classList.remove('open');
+}
+
+function selectType(val) {
+  spreadType = val;
+  const label = document.getElementById('cs-label');
+  label.textContent = val === 'markup' ? 'Markup' : 'Markdown';
+  label.classList.remove('cs-placeholder');
+
+  document.getElementById('check-markup').style.display   = val === 'markup'   ? 'block' : 'none';
+  document.getElementById('check-markdown').style.display = val === 'markdown' ? 'block' : 'none';
+
+  const prefix = document.getElementById('vib-prefix');
+  prefix.textContent = val === 'markup' ? '+' : '−';
+  prefix.classList.add('visible');
+
+  document.getElementById('spread-helper').textContent =
+    val === 'markup'
+      ? "Add bps on top of Uphold's spread. Partner earns the difference on every transaction."
+      : 'Partner absorbs bps on every transaction.';
+
+  document.getElementById('spread-helper').classList.add('visible');
+  document.getElementById('absorb-wrap').classList.toggle('visible', val === 'markdown');
+  if (val === 'markup') document.getElementById('absorb-toggle').checked = false;
+
+  closeDropdown();
+  updateChangesUI();
+  renderTable();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SPREAD PLAN — VALUE INPUT
+══════════════════════════════════════════════════════════════ */
+function onValueInput() {
+  spreadValue = document.getElementById('spread-value').value;
+  document.getElementById('vib-clear').classList.toggle('visible', spreadValue !== '');
+  updateChangesUI();
+  renderTable();
+}
+
+function onValueFocus() {}
+
+function clearValue() {
+  document.getElementById('spread-value').value = '';
+  spreadValue = '';
+  document.getElementById('vib-clear').classList.remove('visible');
+  updateChangesUI();
+  renderTable();
+}
+
+function onAbsorbChange() {
+  updateChangesUI();
+  renderTable();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   GLOBAL CLICK HANDLER
+   Closes dropdown (with null checks) and open cells.
+   Only re-renders table when on spread-plan screen.
+══════════════════════════════════════════════════════════════ */
+document.addEventListener('click', e => {
+  closeDropdown(); // null-safe, no-ops on other screens
+
+  if (appScreen === 'spread-plan' && openCells.size > 0
+      && !e.target.closest('.tier-cell.editing')
+      && !e.target.closest('.tc-hover-overlay')) {
+    openCells.clear();
+    renderTable();
+  }
+});
+
+/* ── Close asset dropdown on outside click ───────────────── */
+document.addEventListener('click', function(e) {
+  if (assetDropdownOpen && !e.target.closest('.col-hdr-assets-select')) {
+    closeAssetDropdown();
+    updateChangesUI();
+  }
+});
+
+/* ── Close deposits / withdrawals dropdowns on outside click ── */
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.dep-dd-wrap')) {
+    let needDep = false, needWdr = false;
+    if (depositsOpenDD) { depositsOpenDD = null; needDep = true; }
+    if (depositsRowEdit?.openDD) { depositsRowEdit.openDD = null; needDep = true; }
+    if (withdrawalsOpenDD) { withdrawalsOpenDD = null; needWdr = true; }
+    if (withdrawalsRowEdit?.openDD) { withdrawalsRowEdit.openDD = null; needWdr = true; }
+    if (needDep) renderDepositsTab();
+    if (needWdr) renderWithdrawalsTab();
+  }
+});
+
+/* ══════════════════════════════════════════════════════════════
+   INIT — single render() call
+══════════════════════════════════════════════════════════════ */
+render();
+</script>
+</body>
+</html>

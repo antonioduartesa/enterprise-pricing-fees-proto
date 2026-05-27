@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enterprise Portal — Partners</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;font-size:14px;color:#1a2234;background:#f4f5f7;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* BANNER */
+.prod-banner{height:36px;background:#fff8eb;border-bottom:1px solid #fde68a;display:flex;align-items:center;padding:0 20px;gap:10px;font-size:12.5px;color:#92400e;font-weight:500;flex-shrink:0;}
+.prod-badge{background:#ef4444;color:#fff;font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;letter-spacing:.01em;}
+.banner-user{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12.5px;color:#92400e;font-weight:500;}
+
+/* LAYOUT */
+.app-body{display:flex;flex:1;overflow:hidden;}
+.sidebar{width:220px;min-width:220px;background:#fff;border-right:1px solid #e5e7eb;display:flex;flex-direction:column;overflow-y:auto;padding-bottom:16px;flex-shrink:0;}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:16px 16px 14px;}
+.logo-text .main{display:block;font-size:13px;font-weight:600;color:#111;}
+.logo-text .sub{display:block;font-size:10px;color:#9ca3af;}
+.sidebar-label{font-size:11px;color:#9ca3af;padding:8px 16px 3px;text-transform:uppercase;letter-spacing:.04em;font-weight:500;}
+.sidebar-dd{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;margin:1px 8px;border-radius:7px;cursor:pointer;}
+.sidebar-dd:hover{background:#f9fafb;}
+.sidebar-dd-inner{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:#374151;}
+.sidebar-div{height:1px;background:#f3f4f6;margin:6px 0;}
+.nav-item{display:flex;align-items:center;gap:9px;padding:7px 12px;margin:1px 8px;border-radius:7px;cursor:pointer;font-size:13px;color:#4b5563;}
+.nav-item:hover{background:#f3f4f6;}
+
+/* TOPBAR */
+.main-wrapper{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{height:44px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;padding:0 28px;flex-shrink:0;}
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:12.5px;}
+.bc-link{color:#6b7280;cursor:pointer;transition:color .12s;}
+.bc-link:hover{color:#111;}
+.bc-current{color:#111827;font-weight:500;}
+.bc-sep{color:#d1d5db;}
+.topbar-right{display:flex;align-items:center;gap:7px;font-size:13px;color:#374151;font-weight:500;}
+.main-content{flex:1;overflow-y:auto;}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;border-radius:8px;cursor:pointer;font-family:inherit;padding:8px 16px;border:1.5px solid transparent;transition:all .15s;text-decoration:none;}
+.btn-primary{background:#3CC13B;color:#fff;border-color:#3CC13B;}
+.btn-primary:hover{background:#2da82c;border-color:#2da82c;}
+.btn-outline{background:#fff;border-color:#d1d5db;color:#374151;}
+.btn-outline:hover{background:#f9fafb;}
+.btn-sm{padding:6px 14px;font-size:12.5px;}
+.btn-save-pill{background:#3CC13B;color:#fff;border:none;border-radius:20px;padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .15s;}
+.btn-save-pill:hover{background:#2da82c;}
+.btn-discard-pill{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.3);border-radius:20px;padding:7px 16px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;transition:all .15s;}
+.btn-discard-pill:hover{border-color:rgba(255,255,255,.6);}
+
+/* SAVE BAR (dark pill) */
+.save-bar{position:fixed;bottom:20px;left:calc(220px + (100vw - 220px)/2);transform:translateX(-50%);background:#1e293b;border-radius:40px;padding:8px 8px 8px 20px;display:none;align-items:center;gap:8px;z-index:500;box-shadow:0 8px 32px rgba(0,0,0,.25);white-space:nowrap;}
+.save-bar.visible{display:flex;}
+.save-bar-lbl{font-size:13px;color:#fff;font-weight:400;}
+
+/* TOAST */
+.g-toast{position:fixed;top:20px;right:28px;background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:12px 18px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,.12);z-index:2000;font-size:13px;color:#111827;font-weight:500;transition:opacity .25s,transform .25s;opacity:0;transform:translateY(-8px);pointer-events:none;min-width:240px;}
+.g-toast.show{opacity:1;transform:translateY(0);}
+.toast-check{width:22px;height:22px;border-radius:50%;background:#22c55e;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:500;white-space:nowrap;}
+.badge-kyb-pending{background:#fff8eb;color:#d97706;}
+.badge-kyb-completed{background:#f0fdf4;color:#16a34a;}
+.badge-kyb-declined{background:#fff1f2;color:#e11d48;}
+.badge-not-signed{background:#fff8eb;color:#d97706;}
+.badge-signed{background:#f0fdf4;color:#16a34a;}
+
+/* ── SCREEN 1: PARTNERS LIST ──────────────────────────── */
+.partners-page{padding:32px 40px;background:#fff;min-height:100%;}
+@media(max-width:900px){.partners-page{padding:24px 20px;}}
+.partners-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+.partners-title{font-size:22px;font-weight:700;color:#111827;}
+.search-wrap{display:flex;align-items:center;gap:10px;border:1.5px solid #e5e7eb;border-radius:10px;padding:0 16px;height:44px;background:#fff;margin-bottom:16px;transition:border-color .15s;}
+.search-wrap:focus-within{border-color:#9ca3af;}
+.search-wrap input{border:none;outline:none;flex:1;font-size:14px;font-family:inherit;color:#374151;}
+.search-wrap input::placeholder{color:#9ca3af;}
+.filters-row{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.filter-sel{display:flex;align-items:center;justify-content:space-between;gap:6px;border:1.5px solid #e5e7eb;border-radius:8px;padding:7px 12px;font-size:13px;color:#374151;background:#fff;cursor:pointer;min-width:130px;transition:border-color .15s;}
+.filter-sel:hover{border-color:#9ca3af;}
+.filter-lbl{font-size:11px;color:#9ca3af;font-weight:500;display:block;margin-bottom:2px;}
+.filter-val{font-size:13px;color:#374151;}
+.partners-count{font-size:13.5px;color:#3b82f6;font-weight:500;margin-bottom:14px;}
+.table-scroll{overflow-x:auto;}
+.table-header{display:grid;grid-template-columns:1fr 200px 180px 130px;padding:6px 20px;margin-bottom:4px;min-width:720px;}
+.th{font-size:12px;font-weight:500;color:#3b82f6;}
+.partner-row{display:grid;grid-template-columns:1fr 200px 180px 130px;padding:18px 20px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;cursor:pointer;align-items:center;transition:border-color .15s,box-shadow .15s;min-width:720px;}
+.partner-row:hover{border-color:#9ca3af;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.partner-name{font-size:14px;font-weight:600;color:#111827;line-height:1.45;}
+.products-link{font-size:13.5px;font-weight:500;color:#16a34a;}
+.pagination{display:flex;align-items:center;justify-content:center;gap:3px;margin-top:24px;padding-bottom:8px;}
+.pg-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;border:1.5px solid transparent;color:#6b7280;background:transparent;font-family:inherit;transition:all .15s;}
+.pg-btn:hover:not(.active):not(.ellipsis){background:#f3f4f6;}
+.pg-btn.active{background:#3CC13B;color:#fff;}
+.pg-btn.ellipsis{cursor:default;letter-spacing:.05em;}
+.pg-arrow{width:34px;height:34px;border:1.5px solid #e5e7eb;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#6b7280;transition:border-color .15s;}
+.pg-arrow:hover{border-color:#9ca3af;}
+
+/* ── SCREENS 2-5: CONTENT CARD ──────────────────────── */
+.content-card{background:#fff;border-radius:12px;border:1px solid #e5e7eb;margin:24px 28px;padding:32px 40px 40px;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+@media(max-width:900px){
+  .content-card{margin:16px;padding:24px 20px 28px;}
+}
+
+/* PARTNER HEADER */
+.partner-page-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;gap:20px;flex-wrap:wrap;}
+.partner-title{font-size:22px;font-weight:700;color:#111827;line-height:1.3;margin-bottom:8px;max-width:540px;}
+.product-area{display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.product-select{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 14px;font-size:13.5px;color:#374151;background:#fff;cursor:pointer;min-width:180px;transition:border-color .15s;}
+.product-select:hover{border-color:#9ca3af;}
+
+/* TABS */
+.tabs-bar{display:flex;border-bottom:1.5px solid #e5e7eb;margin-bottom:32px;}
+.tab-btn{padding:10px 18px;font-size:14px;color:#6b7280;cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1.5px;background:none;border-top:none;border-left:none;border-right:none;font-family:inherit;transition:color .15s;}
+.tab-btn.active{color:#3CC13B;border-bottom-color:#3CC13B;font-weight:500;}
+.tab-btn:hover:not(.active){color:#374151;}
+
+/* PRODUCT DETAILS */
+.section-title{font-size:17px;font-weight:700;color:#111827;margin-bottom:20px;}
+.product-details-card{border:1.5px solid #e5e7eb;border-radius:12px;padding:24px 28px;margin-bottom:28px;}
+.pd-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:20px;}
+@media(max-width:900px){.pd-grid{grid-template-columns:repeat(2,1fr);}}
+.pd-label{font-size:11.5px;color:#6b7280;font-weight:500;margin-bottom:6px;}
+.pd-value{font-size:14px;color:#374151;font-weight:500;}
+.pd-sel{display:flex;align-items:center;justify-content:space-between;gap:6px;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 12px;font-size:13px;color:#374151;cursor:pointer;background:#fff;transition:border-color .15s;}
+.pd-sel:hover{border-color:#9ca3af;}
+
+/* MEMBERS */
+.members-section{margin-top:4px;}
+.members-title{font-size:16px;font-weight:700;color:#111827;margin-bottom:4px;}
+.members-sub{font-size:13px;color:#9ca3af;margin-bottom:16px;}
+.member-pills{display:flex;gap:8px;margin-bottom:14px;}
+.m-pill{padding:5px 14px;border-radius:20px;font-size:13px;cursor:pointer;transition:all .15s;border:1.5px solid #e5e7eb;background:#fff;color:#374151;font-family:inherit;}
+.m-pill.active{background:#3CC13B;color:#fff;border-color:#3CC13B;}
+.members-count{font-size:13px;color:#374151;margin-bottom:12px;}
+.members-table-hdr{display:grid;grid-template-columns:1fr 1fr 120px 100px 140px;padding:10px 20px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px 10px 0 0;border-bottom:none;}
+.mt-th{font-size:12px;font-weight:500;color:#6b7280;}
+.members-empty{border:1px solid #e5e7eb;border-radius:0 0 10px 10px;padding:48px 0;text-align:center;}
+.members-empty-text{font-size:13.5px;color:#9ca3af;margin-top:10px;}
+
+/* PRICING */
+.pricing-section{margin-bottom:24px;}
+.section-hdr-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.revenue-card{border:1.5px solid #e5e7eb;border-radius:12px;padding:20px 24px;margin-bottom:24px;}
+.revenue-option-hdr{font-size:12.5px;color:#9ca3af;font-weight:500;margin-bottom:16px;text-transform:uppercase;letter-spacing:.04em;}
+.revenue-option{display:flex;align-items:flex-start;gap:13px;padding:14px 0;cursor:pointer;}
+.revenue-option+.revenue-option{border-top:1px solid #f3f4f6;}
+.radio-outer{width:19px;height:19px;border:2px solid #d1d5db;border-radius:50%;flex-shrink:0;margin-top:1px;transition:border-color .15s;display:flex;align-items:center;justify-content:center;}
+.radio-outer.selected{border-color:#3CC13B;background:#3CC13B;}
+.radio-inner{width:7px;height:7px;background:#fff;border-radius:50%;display:none;}
+.radio-outer.selected .radio-inner{display:block;}
+.rev-opt-title{font-size:14px;font-weight:600;color:#111827;margin-bottom:3px;}
+.rev-opt-sub{font-size:13px;color:#6b7280;line-height:1.5;}
+
+/* LIMITS */
+.limits-section{border-top:1px solid #e5e7eb;padding-top:24px;margin-top:4px;}
+.limits-title{font-size:15px;font-weight:600;color:#111827;margin-bottom:4px;}
+.limits-sub{font-size:13px;color:#3b82f6;margin-bottom:20px;line-height:1.5;}
+.limits-table{width:100%;border-collapse:collapse;}
+.limits-table th{font-size:12.5px;font-weight:500;color:#374151;padding:0 0 10px;text-align:left;}
+.limits-table th:first-child{width:180px;}
+.limits-table td{padding:6px 0;vertical-align:middle;}
+.limits-table td:first-child{font-size:14px;color:#374151;font-weight:400;}
+.lim-inp-wrap{border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 13px;background:#fff;display:flex;align-items:center;gap:4px;max-width:200px;transition:border-color .15s,box-shadow .15s;}
+.lim-inp-wrap:focus-within{border-color:#3CC13B;box-shadow:0 0 0 3px rgba(60,193,59,.08);}
+.lim-inp{border:none;outline:none;font-family:inherit;font-size:13.5px;color:#374151;width:50px;background:transparent;}
+.lim-unit{font-size:13px;color:#9ca3af;}
+.limits-table td{padding-top:7px;padding-bottom:7px;}
+.limits-table td:not(:first-child){padding-right:12px;}
+
+/* STANDARD PLAN */
+.std-plan-section{margin-top:32px;padding-top:28px;border-top:1px solid #f3f4f6;}
+.std-plan-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+.std-plan-title{font-size:17px;font-weight:700;color:#111827;}
+.std-plan-sub{font-size:13px;color:#3b82f6;margin-bottom:18px;cursor:pointer;}
+.std-plan-card{border:1.5px solid #e5e7eb;border-radius:12px;padding:24px 28px;}
+.std-summary{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:24px;}
+.std-col-title{font-size:12px;font-weight:500;color:#6b7280;margin-bottom:10px;text-transform:uppercase;letter-spacing:.03em;}
+.std-row{display:flex;justify-content:space-between;margin-bottom:6px;}
+.std-row-lbl{font-size:13px;color:#374151;}
+.std-undef{font-size:13px;color:#9ca3af;}
+</style>
+</head>
+<body>
+
+<!-- PRODUCTION BANNER -->
+<div class="prod-banner">
+  <span class="prod-badge">Production environment</span>
+  Explore Enterprise Portal live environment.
+  <div class="banner-user">
+    <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="5" r="3" stroke="#92400e" stroke-width="1.3"/><path d="M1.5 13.5c0-3.31 2.69-6 6-6s6 2.69 6 6" stroke="#92400e" stroke-width="1.3" stroke-linecap="round"/></svg>
+    John Doe
+  </div>
+</div>
+
+<div class="app-body">
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><rect width="30" height="30" rx="8" fill="#f0fdf4"/><path d="M9 15.5l4 4 8-9" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="logo-text"><span class="main">enterprise portal</span><span class="sub">by uphold</span></div>
+    </div>
+    <div class="sidebar-label">Product</div>
+    <div class="sidebar-dd">
+      <div class="sidebar-dd-inner">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1.5" y="1.5" width="5" height="5" rx="1" fill="#6b7280"/><rect x="8.5" y="1.5" width="5" height="5" rx="1" fill="#6b7280"/><rect x="1.5" y="8.5" width="5" height="5" rx="1" fill="#6b7280"/><rect x="8.5" y="8.5" width="5" height="5" rx="1" fill="#6b7280"/></svg>
+        Partners
+      </div>
+      <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>
+    </div>
+    <div class="sidebar-label">Environment</div>
+    <div class="sidebar-dd">
+      <div class="sidebar-dd-inner">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4" stroke="#ef4444" stroke-width="1.4"/><circle cx="6" cy="6" r="1.8" fill="#ef4444"/></svg>
+        <span style="color:#ef4444;">Production</span>
+      </div>
+      <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>
+    </div>
+    <div class="sidebar-div"></div>
+    <div style="padding:2px 8px;">
+      <div class="nav-item" onclick="goToPartners()">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1.5 6L7.5 1.5 13.5 6V13.5a.75.75 0 01-.75.75H2.25A.75.75 0 011.5 13.5V6z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M5.5 14.25V8.5h4v5.75" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Home
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="main-wrapper">
+    <div class="topbar" id="topbar"></div>
+    <div class="main-content" id="main-content"></div>
+  </div>
+</div>
+
+<!-- SAVE BAR -->
+<div class="save-bar" id="save-bar">
+  <span class="save-bar-lbl" id="save-bar-lbl">1 unsaved change</span>
+  <button class="btn-discard-pill" onclick="discardChanges()">Discard</button>
+  <button class="btn-save-pill" onclick="saveChanges()">Save</button>
+</div>
+
+<!-- TOAST -->
+<div class="g-toast" id="g-toast">
+  <div class="toast-check"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6.5l3 3 5-6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <span>Changes successfully updated.</span>
+</div>
+
+<script>
+// ── STATE ─────────────────────────────────────────────────
+let screen      = 'partners'; // 'partners' | 'partner-detail' | 'pricing'
+let activeTab   = 'product-details'; // 'product-details' | 'pricing'
+let pricingModel  = null; // null | 'wholesale' | 'revenue-share'
+let savedModel    = null;
+let pricingSaved  = false;
+let toastTimer;
+
+// ── NAVIGATION ────────────────────────────────────────────
+function goToPartners() {
+  screen = 'partners';
+  render();
+}
+
+function goToPartner() {
+  screen = 'partner-detail';
+  activeTab = 'product-details';
+  render();
+}
+
+function goToTab(tab) {
+  activeTab = tab;
+  if (tab === 'pricing' && screen !== 'partner-detail' && screen !== 'pricing') {
+    screen = 'pricing';
+  } else {
+    screen = tab === 'pricing' ? 'pricing' : 'partner-detail';
+  }
+  render();
+}
+
+// ── PRICING ACTIONS ───────────────────────────────────────
+function selectModel(model) {
+  pricingModel = model;
+  render();
+  updateSaveBar();
+}
+
+function saveChanges() {
+  savedModel   = pricingModel;
+  pricingSaved = true;
+  hideSaveBar();
+  render();
+  showToast();
+}
+
+function discardChanges() {
+  pricingModel = savedModel;
+  hideSaveBar();
+  render();
+}
+
+// ── SAVE BAR ─────────────────────────────────────────────
+function updateSaveBar() {
+  const bar = document.getElementById('save-bar');
+  const lbl = document.getElementById('save-bar-lbl');
+  const changed = pricingModel !== savedModel;
+  if (changed) {
+    const n = 1;
+    lbl.textContent = n + ' unsaved change';
+    bar.classList.add('visible');
+  } else {
+    bar.classList.remove('visible');
+  }
+}
+
+function hideSaveBar() {
+  document.getElementById('save-bar').classList.remove('visible');
+}
+
+// ── TOAST ─────────────────────────────────────────────────
+function showToast() {
+  const t = document.getElementById('g-toast');
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── RENDER ────────────────────────────────────────────────
+function render() {
+  renderTopbar();
+  renderContent();
+  updateSaveBar();
+}
+
+function renderTopbar() {
+  const el = document.getElementById('topbar');
+  const userHTML = `<div class="topbar-right"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="5" r="3" stroke="#6b7280" stroke-width="1.3"/><path d="M1.5 13.5c0-3.31 2.69-6 6-6s6 2.69 6 6" stroke="#6b7280" stroke-width="1.3" stroke-linecap="round"/></svg>John Doe</div>`;
+  if (screen === 'partners') {
+    el.innerHTML = `<div></div>${userHTML}`;
+  } else if (screen === 'partner-detail') {
+    el.innerHTML = `
+      <div class="breadcrumb">
+        <span class="bc-link" onclick="goToPartners()">Partners</span>
+        <span class="bc-sep">›</span>
+        <span class="bc-current">(Partner name)</span>
+      </div>
+      ${userHTML}`;
+  } else {
+    el.innerHTML = `
+      <div class="breadcrumb">
+        <span class="bc-link" onclick="goToPartners()">Partners</span>
+        <span class="bc-sep">›</span>
+        <span class="bc-link" onclick="goToPartner()">(Partner name)</span>
+        <span class="bc-sep">›</span>
+        <span class="bc-current">Pricing</span>
+      </div>
+      ${userHTML}`;
+  }
+}
+
+function renderContent() {
+  const el = document.getElementById('main-content');
+  if (screen === 'partners') {
+    el.style.background = '#fff';
+    el.innerHTML = renderPartners();
+  } else {
+    el.style.background = '#f4f5f7';
+    const tab   = (screen === 'pricing') ? 'pricing' : 'product-details';
+    const inner = (tab === 'pricing') ? renderPricingContent() : renderProductDetails();
+    el.innerHTML = `
+      <div class="content-card">
+        ${renderPartnerHeader()}
+        ${renderTabs(tab)}
+        ${inner}
+      </div>`;
+  }
+}
+
+// ── PARTNERS LIST ─────────────────────────────────────────
+function renderPartners() {
+  const rows = [
+    { kyb:'pending',   contract:'not-signed', products:5 },
+    { kyb:'completed', contract:'signed',     products:1 },
+    { kyb:'declined',  contract:'not-signed', products:5 },
+    { kyb:'pending',   contract:'not-signed', products:5 },
+    { kyb:'pending',   contract:'signed',     products:5 },
+    { kyb:'completed', contract:'signed',     products:5 },
+    { kyb:'pending',   contract:'not-signed', products:5 },
+    { kyb:'pending',   contract:'not-signed', products:5 },
+    { kyb:'pending',   contract:'not-signed', products:5 },
+    { kyb:'pending',   contract:'not-signed', products:5 },
+  ];
+
+  const kybBadge = k => ({
+    pending:   `<span class="badge badge-kyb-pending">KYB pending</span>`,
+    completed: `<span class="badge badge-kyb-completed">KYB completed</span>`,
+    declined:  `<span class="badge badge-kyb-declined">KYB declined</span>`,
+  }[k]);
+
+  const contractBadge = c => c === 'signed'
+    ? `<span class="badge badge-signed">Signed</span>`
+    : `<span class="badge badge-not-signed">1 not signed</span>`;
+
+  const rowsHTML = rows.map(r => `
+    <div class="partner-row" onclick="goToPartner()">
+      <div class="partner-name">Partner name organization<br>example in 2 lines</div>
+      <div>${kybBadge(r.kyb)}</div>
+      <div>${contractBadge(r.contract)}</div>
+      <div class="products-link">${r.products} product${r.products !== 1 ? 's' : ''}</div>
+    </div>`).join('');
+
+  const filterLabel = (lbl, val) => `
+    <div class="filter-sel">
+      <div><div class="filter-lbl">${lbl}</div><div class="filter-val">${val}</div></div>
+      <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>
+    </div>`;
+
+  return `
+    <div class="partners-page">
+      <div class="partners-hdr">
+        <h1 class="partners-title">Partners</h1>
+        <button class="btn btn-primary">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Add partner
+        </button>
+      </div>
+
+      <div class="search-wrap">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="color:#9ca3af;flex-shrink:0"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.4"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <input placeholder="Search by legal business name or user email">
+      </div>
+
+      <div class="filters-row">
+        ${filterLabel('Uphold agent','All')}
+        ${filterLabel('Product','All')}
+        ${filterLabel('Integration','All')}
+        ${filterLabel('KYB','All')}
+        ${filterLabel('Contract','All')}
+      </div>
+
+      <p class="partners-count">1761 partners</p>
+
+      <div class="table-scroll">
+        <div class="table-header">
+          <div class="th">Account</div>
+          <div class="th">KYB</div>
+          <div class="th">Contract</div>
+          <div class="th">Products</div>
+        </div>
+
+        ${rowsHTML}
+      </div>
+
+      <div class="pagination">
+        <div class="pg-arrow">
+          <svg width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M7 1L1 6l6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <button class="pg-btn active">1</button>
+        <button class="pg-btn">2</button>
+        <button class="pg-btn">3</button>
+        <button class="pg-btn">4</button>
+        <button class="pg-btn">5</button>
+        <button class="pg-btn ellipsis">…</button>
+        <button class="pg-btn">10</button>
+        <div class="pg-arrow">
+          <svg width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M1 1l6 5-6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ── PARTNER HEADER (shared across screens 2-5) ────────────
+function renderPartnerHeader() {
+  return `
+    <div class="partner-page-hdr">
+      <div>
+        <div class="partner-title">Partner name organization example in a long line</div>
+        <span class="badge badge-kyb-pending">KYB Pending</span>
+      </div>
+      <div class="product-area">
+        <div>
+          <div style="font-size:12px;color:#6b7280;margin-bottom:6px;font-weight:500;">Select a product</div>
+          <div class="product-select">
+            <span style="font-size:13.5px;color:#374151;">B2B Payments</span>
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+        <div style="margin-top:22px;">
+          <button class="btn btn-primary">Add product</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ── TABS ──────────────────────────────────────────────────
+function renderTabs(active) {
+  return `
+    <div class="tabs-bar">
+      <button class="tab-btn ${active === 'product-details' ? 'active' : ''}" onclick="goToTab('product-details')">Product details</button>
+      <button class="tab-btn ${active === 'pricing' ? 'active' : ''}" onclick="goToTab('pricing')">Pricing</button>
+    </div>`;
+}
+
+// ── PRODUCT DETAILS TAB ───────────────────────────────────
+function renderProductDetails() {
+  return `
+    <div class="section-title">B2B Payments</div>
+    <div class="product-details-card">
+      <div class="pd-grid">
+        <div>
+          <div class="pd-label">Product type</div>
+          <div class="pd-value">B2B Payments</div>
+        </div>
+        <div>
+          <div class="pd-label">Integration</div>
+          <div class="pd-value" style="color:#6b7280;">In progress</div>
+        </div>
+        <div>
+          <div class="pd-label">Contract</div>
+          <div><span class="badge badge-signed">Signed</span></div>
+        </div>
+        <div>
+          <div class="pd-label">Sales account email</div>
+          <div class="pd-sel">
+            <span style="font-size:13px;">tc0078@uphold.com</span>
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+        <div>
+          <div class="pd-label">Account manager email</div>
+          <div class="pd-sel">
+            <span style="font-size:13px;">tc0078@uphold.com</span>
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="members-section">
+      <div class="members-title">Members</div>
+      <div class="members-sub">All members listed on this product.</div>
+      <div class="member-pills">
+        <button class="m-pill active">All <strong>0</strong></button>
+        <button class="m-pill">Active 0</button>
+        <button class="m-pill">Deactivated 0</button>
+      </div>
+      <div class="members-count">0 members</div>
+      <div class="members-table-hdr">
+        <div class="mt-th">Name</div>
+        <div class="mt-th">Email</div>
+        <div class="mt-th">Role</div>
+        <div class="mt-th">Status</div>
+        <div class="mt-th">Last access</div>
+      </div>
+      <div class="members-empty">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="#d1d5db" stroke-width="1.3"/><path d="M9 8v4M9 6.5v.5" stroke="#d1d5db" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <div class="members-empty-text">You don't have members.</div>
+      </div>
+    </div>`;
+}
+
+// ── PRICING TAB ───────────────────────────────────────────
+function renderPricingContent() {
+  const isWholesale = pricingModel === 'wholesale';
+  const savedWholesale = savedModel === 'wholesale';
+
+  const revenueCard = `
+    <div class="revenue-card">
+      <div class="revenue-option-hdr">Select an option</div>
+      <div class="revenue-option" onclick="selectModel('wholesale')">
+        <div class="radio-outer ${isWholesale ? 'selected' : ''}">
+          <div class="radio-inner"></div>
+        </div>
+        <div>
+          <div class="rev-opt-title">Wholesale model</div>
+          <div class="rev-opt-sub">Uphold provides a base price. The partner adds their own markup on top, keeping the difference as revenue.</div>
+        </div>
+      </div>
+      <div class="revenue-option" onclick="selectModel('revenue-share')">
+        <div class="radio-outer ${pricingModel === 'revenue-share' ? 'selected' : ''}">
+          <div class="radio-inner"></div>
+        </div>
+        <div>
+          <div class="rev-opt-title">Revenue share model</div>
+          <div class="rev-opt-sub">The partner earns a percentage of Uphold's take rate rather than controlling their own markup directly.</div>
+        </div>
+      </div>
+    </div>`;
+
+  const limitsSection = isWholesale ? `
+    <div class="limits-section">
+      <div class="limits-title">Limits</div>
+      <div class="limits-sub">Per-transaction fee limits applied regardless of markup, across deposits, withdrawals, receives, and sends.</div>
+      <table class="limits-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Min</th>
+            <th>Max</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${['Trade','Deposits','Withdrawals'].map(lbl => `
+          <tr>
+            <td>${lbl}</td>
+            <td><div class="lim-inp-wrap"><input class="lim-inp" type="number" min="0" placeholder="0"><span class="lim-unit">bps</span></div></td>
+            <td><div class="lim-inp-wrap"><input class="lim-inp" type="number" min="0" placeholder="0"><span class="lim-unit">bps</span></div></td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>` : '';
+
+  const standardPlan = (savedWholesale && pricingSaved) ? `
+    <div class="std-plan-section">
+      <div class="std-plan-hdr">
+        <div class="std-plan-title">Standard plan</div>
+        <a href="EP-Pricing-fees.html" class="btn btn-outline btn-sm">Edit spread plan</a>
+      </div>
+      <div class="std-plan-sub">View spread and fees plan's detail.</div>
+      <div class="std-plan-card">
+        <div class="std-summary">
+          <div>
+            <div class="std-col-title">Adjustment</div>
+            <div class="std-row"><span class="std-row-lbl">Trade</span><span class="std-undef">Not defined yet.</span></div>
+            <div class="std-row"><span class="std-row-lbl">Deposits</span><span class="std-undef">Not defined yet.</span></div>
+            <div class="std-row"><span class="std-row-lbl">Withdrawals</span><span class="std-undef">Not defined yet.</span></div>
+          </div>
+          <div>
+            <div class="std-col-title">Trade ticket size</div>
+            <div class="std-undef">Not defined yet.</div>
+          </div>
+          <div>
+            <div class="std-col-title">Deposits</div>
+            <div class="std-undef">Not defined yet.</div>
+          </div>
+          <div>
+            <div class="std-col-title">Withdrawals</div>
+            <div class="std-undef">Not defined yet.</div>
+          </div>
+        </div>
+      </div>
+    </div>` : '';
+
+  const viewLogsBtn = (pricingSaved && savedWholesale)
+    ? `<button class="btn btn-outline btn-sm">View logs</button>` : '';
+
+  return `
+    <div class="pricing-section">
+      <div class="section-hdr-row">
+        <div class="section-title" style="margin-bottom:0;">Pricing</div>
+        ${viewLogsBtn}
+      </div>
+      <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:4px;">Revenue model</div>
+      <div style="font-size:13px;color:#6b7280;margin-bottom:20px;">Defines how this partner earns on transactions.</div>
+      ${revenueCard}
+      ${limitsSection}
+      ${standardPlan}
+    </div>`;
+}
+
+// ── INIT ──────────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>

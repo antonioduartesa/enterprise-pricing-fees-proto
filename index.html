@@ -295,9 +295,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 .lim2-del-btn:hover{background:#d5d8ea;}
 /* Deposits/Withdrawals limits table */
 .lim2-dep-table{margin-top:16px;width:100%;overflow:visible;}
-.lim2-dep-hdr{display:grid;grid-template-columns:1fr 140px 140px 36px;padding:0 0 8px;column-gap:12px;}
+.lim2-dep-hdr{display:grid;grid-template-columns:1fr 120px 120px 36px;padding:0 0 8px;column-gap:12px;}
 .lim2-dep-col{font-size:12px;font-weight:500;color:#697BAA;}
-.lim2-dep-row{display:grid;grid-template-columns:1fr 140px 140px 36px;padding:10px 0;border-top:1px solid #f3f4f6;align-items:center;column-gap:12px;position:relative;}
+.lim2-dep-row{display:grid;grid-template-columns:1fr 120px 120px 36px;padding:10px 0;border-top:1px solid #f3f4f6;align-items:center;column-gap:12px;position:relative;}
 .lim2-meth-inner{display:flex;align-items:center;gap:10px;min-width:0;overflow:hidden;}
 .lim2-meth-icon{display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex-shrink:0;}
 .lim2-meth-dd-wrap{position:relative;}
@@ -2112,6 +2112,7 @@ function renderPricingContent() {
   function buildLimCard(name, kind, iconSVG, rows, railsOn, ddOpen, ddPrefix, methods) {
     const usedMethods = new Set(rows.map(r => r.method));
     const availableMethods = methods.filter(m => !usedMethods.has(m));
+    const singular = name === 'Deposits' ? 'deposit' : 'withdrawal';
 
     const rowsHTML = rows.map((row, idx) => `
       <div class="lim2-dep-row">
@@ -2139,7 +2140,7 @@ function renderPricingContent() {
         </div>
         <div class="lim2-card-content">
           <div class="lim2-meth-lbl">${rows.length > 1 ? 'Methods' : 'Method'}</div>
-          <div class="lim2-meth-dd-wrap">
+          <div class="lim2-meth-dd-wrap" style="max-width:320px;">
             <button class="lim2-meth-trigger${ddOpen === 'top' ? ' open' : ''}" onclick="${ddPrefix}LimitToggleTopDD(event)">
               <span class="lim2-ph">Select</span>
               ${chevronSVG}
@@ -2149,19 +2150,19 @@ function renderPricingContent() {
               ${availableMethods.map(m => `<div class="lim2-meth-opt" onclick="${ddPrefix}LimitAddMethod('${m.replace(/'/g,"\\'")}',event)"><span class="lim2-meth-icon">${limMethodIcon(m)}</span>${m}</div>`).join('')}
             </div>` : ''}
           </div>
-          ${rows.length > 0 ? `
-          <div class="lim2-dep-hdr" style="margin-top:12px;">
-            <div></div>
-            <div class="lim2-dep-col">Min</div>
-            <div class="lim2-dep-col">Max</div>
-            <div></div>
-          </div>
-          ${rowsHTML}` : `
-          <div class="lim2-assets-empty" style="margin-top:12px;">
-            <div class="lim2-assets-empty-txt">Select ${name.toLowerCase()} methods for this organization.</div>
-          </div>`}
         </div>
       </div>
+      ${rows.length > 0 ? `
+      <div class="lim2-dep-hdr" style="margin-top:16px;">
+        <div></div>
+        <div class="lim2-dep-col">Min</div>
+        <div class="lim2-dep-col">Max</div>
+        <div></div>
+      </div>
+      ${rowsHTML}` : `
+      <div style="text-align:center;padding:32px 0 8px;">
+        <span class="lim2-assets-empty-txt">Select ${singular} methods for this organization.</span>
+      </div>`}
     </div>`;
   }
 

@@ -277,22 +277,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 .lim2-title{font-size:20px;font-weight:600;color:#1d2738;margin-bottom:4px;}
 .lim2-sub{font-size:14px;color:#697BAA;margin-bottom:24px;}
 .lim2-card{border:1.5px solid #e1e3ef;border-radius:12px;padding:20px 24px;margin-bottom:16px;overflow:visible;}
-.lim2-card-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;}
-.lim2-icon-title{display:flex;align-items:center;gap:12px;}
-.lim2-icon-title .lim2-add-btn{margin-left:12px;}
+.lim2-card-layout{display:flex;gap:24px;align-items:flex-start;}
+.lim2-card-left{display:flex;align-items:center;gap:12px;flex-shrink:0;min-width:140px;}
+.lim2-card-content{flex:1;min-width:0;}
 .lim2-icon{width:36px;height:36px;border-radius:10px;background:#f0f2fa;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .lim2-name{font-size:14px;font-weight:600;color:#1d2738;}
 .lim2-kind{font-size:12.5px;color:#697BAA;}
-.lim2-meta{font-size:12px;color:#9ca3af;white-space:nowrap;}
-.lim2-card-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;}
-.lim2-card-right-row{display:flex;align-items:center;gap:14px;}
-.lim2-rails-wrap{display:flex;align-items:center;gap:6px;font-size:13px;color:#35415f;}
-.lim2-info-wrap{position:relative;display:flex;align-items:center;cursor:default;}
-.lim2-tooltip{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#1d2738;color:#fff;font-size:12.5px;font-weight:400;line-height:1.45;padding:8px 12px;border-radius:8px;white-space:nowrap;z-index:600;box-shadow:0 4px 16px rgba(0,0,0,.18);pointer-events:none;}
-.lim2-tooltip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#1d2738;}
-.lim2-info-wrap:hover .lim2-tooltip{display:block;}
-.lim2-add-btn{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1.5px solid #49cc68;color:#2aa84a;border-radius:9999px;padding:5px 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap;}
-.lim2-add-btn:hover{background:rgba(73,204,104,.08);}
+.lim2-meth-lbl{font-size:12px;font-weight:500;color:#697BAA;margin-bottom:6px;}
 /* Trade inputs */
 .lim2-trade-body{margin-top:20px;display:flex;align-items:flex-end;gap:16px;}
 .lim2-field{display:flex;flex-direction:column;gap:6px;}
@@ -304,9 +295,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 .lim2-del-btn:hover{background:#d5d8ea;}
 /* Deposits/Withdrawals limits table */
 .lim2-dep-table{margin-top:16px;width:100%;overflow:visible;}
-.lim2-dep-hdr{display:grid;grid-template-columns:340px 140px 140px 36px;padding:0 0 8px;column-gap:12px;}
+.lim2-dep-hdr{display:grid;grid-template-columns:180px 120px 120px 36px;padding:0 0 8px;column-gap:12px;width:fit-content;}
 .lim2-dep-col{font-size:12px;font-weight:500;color:#697BAA;}
-.lim2-dep-row{display:grid;grid-template-columns:340px 140px 140px 36px;padding:10px 0;border-top:1px solid #f3f4f6;align-items:center;column-gap:12px;position:relative;}
+.lim2-dep-row{display:grid;grid-template-columns:180px 120px 120px 36px;padding:10px 0;border-top:1px solid #f3f4f6;align-items:center;column-gap:12px;position:relative;width:fit-content;}
 .lim2-meth-inner{display:flex;align-items:center;gap:10px;min-width:0;overflow:hidden;}
 .lim2-meth-icon{display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex-shrink:0;}
 .lim2-meth-dd-wrap{position:relative;}
@@ -315,8 +306,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 .lim2-meth-trigger.open{border-color:#3CC13B;box-shadow:0 0 0 3px rgba(60,193,59,.08);}
 .lim2-meth-list{display:none;position:absolute;top:calc(100% + 4px);left:0;background:#fff;border:1.5px solid #e1e3ef;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.1);z-index:400;min-width:100%;overflow:hidden;}
 .lim2-meth-list.open{display:block;}
-.lim2-meth-opt{padding:10px 14px;font-size:13.5px;color:#374151;cursor:pointer;transition:background .1s;white-space:nowrap;}
+.lim2-meth-opt{padding:10px 14px;font-size:13.5px;color:#374151;cursor:pointer;transition:background .1s;display:flex;align-items:center;gap:10px;justify-content:space-between;}
 .lim2-meth-opt:hover{background:#f9fafb;}
+.lim2-meth-opt-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
+.lim2-meth-chk{display:flex;align-items:center;flex-shrink:0;}
 .lim2-num-wrap{border:1.5px solid #e1e3ef;border-radius:10px;padding:9px 12px;background:#fff;display:flex;align-items:center;gap:4px;transition:border-color .15s,box-shadow .15s;}
 .lim2-num-wrap:focus-within{border-color:#3CC13B;box-shadow:0 0 0 3px rgba(60,193,59,.08);}
 .lim2-num-inp{border:none;outline:none;font-family:inherit;font-size:13.5px;color:#374151;width:100%;background:transparent;}
@@ -412,14 +405,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 .pp-card-hdr-left{display:flex;align-items:center;gap:12px;}
 .pp-plan-icon{width:36px;height:36px;border-radius:10px;background:#f1f3f9;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .pp-plan-name{font-size:15px;font-weight:700;color:#111827;}
-.pp-plan-meta{font-size:12px;color:#9ca3af;margin-top:1px;}
-.pp-edit-btn{border:1.5px solid #3CC13B;background:transparent;color:#3CC13B;border-radius:8px;padding:5px 16px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .15s,color .15s;}
-.pp-edit-btn:hover{background:#f0fdf4;}
-.pp-cols{display:grid;grid-template-columns:1fr 1.2fr 1fr 1fr;gap:0;}
+.pp-plan-meta{font-size:12px;color:#9ca3af;}
+.pp-cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;}
 .pp-col{}
-.pp-col-title{font-size:12px;font-weight:700;color:#111827;margin-bottom:10px;}
-.pp-col-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;font-size:13px;color:#697baa;}
-.pp-col-label{min-width:80px;flex-shrink:0;}
+.pp-col-head{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.pp-col-title{font-size:14px;font-weight:700;color:#111827;}
+.pp-col-subhdr{font-size:12.5px;font-weight:600;color:#374151;margin-bottom:6px;}
 .pp-tier-line{font-size:13px;color:#697baa;margin-bottom:5px;}
 .pp-method-line{font-size:13px;color:#697baa;margin-bottom:5px;}
 /* Partner fee chips on summary */
@@ -725,15 +716,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 .pft-method{display:flex;align-items:center;gap:10px;font-size:13.5px;font-weight:600;color:#111827;}
 .pft-method-icon{width:32px;height:32px;border-radius:50%;background:#f1f3f9;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;}
 .pft-cell{display:flex;flex-direction:column;gap:5px;align-items:flex-start;}
-.pft-dd-wrap{position:relative;width:120px;}
-.pft-dd-trigger{display:flex;align-items:center;justify-content:space-between;gap:6px;width:100%;height:36px;padding:0 12px;border:1.5px solid #d1d5db;border-radius:8px;background:#fff;font-size:13px;color:#374151;cursor:pointer;font-family:inherit;transition:border-color .15s;}
+.pft-dd-wrap{position:relative;width:160px;}
+.pft-dd-trigger{display:flex;align-items:center;justify-content:space-between;gap:6px;width:100%;height:36px;padding:0 12px;border:1.5px solid #d1d5db;border-radius:8px;background:#fff;font-size:13px;color:#374151;cursor:pointer;font-family:inherit;transition:border-color .15s;white-space:nowrap;overflow:hidden;}
 .pft-dd-trigger:hover{border-color:#9ca3af;}
 .pft-dd-trigger.open{border-color:#3CC13B;box-shadow:0 0 0 3px rgba(60,193,59,.08);}
 .pft-ph{color:#9ca3af;}
-.pft-dd-list{display:none;position:absolute;top:calc(100% + 4px);left:0;width:180px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:300;overflow:hidden;padding:4px 0;}
+.pft-dd-list{display:none;position:absolute;top:calc(100% + 4px);left:0;min-width:180px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:300;overflow:hidden;padding:4px 0;}
 .pft-dd-list.open{display:block;}
-.pft-dd-opt{padding:9px 14px;font-size:13px;color:#374151;cursor:pointer;transition:background .1s;}
+.pft-dd-opt{padding:9px 14px;font-size:13px;color:#374151;cursor:pointer;transition:background .1s;display:flex;align-items:center;justify-content:space-between;gap:10px;}
 .pft-dd-opt:hover{background:#f9fafb;}
+.pft-dd-opt-chk{display:flex;align-items:center;flex-shrink:0;}
 .pft-fee-box{display:flex;align-items:center;gap:6px;width:110px;height:36px;padding:0 10px;border:1.5px solid #d1d5db;border-radius:8px;background:#fff;transition:border-color .15s;}
 .pft-fee-box:focus-within{border-color:#3CC13B;box-shadow:0 0 0 3px rgba(60,193,59,.08);}
 .pft-fee-inp{border:none;outline:none;flex:1;min-width:0;font-size:13px;color:#111827;font-family:inherit;background:transparent;}
@@ -1005,15 +997,15 @@ function limMethodIcon(method) {
   return `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 8l7-4 7 4v1H3V8z" stroke="#1d2738" stroke-width="1.5" stroke-linejoin="round"/><path d="M4.5 9v5M8.2 9v5M11.8 9v5M15.5 9v5" stroke="#1d2738" stroke-width="1.5" stroke-linecap="round"/><path d="M3 15.5h14" stroke="#1d2738" stroke-width="1.5" stroke-linecap="round"/></svg>`;
 }
 
-let depositsLimitRows      = [{method: null, min: '', max: ''}];
+let depositsLimitRows      = [];
 let savedDepositsLimitRows = [];
 let depositsLimitRailsOn   = true;
-let depositsLimitDDOpen    = null; // null | row-index
+let depositsLimitDDOpen    = null; // null | 'top'
 
-let withdrawalsLimitRows      = [{method: null, min: '', max: ''}];
+let withdrawalsLimitRows      = [];
 let savedWithdrawalsLimitRows = [];
 let withdrawalsLimitRailsOn   = true;
-let withdrawalsLimitDDOpen    = null;
+let withdrawalsLimitDDOpen    = null; // null | 'top'
 
 // ── Assets state (Pricing tab) ─────────────────────────────
 let pricingAssetKeys        = new Set();
@@ -1151,9 +1143,7 @@ function discardPartnerChanges() {
   limitsTradeMin          = savedLimitsTradeMin;
   limitsTradeMax          = savedLimitsTradeMax;
   depositsLimitRows       = JSON.parse(JSON.stringify(savedDepositsLimitRows));
-  if (!depositsLimitRows.length) depositsLimitRows = [{method:null,min:'',max:''}];
   withdrawalsLimitRows    = JSON.parse(JSON.stringify(savedWithdrawalsLimitRows));
-  if (!withdrawalsLimitRows.length) withdrawalsLimitRows = [{method:null,min:'',max:''}];
   pricingAssetKeys        = new Set(savedPricingAssetKeys);
   pricingAssetsModalOpen  = false;
   pricingAssetsModalDraft = null;
@@ -1234,54 +1224,41 @@ function renderPricingInPlace() {
 }
 
 /* ── Limits — Deposits rows ──────────────────────────────── */
-function depositsLimLimitAddRow() { depositsLimAddRow(); }
-function depositsLimAddRow() {
-  depositsLimitRows.push({method:null,min:'',max:''});
-  renderContent(); updateSaveBar();
-}
-function depositsLimLimitDeleteRow(idx) { depositsLimDeleteRow(idx); }
-function depositsLimDeleteRow(idx) {
-  limOpenDeleteModal('deposits', idx, depositsLimitRows[idx]?.method || 'this method');
-}
-function depositsLimLimitToggleDD(idx,e) { depositsLimToggleDD(idx,e); }
-function depositsLimToggleDD(idx,e) {
+/* ── Limits — Deposits rows ──────────────────────────────── */
+function depositsLimLimitToggleTopDD(e) {
   if(e) e.stopPropagation();
-  depositsLimitDDOpen = (depositsLimitDDOpen === idx) ? null : idx;
+  depositsLimitDDOpen = depositsLimitDDOpen === 'top' ? null : 'top';
   renderContent();
 }
-function depositsLimLimitSetMethod(idx,m,e) { depositsLimSetMethod(idx,m,e); }
-function depositsLimSetMethod(idx,m,e) {
+function depositsLimLimitToggleMethod(m,e) {
   if(e) e.stopPropagation();
-  depositsLimitRows[idx].method = m;
-  depositsLimitDDOpen = null;
+  const idx = depositsLimitRows.findIndex(r => r.method === m);
+  if (idx >= 0) depositsLimitRows.splice(idx, 1);
+  else depositsLimitRows.push({method:m,min:'',max:''});
   renderContent(); updateSaveBar();
+}
+function depositsLimLimitDeleteRow(idx) {
+  limOpenDeleteModal('deposits', idx, depositsLimitRows[idx]?.method || 'this method');
 }
 function depositsLimLimitSetMin(idx,val) { depositsLimitRows[idx].min = val; updateSaveBar(); }
 function depositsLimLimitSetMax(idx,val) { depositsLimitRows[idx].max = val; updateSaveBar(); }
 function depositsLimLimitToggleRails() { depositsLimitRailsOn = !depositsLimitRailsOn; updateSaveBar(); }
 
 /* ── Limits — Withdrawals rows ───────────────────────────── */
-function withdrawalsLimLimitAddRow() { withdrawalsLimAddRow(); }
-function withdrawalsLimAddRow() {
-  withdrawalsLimitRows.push({method:null,min:'',max:''});
-  renderContent(); updateSaveBar();
-}
-function withdrawalsLimLimitDeleteRow(idx) { withdrawalsLimDeleteRow(idx); }
-function withdrawalsLimDeleteRow(idx) {
-  limOpenDeleteModal('withdrawals', idx, withdrawalsLimitRows[idx]?.method || 'this method');
-}
-function withdrawalsLimLimitToggleDD(idx,e) { withdrawalsLimToggleDD(idx,e); }
-function withdrawalsLimToggleDD(idx,e) {
+function withdrawalsLimLimitToggleTopDD(e) {
   if(e) e.stopPropagation();
-  withdrawalsLimitDDOpen = (withdrawalsLimitDDOpen === idx) ? null : idx;
+  withdrawalsLimitDDOpen = withdrawalsLimitDDOpen === 'top' ? null : 'top';
   renderContent();
 }
-function withdrawalsLimLimitSetMethod(idx,m,e) { withdrawalsLimSetMethod(idx,m,e); }
-function withdrawalsLimSetMethod(idx,m,e) {
+function withdrawalsLimLimitToggleMethod(m,e) {
   if(e) e.stopPropagation();
-  withdrawalsLimitRows[idx].method = m;
-  withdrawalsLimitDDOpen = null;
+  const idx = withdrawalsLimitRows.findIndex(r => r.method === m);
+  if (idx >= 0) withdrawalsLimitRows.splice(idx, 1);
+  else withdrawalsLimitRows.push({method:m,min:'',max:''});
   renderContent(); updateSaveBar();
+}
+function withdrawalsLimLimitDeleteRow(idx) {
+  limOpenDeleteModal('withdrawals', idx, withdrawalsLimitRows[idx]?.method || 'this method');
 }
 function withdrawalsLimLimitSetMin(idx,val) { withdrawalsLimitRows[idx].min = val; updateSaveBar(); }
 function withdrawalsLimLimitSetMax(idx,val) { withdrawalsLimitRows[idx].max = val; updateSaveBar(); }
@@ -2021,7 +1998,6 @@ function renderPricingContent() {
           <div class="lim2-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 6h12M3 6l3-3M3 6l3 3M15 12H3M15 12l-3-3M15 12l-3 3" stroke="#697BAA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div><div class="lim2-name">Trades</div><div class="lim2-kind">Spread limits</div></div>
         </div>
-        <span class="lim2-meta">Last updated at September 26, 2025.</span>
       </div>
       <div class="lim2-trade-body">
         <div class="lim2-field">
@@ -2044,14 +2020,9 @@ function renderPricingContent() {
 
   // ── Pricing plan filled card ──
   function buildPricingPlanCard() {
-    // Conditions for filled state: at least one deposit or withdrawal method configured
-    // AND the spread plan has been opened/saved (savedTierThresholds exist and are non-zero)
     const depMethods = savedDepositsLimitRows.filter(r => r.method).map(r => r.method);
     const wdrMethods = savedWithdrawalsLimitRows.filter(r => r.method).map(r => r.method);
-    const hasMethods = depMethods.length > 0 || wdrMethods.length > 0;
-    // Only show the filled card once the user has actually configured something
-    // (hasMethods = at least one limits method, or a trade partner fee/absorb is set)
-    const hasConfig  = hasMethods || savedPartnerFee !== '' || savedAbsorbSpreads;
+    const hasConfig  = depMethods.length > 0 || wdrMethods.length > 0 || savedPartnerFee !== '' || savedAbsorbSpreads;
 
     if (!hasConfig) {
       return `<div class="lim2-plan-empty">
@@ -2060,7 +2031,6 @@ function renderPricingContent() {
       </div>`;
     }
 
-    // ── Partner fee chips ──
     function tradeChip() {
       if (savedAbsorbSpreads) return `<span class="pp-chip absorb">Absorb all spreads</span>`;
       const fee = parseInt(savedPartnerFee) || 0;
@@ -2069,31 +2039,25 @@ function renderPricingContent() {
       return `<span class="pp-chip zero">0 bps</span>`;
     }
     function depChip() {
-      if (depositsLimitRailsOn) return `<span class="pp-chip absorb">Uphold rails</span>`;
-      // Find first method with a partner fee set
-      const entry = Object.values(savedPlanFees.deposits)[0];
+      const entry = Object.values(savedPlanFees?.deposits || {})[0];
       const fee = entry ? (parseInt(entry.pFee) || 0) : 0;
-      if (fee > 0) return `<span class="pp-chip pos">+ ${fee} %</span>`;
-      if (fee < 0) return `<span class="pp-chip neg">− ${Math.abs(fee)} %</span>`;
-      return `<span class="pp-chip zero">0 %</span>`;
+      if (fee > 0) return `<span class="pp-chip pos">+ ${fee} bps</span>`;
+      if (fee < 0) return `<span class="pp-chip neg">− ${Math.abs(fee)} bps</span>`;
+      return `<span class="pp-chip zero">0 bps</span>`;
     }
     function wdrChip() {
-      if (withdrawalsLimitRailsOn) return `<span class="pp-chip absorb">Uphold rails</span>`;
-      const entry = Object.values(savedPlanFees.withdrawals)[0];
+      const entry = Object.values(savedPlanFees?.withdrawals || {})[0];
       const fee = entry ? (parseInt(entry.pFee) || 0) : 0;
-      if (fee > 0) return `<span class="pp-chip pos">+ ${fee} %</span>`;
-      if (fee < 0) return `<span class="pp-chip neg">− ${Math.abs(fee)} %</span>`;
-      return `<span class="pp-chip zero">0 %</span>`;
+      if (fee > 0) return `<span class="pp-chip pos">+ ${fee} bps</span>`;
+      if (fee < 0) return `<span class="pp-chip neg">− ${Math.abs(fee)} bps</span>`;
+      return `<span class="pp-chip absorb">Absorb all fees</span>`;
     }
 
-    // ── Tier ranges ──
     const tiers = savedTierThresholds;
     const tierLabels = [];
     if (tiers.length > 0) {
       tierLabels.push(`Less than ${formatMoney(tiers[0])}`);
-      for (let i = 1; i < tiers.length; i++) {
-        tierLabels.push(`${formatMoney(tiers[i-1])} - ${formatMoney(tiers[i])}`);
-      }
+      for (let i = 1; i < tiers.length; i++) tierLabels.push(`${formatMoney(tiers[i-1])} – ${formatMoney(tiers[i])}`);
       tierLabels.push(`Greater than ${formatMoney(tiers[tiers.length - 1])}`);
     }
 
@@ -2104,52 +2068,41 @@ function renderPricingContent() {
             <div class="pp-plan-icon">
               <svg width="18" height="18" viewBox="0 0 22 22" fill="none"><rect x="2" y="2" width="18" height="18" rx="5" stroke="#94a3b8" stroke-width="1.5"/><path d="M7 11h8M7 7.5h5M7 14.5h8" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></svg>
             </div>
-            <div>
-              <div class="pp-plan-name">Standard plan</div>
-              <div class="pp-plan-meta">Last updated at September 26, 2025.</div>
-            </div>
+            <span class="pp-plan-name">Standard plan</span>
+            <button class="btn-green-outline" onclick="goToSpreadPlan()" style="font-size:13px;padding:5px 14px;">Edit plan</button>
           </div>
-          <button class="pp-edit-btn" onclick="goToSpreadPlan()">Edit plan</button>
+          <span class="pp-plan-meta">Last updated at September 26, 2025.</span>
         </div>
         <div class="pp-cols">
           <div class="pp-col">
-            <div class="pp-col-title">Partner fee</div>
-            <div class="pp-col-row"><span class="pp-col-label">Trade</span>${tradeChip()}</div>
-            <div class="pp-col-row"><span class="pp-col-label">Deposits</span>${depChip()}</div>
-            <div class="pp-col-row"><span class="pp-col-label">Withdrawals</span>${wdrChip()}</div>
+            <div class="pp-col-head"><span class="pp-col-title">Trade spread</span>${tradeChip()}</div>
+            ${tierLabels.length ? `<div class="pp-col-subhdr">Threshold tiers:</div>${tierLabels.map(l => `<div class="pp-tier-line">${l}</div>`).join('')}` : ''}
           </div>
           <div class="pp-col">
-            <div class="pp-col-title">Trade ticket size</div>
-            ${tierLabels.map(l => `<div class="pp-tier-line">${l}</div>`).join('')}
+            <div class="pp-col-head"><span class="pp-col-title">Deposits fee</span>${depChip()}</div>
+            ${depMethods.length ? `<div class="pp-col-subhdr">Methods:</div>${depMethods.map(m => `<div class="pp-tier-line">${m}</div>`).join('')}` : ''}
           </div>
           <div class="pp-col">
-            <div class="pp-col-title">Deposit</div>
-            ${depMethods.length ? depMethods.map(m => `<div class="pp-method-line">${m}</div>`).join('') : '<div class="pp-method-line" style="color:#c4c9d6">No methods set</div>'}
-          </div>
-          <div class="pp-col">
-            <div class="pp-col-title">Withdrawal</div>
-            ${wdrMethods.length ? wdrMethods.map(m => `<div class="pp-method-line">${m}</div>`).join('') : '<div class="pp-method-line" style="color:#c4c9d6">No methods set</div>'}
+            <div class="pp-col-head"><span class="pp-col-title">Withdrawal fee</span>${wdrChip()}</div>
+            ${wdrMethods.length ? `<div class="pp-col-subhdr">Methods:</div>${wdrMethods.map(m => `<div class="pp-tier-line">${m}</div>`).join('')}` : ''}
           </div>
         </div>
       </div>`;
   }
 
   // ── Deposits/Withdrawals limits card builder ──
+  const chkOnSVG  = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect width="18" height="18" rx="4" fill="#49CC68"/><path d="M4.5 9l3.5 3.5 5.5-6" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const chkOffSVG = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x=".75" y=".75" width="16.5" height="16.5" rx="3.25" stroke="#d1d5db" stroke-width="1.5"/></svg>`;
+
   function buildLimCard(name, kind, iconSVG, rows, railsOn, ddOpen, ddPrefix, methods) {
-    const rowsHTML = rows.map((row, idx) => {
-      const hasMethod = !!row.method;
-      return `
+    const usedMethods = new Set(rows.map(r => r.method));
+    const singular = name === 'Deposits' ? 'deposit' : 'withdrawal';
+
+    const rowsHTML = rows.map((row, idx) => `
       <div class="lim2-dep-row">
-        <div class="lim2-meth-dd-wrap">
-          <button class="lim2-meth-trigger${ddOpen === idx ? ' open' : ''}" onclick="${ddPrefix}LimitToggleDD(${idx},event)">
-            ${hasMethod
-              ? `<span class="lim2-meth-inner"><span class="lim2-meth-icon">${limMethodIcon(row.method)}</span><span>${row.method}</span></span>`
-              : `<span class="lim2-ph">Select</span>`}
-            ${chevronSVG}
-          </button>
-          <div class="lim2-meth-list${ddOpen === idx ? ' open' : ''}">
-            ${methods.map(m => `<div class="lim2-meth-opt" onclick="${ddPrefix}LimitSetMethod(${idx},'${m}',event)">${m}</div>`).join('')}
-          </div>
+        <div class="lim2-meth-inner">
+          <span class="lim2-meth-icon">${limMethodIcon(row.method)}</span>
+          <span>${row.method}</span>
         </div>
         <div class="lim2-num-wrap">
           <input class="lim2-num-inp" type="text" inputmode="numeric" pattern="[0-9]*" value="${row.min}" placeholder="0" oninput="${ddPrefix}LimitSetMin(${idx},this.value)">
@@ -2159,42 +2112,46 @@ function renderPricingContent() {
           <input class="lim2-num-inp" type="text" inputmode="numeric" pattern="[0-9]*" value="${row.max}" placeholder="0" oninput="${ddPrefix}LimitSetMax(${idx},this.value)">
           <span class="lim2-unit-lbl">%</span>
         </div>
-        ${hasMethod
-          ? `<button class="lim2-row-del" onclick="${ddPrefix}LimitDeleteRow(${idx})">${trashSVG}</button>`
-          : `<div></div>`}
-      </div>`;
-    }).join('');
+        <button class="lim2-row-del" onclick="${ddPrefix}LimitDeleteRow(${idx})">${trashSVG}</button>
+      </div>`).join('');
+
     return `
     <div class="lim2-card">
-      <div class="lim2-card-hdr">
-        <div class="lim2-icon-title">
+      <div class="lim2-card-layout">
+        <div class="lim2-card-left">
           <div class="lim2-icon">${iconSVG}</div>
           <div><div class="lim2-name">${name}</div><div class="lim2-kind">${kind}</div></div>
-          <button class="lim2-add-btn" onclick="${ddPrefix}LimitAddRow()">Add method</button>
         </div>
-        <div class="lim2-card-right">
-          <div class="lim2-card-right-row">
-            <div class="lim2-rails-wrap">
-              <span>Uphold rails</span>
-              <span class="lim2-info-wrap">${infoSVG}<span class="lim2-tooltip">${name} will be processed through partner's own infrastructure.</span></span>
-              <label class="toggle-switch" onclick="event.stopPropagation()">
-                <input type="checkbox" ${railsOn ? 'checked' : ''} onchange="${ddPrefix}LimitToggleRails()">
-                <div class="toggle-track"></div><div class="toggle-thumb"></div>
-              </label>
+        <div class="lim2-card-content">
+          <div class="lim2-meth-lbl">${rows.length > 1 ? 'Methods' : 'Method'}</div>
+          <div class="lim2-meth-dd-wrap" style="max-width:320px;">
+            <button class="lim2-meth-trigger${ddOpen === 'top' ? ' open' : ''}" onclick="${ddPrefix}LimitToggleTopDD(event)">
+              <span class="lim2-ph">Select</span>
+              ${chevronSVG}
+            </button>
+            <div class="lim2-meth-list${ddOpen === 'top' ? ' open' : ''}">
+              ${methods.map(m => {
+                const sel = usedMethods.has(m);
+                return `<div class="lim2-meth-opt" onclick="${ddPrefix}LimitToggleMethod('${m.replace(/'/g,"\\'")}',event)">
+                  <span class="lim2-meth-opt-left"><span class="lim2-meth-icon">${limMethodIcon(m)}</span>${m}</span>
+                  <span class="lim2-meth-chk">${sel ? chkOnSVG : chkOffSVG}</span>
+                </div>`;
+              }).join('')}
             </div>
           </div>
-          <span class="lim2-meta">Last updated at September 26, 2025.</span>
         </div>
       </div>
-      <div class="lim2-dep-table">
-        <div class="lim2-dep-hdr">
-          <div class="lim2-dep-col">Method</div>
-          <div class="lim2-dep-col">Min</div>
-          <div class="lim2-dep-col">Max</div>
-          <div></div>
-        </div>
-        ${rowsHTML}
+      ${rows.length > 0 ? `
+      <div class="lim2-dep-hdr" style="margin-top:16px;">
+        <div></div>
+        <div class="lim2-dep-col">Min</div>
+        <div class="lim2-dep-col">Max</div>
+        <div></div>
       </div>
+      ${rowsHTML}` : `
+      <div style="text-align:center;padding:32px 0 8px;">
+        <span class="lim2-assets-empty-txt">Select ${singular} methods for this organization.</span>
+      </div>`}
     </div>`;
   }
 
@@ -2235,12 +2192,12 @@ function renderPricingContent() {
   const assetsSection = `
     ${pricingAssetsModalOpen ? buildEditAssetsModal() : ''}
     <div class="psb-block">
-      <div class="lim2-assets-hdr">
-        <div>
-          <div class="psb-title">Assets</div>
-          <div class="psb-sub" style="margin-bottom:0;">Configure which assets will be available for this organization.</div>
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+          <div class="psb-title" style="margin-bottom:0;">Assets</div>
+          <button class="btn-green-outline" onclick="openEditAssetsModal()">Edit assets</button>
         </div>
-        <button class="btn-green-outline" onclick="openEditAssetsModal()">Edit assets</button>
+        <div class="psb-sub" style="margin-bottom:0;">Configure which assets will be available for this organization.</div>
       </div>
       <div class="pa-search-bar">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="#9ca3af" stroke-width="1.4"/><path d="M9.5 9.5l3 3" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>
@@ -2383,7 +2340,7 @@ function planFeesMethods(kind) {
 function planFeesEntry(kind, method) {
   if (!planFees[kind][method]) {
     const saved = savedPlanFees[kind][method];
-    planFees[kind][method] = saved ? { ...saved } : { jur: null, uFee: '', pFee: '' };
+    planFees[kind][method] = saved ? { ...saved, jur: Array.isArray(saved.jur) ? [...saved.jur] : (saved.jur ? [saved.jur] : []) } : { jur: [], uFee: '', pFee: '' };
   }
   return planFees[kind][method];
 }
@@ -2394,8 +2351,8 @@ function planFeesDirtyCount() {
     for (const method in planFees[kind]) {
       if (planFeesDeleted[kind].has(method)) continue;
       const e = planFees[kind][method];
-      const s = savedPlanFees[kind][method] || { jur: null, uFee: '', pFee: '' };
-      if ((e.jur || null) !== (s.jur || null)) n++;
+      const s = savedPlanFees[kind][method] || { jur: [], uFee: '', pFee: '' };
+      if ((e.jur||[]).slice().sort().join(',') !== (Array.isArray(s.jur)?s.jur:[]).slice().sort().join(',')) n++;
       if ((parseInt(e.uFee) || 0) !== (parseInt(s.uFee) || 0)) n++;
       if ((parseInt(e.pFee) || 0) !== (parseInt(s.pFee) || 0)) n++;
     }
@@ -2410,8 +2367,8 @@ function planFeesKindDirty(kind) {
   for (const method in planFees[kind]) {
     if (planFeesDeleted[kind].has(method)) continue;
     const e = planFees[kind][method];
-    const s = savedPlanFees[kind][method] || { jur: null, uFee: '', pFee: '' };
-    if ((e.jur || null) !== (s.jur || null)) return true;
+    const s = savedPlanFees[kind][method] || { jur: [], uFee: '', pFee: '' };
+    if ((e.jur||[]).slice().sort().join(',') !== (Array.isArray(s.jur)?s.jur:[]).slice().sort().join(',')) return true;
     if ((parseInt(e.uFee) || 0) !== (parseInt(s.uFee) || 0)) return true;
     if ((parseInt(e.pFee) || 0) !== (parseInt(s.pFee) || 0)) return true;
   }
@@ -2427,10 +2384,13 @@ function planFeesToggleDD(kind, method, e) {
   renderPlanFeesTab(kind);
 }
 
-function planFeesSetJur(kind, method, jur, e) {
+function planFeesToggleJur(kind, method, jur, e) {
   e.stopPropagation();
-  planFeesEntry(kind, method).jur = jur;
-  planFeesOpenDD[kind] = null;
+  const entry = planFeesEntry(kind, method);
+  const arr = entry.jur || [];
+  const idx = arr.indexOf(jur);
+  if (idx >= 0) arr.splice(idx, 1); else arr.push(jur);
+  entry.jur = arr;
   renderPlanFeesTab(kind);
   updateChangesUI();
 }
@@ -2497,17 +2457,27 @@ function renderPlanFeesTab(kind) {
       const entry  = planFeesEntry(kind, method);
       const tot    = (parseInt(entry.uFee) || 0) + (parseInt(entry.pFee) || 0);
       const ddOpen = planFeesOpenDD[kind] === method;
+      const jurArr = entry.jur || [];
+      const jurLabel = jurArr.length === 0 ? null : jurArr.length === PLAN_FEES_JURIS.length ? 'All' : jurArr.join(', ');
+      const chkOnSVG2  = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect width="18" height="18" rx="4" fill="#49CC68"/><path d="M4.5 9l3.5 3.5 5.5-6" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+      const chkOffSVG2 = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x=".75" y=".75" width="16.5" height="16.5" rx="3.25" stroke="#d1d5db" stroke-width="1.5"/></svg>`;
       rows += `
       <div class="pft-card"><div class="pft-row">
         <div class="pft-method">${icon}<span>${method}</span></div>
         <div class="pft-cell">
           <div class="pft-dd-wrap">
             <button class="pft-dd-trigger${ddOpen ? ' open' : ''}" onclick="planFeesToggleDD('${kind}','${method}',event)">
-              <span class="${entry.jur ? '' : 'pft-ph'}">${entry.jur || 'Select'}</span>
+              <span class="${jurLabel ? '' : 'pft-ph'}" style="overflow:hidden;text-overflow:ellipsis;">${jurLabel || 'Select'}</span>
               ${chevSVG}
             </button>
             <div class="pft-dd-list${ddOpen ? ' open' : ''}">
-              ${PLAN_FEES_JURIS.map(j => `<div class="pft-dd-opt" onclick="planFeesSetJur('${kind}','${method}','${j}',event)">${j}</div>`).join('')}
+              ${PLAN_FEES_JURIS.map(j => {
+                const sel = jurArr.includes(j);
+                return `<div class="pft-dd-opt" onclick="planFeesToggleJur('${kind}','${method.replace(/'/g,"\\'")}','${j}',event)">
+                  <span>${j}</span>
+                  <span class="pft-dd-opt-chk">${sel ? chkOnSVG2 : chkOffSVG2}</span>
+                </div>`;
+              }).join('')}
             </div>
           </div>
         </div>
@@ -2535,7 +2505,7 @@ function renderPlanFeesTab(kind) {
       rows += `
       <div class="pft-card pft-card-saved" onclick="planFeesEditRow('${kind}','${method}')"><div class="pft-row">
         <div class="pft-method">${icon}<span>${method}</span></div>
-        <div class="pft-cell"><span class="pft-display${saved.jur ? '' : ' ph'}">${saved.jur || 'Select'}</span></div>
+        <div class="pft-cell"><span class="pft-display${saved.jur && (Array.isArray(saved.jur) ? saved.jur.length > 0 : true) ? '' : ' ph'}">${Array.isArray(saved.jur) ? (saved.jur.length === PLAN_FEES_JURIS.length ? 'All' : saved.jur.join(', ') || 'Select') : (saved.jur || 'Select')}</span></div>
         <div class="pft-cell"><span class="pft-display">${uFee} %</span></div>
         <div class="pft-cell"><span class="pft-chip${chipCls}">${chipLbl}</span></div>
         <div class="pft-total">${uFee + pFee} %</div>

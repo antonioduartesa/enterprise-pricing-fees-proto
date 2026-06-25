@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enterprise Portal — Pricing</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;font-size:14px;color:#1a2234;background:#f0f2fa;display:flex;flex-direction:column;height:100vh;overflow:hidden}
+
+/* ── Production banner ── */
+.prod-banner{height:36px;background:#fff8eb;border-bottom:1px solid #fde68a;display:flex;align-items:center;padding:0 24px;gap:10px;font-size:12.5px;flex-shrink:0}
+.prod-env-label{font-weight:700;color:#dc2626;font-size:12.5px}
+.prod-banner-text{color:#78350f}
+.prod-user-btn{margin-left:auto;display:flex;align-items:center;gap:7px;background:#fff;border:1px solid #e5e7eb;border-radius:9999px;padding:5px 14px 5px 10px;font-size:13px;font-weight:600;color:#1d2738;cursor:pointer;font-family:inherit;transition:background .15s}
+.prod-user-btn:hover{background:#f9fafb}
+
+/* ── Layout ── */
+.app-body{display:flex;flex:1;overflow:hidden}
+.sidebar{width:220px;min-width:220px;background:#fff;border-right:1px solid #e5e7eb;display:flex;flex-direction:column;overflow-y:auto;padding-bottom:24px;flex-shrink:0}
+.main-wrapper{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#f0f2fa}
+.main-content{flex:1;overflow-y:auto}
+
+/* ── Sidebar ── */
+.sb-logo{display:flex;align-items:center;gap:10px;padding:16px 16px 12px;cursor:pointer;text-decoration:none}
+.sb-logo-icon{width:30px;height:30px;flex-shrink:0}
+.sb-logo-text .lt-main{display:block;font-size:13px;font-weight:700;color:#111;line-height:1.2}
+.sb-logo-text .lt-sub{display:block;font-size:10px;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em}
+.sb-section{font-size:10.5px;color:#9ca3af;padding:10px 16px 3px;text-transform:uppercase;letter-spacing:.055em;font-weight:600}
+.sb-div{height:1px;background:#f3f4f6;margin:5px 0}
+.sb-dd{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;margin:1px 8px;border-radius:8px;cursor:pointer;transition:background .12s}
+.sb-dd:hover{background:#f9fafb}
+.sb-dd-inner{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:500;color:#374151}
+.sb-dd-icon{width:28px;height:28px;background:#f0f2fa;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sb-nav{display:flex;align-items:center;gap:9px;padding:7px 12px;margin:1px 8px;border-radius:8px;cursor:pointer;font-size:13px;color:#4b5563;transition:background .12s;text-decoration:none}
+.sb-nav:hover{background:#f3f4f6;color:#374151}
+.sb-nav.active{background:#f0fdf4;color:#166534;font-weight:500}
+.sb-nav svg{color:#9ca3af;flex-shrink:0;width:16px;height:16px}
+.sb-nav.active svg{color:#16a34a}
+.sb-env{display:flex;align-items:center;gap:8px;padding:7px 12px;margin:1px 8px;border-radius:8px;cursor:pointer;transition:background .12s}
+.sb-env:hover{background:#f9fafb}
+.env-dot{width:24px;height:24px;border-radius:50%;background:#fee2e2;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.env-name-wrap{flex:1}
+.env-name{font-size:13px;font-weight:600;color:#dc2626}
+
+/* ── Page wrapper ── */
+.page-wrap{background:#fff;min-height:100%;padding:0}
+
+/* ── Home screen ── */
+.home-content{padding:28px 32px 32px;display:flex;flex-direction:column;min-height:100%}
+.home-greeting{font-size:28px;font-weight:700;color:#1d2738;margin-bottom:3px}
+.home-greeting-sub{font-size:14px;color:#697BAA;margin-bottom:28px}
+.home-build-title{font-size:18px;font-weight:700;color:#1d2738;margin-bottom:3px}
+.home-build-sub{font-size:13.5px;color:#697BAA;margin-bottom:20px}
+.home-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;flex:1;align-items:stretch}
+@media(max-width:860px){.home-cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.home-cards{grid-template-columns:1fr}}
+.home-card{border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;cursor:pointer;transition:box-shadow .15s,border-color .15s;display:flex;flex-direction:column}
+.home-card:hover{box-shadow:0 6px 20px rgba(0,0,0,.08);border-color:#d1d5db}
+.home-card-img{flex-shrink:0;display:flex;align-items:center;justify-content:center;padding:28px 0 20px}
+.home-card-body{padding:18px 22px 26px;display:flex;flex-direction:column;flex:1}
+.home-card-header{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.home-card-pill{display:flex;align-items:center;gap:6px;background:#f0f9ef;color:#166534;font-size:12px;font-weight:600;padding:4px 10px;border-radius:9999px}
+.home-card-title{font-size:16px;font-weight:700;color:#1d2738;margin-bottom:12px}
+.home-card-points{display:flex;flex-direction:column;gap:8px;margin-bottom:24px;flex:1}
+.home-card-point{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;color:#374151;line-height:1.45}
+.home-card-point-check{width:17px;height:17px;flex-shrink:0;margin-top:1px;color:#22c55e}
+.home-card-link{display:flex;align-items:center;gap:6px;color:#16a34a;font-size:13.5px;font-weight:600;cursor:pointer;text-decoration:none;margin-top:auto}
+.home-card-link:hover{color:#166534}
+
+/* ── Breadcrumb ── */
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:12px;padding:12px 24px 0;margin-bottom:4px}
+.bc-link{color:#697BAA;cursor:pointer;font-weight:500}
+.bc-link:hover{color:#374151}
+.bc-sep{color:#d1d5db}
+.bc-current{color:#1d2738;font-weight:600}
+
+/* ── Page header ── */
+.page-hdr{padding:24px 28px 0;display:flex;align-items:flex-start;justify-content:space-between}
+.page-title{font-size:26px;font-weight:700;color:#1d2738}
+
+/* ── Pricing page ── */
+.pricing-wrap{padding:0 28px}
+.pricing-title{font-size:26px;font-weight:700;color:#1d2738;padding:28px 0 20px}
+
+/* ── Tabs ── */
+.tabs-bar{display:flex;border-bottom:1.5px solid #e5e7eb;margin-bottom:0}
+.tab-btn{padding:10px 18px;font-size:14px;color:#6b7280;cursor:pointer;border:none;border-bottom:2.5px solid transparent;margin-bottom:-1.5px;background:none;font-family:inherit;font-weight:400;transition:color .15s}
+.tab-btn.active{color:#16a34a;border-bottom-color:#16a34a;font-weight:500}
+.tab-btn:hover:not(.active){color:#374151}
+
+/* ── Performance tab ── */
+.perf-section{padding:28px 0 0}
+.perf-title{font-size:22px;font-weight:700;color:#1d2738;margin-bottom:6px}
+.perf-sub{font-size:13.5px;color:#697BAA;margin-bottom:28px}
+.perf-group-label{font-size:12px;color:#697BAA;font-weight:500;margin-bottom:12px;text-transform:none}
+.perf-cards-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px}
+.perf-card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:24px 28px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.perf-card-value{font-size:28px;font-weight:700;color:#1d2738;margin-bottom:4px}
+.perf-card-value.neg{color:#dc2626}
+.perf-card-label{font-size:13px;color:#697BAA}
+
+/* ── Pricing details tab ── */
+.pricing-details-wrap{padding:24px 0}
+.section-heading{font-size:20px;font-weight:700;color:#1d2738;margin-bottom:2px}
+.section-sub{font-size:13px;color:#697BAA;margin-bottom:16px}
+.assets-section-title{font-size:15px;font-weight:700;color:#1d2738;margin-bottom:2px}
+.assets-section-sub{font-size:13px;color:#697BAA;margin-bottom:12px}
+.assets-grid-limited{display:grid;grid-template-columns:repeat(4,1fr);gap:0;max-height:285px;overflow:hidden}
+.assets-view-all{display:inline-flex;align-items:center;gap:5px;margin-top:10px;font-size:13px;font-weight:600;color:#16a34a;cursor:pointer;background:none;border:none;font-family:inherit;padding:0}
+.assets-view-all:hover{color:#166534}
+
+/* Assets section */
+.assets-search{display:flex;align-items:center;gap:10px;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 16px;background:#f8f9fb;margin-bottom:14px;transition:border-color .15s}
+.assets-search:focus-within{border-color:#86efac;background:#fff}
+.assets-search input{border:none;outline:none;font-family:inherit;font-size:13.5px;color:#374151;flex:1;background:transparent}
+.assets-search input::placeholder{color:#9ca3af}
+.cat-pills{display:flex;gap:8px;flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;margin-bottom:14px}
+.cat-pills::-webkit-scrollbar{height:0}
+.cat-pill{display:inline-flex;align-items:center;gap:4px;height:30px;padding:0 12px;border-radius:9999px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;font-family:inherit;background:#e1e3ef;color:#374151;white-space:nowrap;flex-shrink:0;transition:all .12s}
+.cat-pill:hover{background:#d5d8ea}
+.cat-pill.active{background:#22c55e;color:#fff}
+.cat-pill-count{font-weight:400;opacity:.7;margin-left:2px}
+.assets-count{font-size:13px;color:#697BAA;font-weight:500;margin-bottom:14px}
+.assets-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.asset-item{display:flex;align-items:center;gap:10px;padding:12px 8px;border-bottom:1px solid #f3f4f6;cursor:default}
+.asset-item:nth-child(4n+1){border-right:1px solid #f3f4f6}
+.asset-item:nth-child(4n+2){border-right:1px solid #f3f4f6}
+.asset-item:nth-child(4n+3){border-right:1px solid #f3f4f6}
+.asset-icon-circle{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;font-weight:700;color:#fff;letter-spacing:-.2px}
+.asset-info{}
+.asset-name{font-size:13px;font-weight:600;color:#1d2738;line-height:1.2}
+.asset-ticker{font-size:11.5px;color:#697BAA;font-weight:500}
+
+/* Plan card */
+.plan-section-title{font-size:20px;font-weight:700;color:#1d2738;margin-bottom:4px;margin-top:32px}
+.plan-section-sub{font-size:13.5px;color:#697BAA;margin-bottom:20px}
+.plan-summary-card{border:1px solid #e8eaf2;border-radius:16px;padding:24px 28px;background:#fff}
+.plan-card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.plan-card-hdr-left{display:flex;align-items:center;gap:12px}
+.plan-icon-circle{width:40px;height:40px;border-radius:10px;background:#eff6ff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.plan-name{font-size:15px;font-weight:700;color:#1d2738}
+.plan-view-btn{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1.5px solid #22c55e;color:#16a34a;border-radius:9999px;padding:6px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s}
+.plan-view-btn:hover{background:#f0fdf4}
+.plan-last-updated{font-size:12px;color:#9ca3af}
+.plan-cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;padding-top:4px}
+.plan-col{}
+.plan-col-hdr{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.plan-col-title{font-size:14px;font-weight:700;color:#1d2738}
+.plan-chip{display:inline-flex;align-items:center;border-radius:9999px;padding:2px 9px;font-size:12px;font-weight:600;white-space:nowrap}
+.plan-chip.pos{background:#e0f2fe;color:#0369a1}
+.plan-chip.absorb{background:#fff8eb;color:#d97706}
+.plan-col-subhdr{font-size:12px;font-weight:600;color:#374151;margin-bottom:5px}
+.plan-tier-line{font-size:13px;color:#697BAA;margin-bottom:4px}
+
+/* ── Plan details screen ── */
+.plan-details-wrap{padding:0 28px 40px}
+.plan-details-hdr{display:flex;align-items:center;gap:14px;padding:24px 0 20px}
+.plan-icon{width:44px;height:44px;background:#eff6ff;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.plan-title-grp{}
+.plan-title{font-size:24px;font-weight:700;color:#1d2738;margin-bottom:2px}
+.plan-updated{font-size:12.5px;color:#9ca3af}
+.plan-tabs-bar{display:flex;border-bottom:1.5px solid #e5e7eb;margin-bottom:28px}
+
+/* Spreads section */
+.spreads-title{font-size:22px;font-weight:700;color:#1d2738;margin-bottom:20px}
+.spreads-toolbar{display:flex;align-items:flex-end;justify-content:flex-start;margin-bottom:24px;gap:40px}
+.spreads-tb-left{}
+.spreads-tb-label{font-size:15px;font-weight:700;color:#1d2738;margin-bottom:3px}
+.spreads-tb-sub{font-size:13px;color:#697BAA}
+.spreads-tb-right{display:flex;align-items:flex-end;gap:28px;flex-shrink:0}
+.pf-group{display:flex;flex-direction:column;gap:5px}
+.pf-label-row{display:flex;align-items:center;gap:5px}
+.pf-label{font-size:12px;font-weight:600;color:#374151}
+.pf-input-box{display:flex;align-items:center;gap:6px;border:1.5px solid #e5e7eb;border-radius:9px;padding:7px 12px;background:#f9fafb;width:100px;transition:border-color .15s,background .15s}
+.pf-input-box:focus-within{border-color:#22c55e;background:#fff}
+.pf-fee-input{border:none;outline:none;font-family:inherit;font-size:14px;font-weight:600;color:#1d2738;background:transparent;width:48px;-moz-appearance:textfield}
+.pf-fee-input::-webkit-outer-spin-button,.pf-fee-input::-webkit-inner-spin-button{-webkit-appearance:none}
+.pf-input-unit{font-size:13px;color:#9ca3af}
+
+/* ── Action bar ── */
+#action-bar{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:500;background:#1e2d40;border-radius:9999px;padding:12px 16px 12px 28px;display:none;align-items:center;gap:24px;box-shadow:0 8px 32px rgba(0,0,0,.25);white-space:nowrap}
+.ab-info{font-size:14px;font-weight:500;color:#fff}
+.ab-btns{display:flex;gap:8px}
+.ab-discard{background:#e8eaf0;border:none;border-radius:9999px;padding:9px 24px;font-size:13.5px;font-weight:600;color:#1d2738;cursor:pointer;font-family:inherit;transition:background .12s}
+.ab-discard:hover{background:#d5d8e8}
+.ab-save{background:#22c55e;border:none;border-radius:9999px;padding:9px 24px;font-size:13.5px;font-weight:600;color:#fff;cursor:pointer;font-family:inherit;transition:background .12s}
+.ab-save:hover{background:#16a34a}
+
+/* ── Save modal ── */
+#save-modal-overlay{position:fixed;inset:0;z-index:9000;background:rgba(107,114,128,.5);display:none;align-items:center;justify-content:center}
+.save-modal-card{background:#fff;border-radius:20px;width:520px;max-width:90vw;box-shadow:0 20px 60px rgba(0,0,0,.18)}
+.save-modal-hdr{display:flex;align-items:center;justify-content:space-between;padding:24px 28px 20px;border-bottom:1px solid #f0f2fa}
+.save-modal-title{font-size:18px;font-weight:700;color:#1d2738}
+.save-modal-close{width:32px;height:32px;border-radius:50%;background:#f3f4f6;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#6b7280;font-size:16px;line-height:1}
+.save-modal-close:hover{background:#e5e7eb}
+.save-modal-body{padding:24px 28px 20px}
+.save-modal-body p{font-size:13.5px;color:#4b5563;line-height:1.65;margin-bottom:8px}
+.save-modal-body p:last-child{margin-bottom:0}
+.save-modal-ftr{display:flex;justify-content:flex-end;gap:12px;padding:20px 28px 24px;border-top:1px solid #f0f2fa}
+.save-modal-cancel{background:#fff;border:1.5px solid #e5e7eb;border-radius:9999px;padding:9px 26px;font-size:13.5px;font-weight:600;color:#374151;cursor:pointer;font-family:inherit;transition:background .12s}
+.save-modal-cancel:hover{background:#f9fafb}
+.save-modal-confirm{background:#22c55e;border:none;border-radius:9999px;padding:9px 26px;font-size:13.5px;font-weight:600;color:#fff;cursor:pointer;font-family:inherit;transition:background .12s}
+.save-modal-confirm:hover{background:#16a34a}
+.absorb-grp{display:flex;flex-direction:column;gap:5px}
+.absorb-lbl{font-size:12px;font-weight:600;color:#374151}
+.toggle-switch{position:relative;width:40px;height:22px;flex-shrink:0;cursor:default}
+.toggle-track{position:absolute;inset:0;background:#d1d5db;border-radius:20px}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:16px;height:16px;background:#fff;border-radius:50%;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+
+/* Spread table */
+.spread-table-outer{overflow-x:auto;border:1px solid #e8eaf2;border-radius:16px}
+.spread-table{border-collapse:collapse;width:100%;min-width:800px}
+.spread-table th{padding:14px 20px;font-size:11.5px;font-weight:600;color:#697BAA;text-align:left;border-bottom:1px solid #e8eaf2;background:#f8f9fb;white-space:nowrap}
+.spread-table th:first-child{position:sticky;left:0;z-index:2;background:#f8f9fb;width:150px;min-width:150px}
+.tier-hdr-label{font-size:10.5px;font-weight:500;color:#9ca3af;display:block;margin-bottom:3px}
+.tier-hdr-val{font-size:13px;font-weight:700;color:#1d2738}
+
+/* Tier header interactive */
+.col-hdr-tier{position:relative;padding:14px 20px;font-size:11.5px;text-align:left;border-bottom:1px solid #e8eaf2;background:#f8f9fb;white-space:nowrap;min-width:190px}
+.col-hdr-tier .tier-hdr-content{display:flex;flex-direction:column;gap:2px}
+.col-hdr-tier .tier-hdr-actions{position:absolute;inset:0;display:none;align-items:center;justify-content:center;gap:6px;background:rgba(248,249,251,.95);border-radius:0;pointer-events:all}
+.col-hdr-tier:hover:not(.editing) .tier-hdr-actions{display:flex}
+.tier-hdr-actions button{pointer-events:auto}
+.tier-edit-pill{background:#22c55e;color:#fff;border:none;border-radius:20px;padding:5px 16px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .12s}
+.tier-edit-pill:hover{background:#16a34a}
+.col-hdr-tier.editing{background:#fff;z-index:3}
+.tier-hdr-edit{display:flex;flex-direction:column;gap:5px}
+.tier-hdr-edit-label{font-size:10.5px;font-weight:600;color:#697BAA}
+.tier-hdr-input-row{display:flex;align-items:center;border:1.5px solid #22c55e;border-radius:7px;padding:3px 9px;background:#fff;box-shadow:0 0 0 3px rgba(34,197,94,.1);gap:3px;height:32px}
+.tier-hdr-inp-dollar{font-size:12.5px;color:#374151;font-weight:500;flex-shrink:0}
+.tier-hdr-inp{border:none;outline:none;font-size:12.5px;font-weight:600;color:#111827;font-family:inherit;flex:1;min-width:0;width:70px;background:transparent;-moz-appearance:textfield}
+.tier-hdr-inp::-webkit-outer-spin-button,.tier-hdr-inp::-webkit-inner-spin-button{-webkit-appearance:none}
+.tier-hdr-input-row.error{border-color:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.1)}
+.tier-err-msg{display:flex;align-items:center;gap:4px;margin-top:5px;font-size:11px;color:#ef4444;font-weight:500}
+.asset-th{display:flex;align-items:center;gap:5px}
+.spread-table td{padding:0;vertical-align:middle;border-bottom:1px solid #f0f2fa}
+.spread-table tr:last-child td{border-bottom:none}
+.spread-table .asset-td{padding:0;position:sticky;left:0;z-index:1;background:#fff;border-right:1px solid #f0f2fa}
+.asset-td-inner{display:flex;align-items:center;gap:12px;padding:18px 20px}
+.spread-cell{padding:20px 28px;border-right:1px solid #f0f2fa}
+.spread-cell:last-child{border-right:none}
+.sc-uphold-lbl{font-size:10.5px;color:#9ca3af;margin-bottom:5px}
+.sc-spread-row{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.sc-base{font-size:13px;font-weight:600;color:#1d2738}
+.sc-pfee{display:inline-flex;align-items:center;background:#dbeafe;color:#1d4ed8;font-size:11px;font-weight:600;padding:2px 7px;border-radius:5px;white-space:nowrap}
+.sc-eq{font-size:11px;color:#d1d5db;margin-bottom:5px}
+.sc-total-lbl{font-size:10.5px;color:#9ca3af;margin-bottom:2px}
+.sc-total-val{font-size:13.5px;font-weight:700;color:#1d2738}
+.fallback-td .asset-td-inner{padding:16px}
+.fallback-label{font-size:13px;font-weight:600;color:#f59e0b}
+.fallback-row td{background:#fffbf0}
+.fallback-row .asset-td{background:#fffbf0}
+.fallback-row .sc-pfee{background:#fef3c7;color:#92400e}
+.fallback-row .sc-total-val{color:#92400e}
+
+/* ── Fees table (Deposits / Withdrawals) ── */
+.fees-section-title{font-size:22px;font-weight:700;color:#1d2738;margin-bottom:24px}
+.fees-table-outer{border:1px solid #e8eaf2;border-radius:16px;overflow:hidden}
+/* ── Fees cards (deposits / withdrawals) ── */
+.fees-section-title{font-size:15px;font-weight:700;color:#1d2738;margin-bottom:14px}
+.fees-col-hdrs{display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr 0.8fr;gap:8px;padding:10px 16px;background:#f8f9fb;border:1px solid #e8eaf2;border-radius:10px 10px 0 0;font-size:11px;font-weight:600;color:#697BAA}
+.fees-card{border:1px solid #e8eaf2;border-top:none;background:#fff;transition:background .12s}
+.fees-card:last-child{border-radius:0 0 10px 10px}
+.fees-card-saved{cursor:pointer}
+.fees-card-saved:hover{background:#f8f9fb}
+.fees-card-row{display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr 0.8fr;gap:8px;align-items:center;padding:16px;min-height:64px}
+.fees-method-cell{display:flex;align-items:center;gap:14px}
+.fees-method-icon{width:38px;height:38px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid #f0f2fa}
+.fees-method-name{font-size:14px;font-weight:600;color:#1d2738;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fees-jurisdiction{font-size:13px;color:#697BAA;white-space:nowrap}
+.fees-uphold-val{font-size:13.5px;color:#1d2738;white-space:nowrap}
+.fees-partner-chip{display:inline-flex;align-items:center;font-size:12px;font-weight:600;padding:4px 10px;border-radius:6px;white-space:nowrap;width:fit-content;align-self:center}
+.fees-partner-chip.pos{background:#dbeafe;color:#1d4ed8}
+.fees-partner-chip.neg{background:#fef3c7;color:#92400e}
+.fees-total-val{font-size:14px;font-weight:700;color:#1d2738;white-space:nowrap}
+.fees-total-val.zero{color:#9ca3af}
+/* edit state */
+.fees-card-edit{padding:16px;display:flex;flex-direction:column;gap:12px}
+.fees-edit-row{display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr 0.8fr;gap:8px;align-items:center}
+.fees-pfee-box{display:inline-flex;align-items:center;border:1.5px solid #e5e7eb;border-radius:8px;padding:6px 10px;background:#f9fafb;gap:6px;width:110px;transition:border-color .15s,box-shadow .15s}
+.fees-pfee-box:focus-within{border-color:#22c55e;background:#fff;box-shadow:0 0 0 3px rgba(34,197,94,.1)}
+.fees-pfee-inp{border:none;outline:none;font-size:13.5px;font-weight:600;color:#1d2738;font-family:inherit;width:60px;background:transparent;-moz-appearance:textfield}
+.fees-pfee-inp::-webkit-outer-spin-button,.fees-pfee-inp::-webkit-inner-spin-button{-webkit-appearance:none}
+.fees-pfee-unit{font-size:12px;color:#9ca3af;flex-shrink:0}
+.fees-edit-total{font-size:13.5px;font-weight:700;color:#1d2738}
+.fees-edit-total.zero{color:#9ca3af}
+.fees-edit-hint{font-size:11.5px;color:#697BAA}
+
+/* ── Logs tab ── */
+.logs-wrap{padding:28px 0}
+.logs-heading{font-size:24px;font-weight:700;color:#1d2738;margin-bottom:20px}
+.logs-filter-row{margin-bottom:20px}
+.logs-filter-label{font-size:12px;font-weight:600;color:#697BAA;margin-bottom:6px}
+.logs-author-select{appearance:none;-webkit-appearance:none;border:1.5px solid #e5e7eb;border-radius:9px;padding:10px 36px 10px 14px;font-size:13.5px;font-family:inherit;color:#1d2738;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239ca3af' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 12px center;width:200px;cursor:pointer;outline:none}
+.logs-count{font-size:13px;color:#22c55e;font-weight:600;margin-bottom:16px}
+.logs-table-outer{border:1px solid #e8eaf2;border-radius:12px;overflow:hidden}
+.logs-col-hdrs{display:grid;grid-template-columns:1.8fr 1.8fr 1fr 40px;gap:8px;padding:10px 20px;background:#f8f9fb;border-bottom:1px solid #e8eaf2;font-size:11.5px;font-weight:600;color:#697BAA}
+.log-row{display:grid;grid-template-columns:1.8fr 1.8fr 1fr 40px;gap:8px;align-items:center;padding:16px 20px;border-bottom:1px solid #f0f2fa;cursor:pointer;transition:background .12s}
+.log-row:last-child{border-bottom:none}
+.log-row:hover{background:#f8f9fb}
+.log-date-main{font-size:13.5px;font-weight:600;color:#1d2738;white-space:nowrap}
+.log-date-sub{font-size:12px;color:#22c55e;margin-top:2px;white-space:nowrap}
+.log-author-cell{display:flex;align-items:center;gap:10px}
+.log-avatar{width:32px;height:32px;border-radius:50%;background:#dde2ef;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#697BAA;flex-shrink:0}
+.log-author-name{font-size:13.5px;color:#1d2738;white-space:nowrap}
+.log-plan{font-size:13.5px;color:#697BAA}
+.log-chevron{color:#22c55e;font-size:16px;text-align:right}
+.logs-pagination{display:flex;align-items:center;justify-content:center;gap:4px;margin-top:24px}
+.logs-page-btn{width:36px;height:36px;border-radius:50%;border:none;background:transparent;font-size:13.5px;font-weight:500;color:#697BAA;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .12s}
+.logs-page-btn:hover{background:#f0f2fa}
+.logs-page-btn.active{background:#22c55e;color:#fff;font-weight:700}
+.logs-page-btn.arrow{border:1.5px solid #e5e7eb;color:#697BAA}
+.logs-page-btn.arrow:hover{background:#f0f2fa}
+.logs-page-dots{font-size:13.5px;color:#697BAA;padding:0 4px}
+/* Log detail modal */
+#log-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:600;display:none;align-items:center;justify-content:center}
+.log-modal-card{background:#fff;border-radius:16px;width:540px;max-width:calc(100vw - 40px);box-shadow:0 20px 60px rgba(0,0,0,.2);overflow:hidden}
+.log-modal-hdr{padding:24px 24px 16px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.log-modal-title{font-size:17px;font-weight:700;color:#1d2738}
+.log-modal-close{width:28px;height:28px;border-radius:50%;border:none;background:#f0f2fa;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:#697BAA;flex-shrink:0;line-height:1}
+.log-modal-author{display:flex;align-items:center;gap:12px;padding:0 24px 20px}
+.log-modal-avatar{width:36px;height:36px;border-radius:50%;background:#dde2ef;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#697BAA;flex-shrink:0}
+.log-modal-author-info{}
+.log-modal-author-name{font-size:14px;font-weight:600;color:#1d2738}
+.log-modal-author-email{font-size:12px;color:#697BAA}
+.log-modal-divider{height:1px;background:#f0f2fa;margin:0 0 20px}
+.log-modal-json{background:#f8f9fb;border-radius:0;padding:20px 24px;font-size:12.5px;font-family:'SF Mono',ui-monospace,monospace;color:#35415f;line-height:1.7;white-space:pre-wrap;word-break:break-all;min-height:120px}
+.log-modal-ftr{padding:20px 24px;display:flex;justify-content:flex-end;border-top:1px solid #f0f2fa}
+.log-modal-copy{background:#22c55e;color:#fff;border:none;border-radius:9999px;padding:10px 28px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .12s}
+.log-modal-copy:hover{background:#16a34a}
+
+/* ── Tooltip ── */
+#g-tooltip{position:fixed;z-index:9999;background:#1e293b;color:#fff;font-size:12px;font-weight:400;padding:8px 12px;border-radius:8px;pointer-events:none;display:none;max-width:240px;line-height:1.5;text-align:left;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.info-icon{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;cursor:default;color:#9ca3af;vertical-align:middle}
+.tooltip-wrap{display:inline-flex;align-items:center;padding:3px;margin:-3px;cursor:default}
+.tooltip-wrap .tooltip-text{display:none}
+
+/* ── Info icon SVG ── */
+.info-svg{display:block}
+</style>
+</head>
+<body>
+
+<!-- Production banner -->
+<div class="prod-banner">
+  <span class="prod-env-label">Production environment</span>
+  <span class="prod-banner-text">Explore Enterprise Portal live environment.</span>
+  <button class="prod-user-btn">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4.5" r="2.5" stroke="#1d2738" stroke-width="1.3"/><path d="M1.5 12.5c0-3.04 2.46-5.5 5.5-5.5s5.5 2.46 5.5 5.5" stroke="#1d2738" stroke-width="1.3" stroke-linecap="round"/></svg>
+    John Doe
+  </button>
+</div>
+
+<!-- App body -->
+<div class="app-body">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sb-logo" onclick="goHome()">
+      <svg class="sb-logo-icon" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="30" height="30" rx="7" fill="#f0fdf4"/>
+        <path d="M8.5 15.5l4 4 9-9" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="sb-logo-text"><span class="lt-main">enterprise portal</span><span class="lt-sub">by uphold</span></div>
+    </div>
+
+    <div class="sb-section">Product</div>
+    <div class="sb-dd">
+      <div class="sb-dd-inner">
+        <div class="sb-dd-icon">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1" y="1" width="5.5" height="5.5" rx="1.2" stroke="#697BAA" stroke-width="1.2"/><rect x="8.5" y="1" width="5.5" height="5.5" rx="1.2" stroke="#697BAA" stroke-width="1.2"/><rect x="1" y="8.5" width="5.5" height="5.5" rx="1.2" stroke="#697BAA" stroke-width="1.2"/><rect x="8.5" y="8.5" width="5.5" height="5.5" rx="1.2" stroke="#697BAA" stroke-width="1.2"/></svg>
+        </div>
+        Enterprise APIs
+      </div>
+      <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>
+    </div>
+
+    <div class="sb-section" style="margin-top:6px">Environment</div>
+    <div class="sb-env">
+      <div class="env-dot">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="#dc2626" stroke-width="1.2"/><path d="M6.5 1C8 3 9 4.7 9 6.5s-1 3.5-2.5 5.5M6.5 1C5 3 4 4.7 4 6.5s1 3.5 2.5 5.5M1 6.5h11" stroke="#dc2626" stroke-width="1.1" stroke-linecap="round"/></svg>
+      </div>
+      <div class="env-name-wrap">
+        <div class="env-name">Production</div>
+      </div>
+      <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>
+    </div>
+
+    <div class="sb-div"></div>
+
+    <div class="sb-nav" id="nav-home" onclick="goHome()">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M2 6.5L8 2l6 4.5V14a1 1 0 01-1 1H3a1 1 0 01-1-1V6.5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M6 15v-5h4v5" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+      Home
+    </div>
+
+    <div class="sb-section">Business</div>
+    <div class="sb-nav" onclick="">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 4l1 10h10L15 4M2 4l2-2h8l2 2" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M6 8h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      Transactions
+    </div>
+    <div class="sb-nav" onclick="">
+      <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M2 14c0-3.31 2.69-6 6-6s6 2.69 6 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      Users
+    </div>
+    <div class="sb-nav" onclick="">
+      <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="9" width="3" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="6.5" y="6" width="3" height="8" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="11" y="2" width="3" height="12" rx="1" stroke="currentColor" stroke-width="1.4"/></svg>
+      Analytics
+    </div>
+    <div class="sb-nav" id="nav-pricing" onclick="goPricing()">
+      <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M8 5v6M6 7h3a1 1 0 010 2H7a1 1 0 010 2h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      Pricing
+    </div>
+
+    <div class="sb-section" style="margin-top:4px">Developer tools</div>
+    <div class="sb-nav" onclick="">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M2 13V5a1 1 0 011-1h10a1 1 0 011 1v8a1 1 0 01-1 1H3a1 1 0 01-1-1z" stroke="currentColor" stroke-width="1.4"/><path d="M5 3V2M8 3V2M11 3V2M5 8l2 2-2 2M9 12h2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Developer hub
+    </div>
+    <div class="sb-nav" onclick="">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M13 8a5 5 0 01-10 0V4l5-2 5 2v4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+      Clients
+    </div>
+    <div class="sb-nav" onclick="">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M13 4a1 1 0 00-1-1H4a1 1 0 00-1 1v5l3-2 2 3 2-3 3 2V4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+      Webhooks
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main-wrapper">
+    <div class="main-content">
+      <div class="page-wrap" id="page-wrap"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Global tooltip -->
+<div id="g-tooltip"></div>
+
+<!-- Action bar -->
+<div id="action-bar">
+  <span class="ab-info"><strong id="ab-change-count">1 unsaved change</strong></span>
+  <div class="ab-btns">
+    <button class="ab-discard" onclick="discardChanges()">Discard</button>
+    <button class="ab-save" onclick="openSaveModal()">Save</button>
+  </div>
+</div>
+
+<!-- Save modal -->
+<div id="save-modal-overlay" onclick="handleModalOverlayClick(event)">
+  <div class="save-modal-card">
+    <div class="save-modal-hdr">
+      <span class="save-modal-title">Save changes</span>
+      <button class="save-modal-close" onclick="closeSaveModal()">&#215;</button>
+    </div>
+    <div class="save-modal-body">
+      <p>These changes will take effect immediately for this partner's configuration.</p>
+      <p>This action can't be undone.</p>
+    </div>
+    <div class="save-modal-ftr">
+      <button class="save-modal-cancel" onclick="closeSaveModal()">Cancel</button>
+      <button class="save-modal-confirm" onclick="confirmSave()">Save changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- Log detail modal -->
+<div id="log-modal-overlay" onclick="handleLogOverlayClick(event)">
+  <div class="log-modal-card">
+    <div class="log-modal-hdr">
+      <span class="log-modal-title" id="log-modal-title">Log from September 26, 2026</span>
+      <button class="log-modal-close" onclick="closeLogModal()">&#215;</button>
+    </div>
+    <div class="log-modal-author">
+      <div class="log-modal-avatar">JD</div>
+      <div class="log-modal-author-info">
+        <div class="log-modal-author-name">John Doe</div>
+        <div class="log-modal-author-email">johndoemail@email.com</div>
+      </div>
+    </div>
+    <div class="log-modal-divider"></div>
+    <div class="log-modal-json" id="log-modal-json"></div>
+    <div class="log-modal-ftr">
+      <button class="log-modal-copy" onclick="copyLogJSON()">Copy</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── State ── */
+let screen = 'home'; // 'home' | 'pricing' | 'plan-details'
+let pricingTab = 'performance'; // 'performance' | 'pricing-details' | 'logs'
+let planTab = 'trade'; // 'trade' | 'deposits' | 'withdrawals'
+let assetFilter = 'All';
+let assetSearch = '';
+let partnerFee = 6;   // last saved value
+let draftFee = 6;     // current editing value
+let absorbAll = false; // toggle state
+let tierThresholds = [10000, 50000, 100000, 500000];
+let savedTierThresholds = [10000, 50000, 100000, 500000];
+let editingTierIdx = null;
+
+/* ── Deposits / Withdrawals fees state ── */
+// Each entry: { upholdFee: number (%), partnerFee: number (%) }
+const FEES_ROWS = {
+  deposits: [
+    { key: 'mastercard', name: 'Mastercard',           jurisdiction: 'All',     upholdFee: 6 },
+    { key: 'paypal',     name: 'PayPal',               jurisdiction: 'US',      upholdFee: 6 },
+    { key: 'applepay',   name: 'Apple Pay',            jurisdiction: 'All',     upholdFee: 6 },
+    { key: 'googlepay',  name: 'Google Pay',           jurisdiction: 'All',     upholdFee: 6 },
+    { key: 'bank',       name: 'Bank transfers (SEPA)', jurisdiction: 'EEA, US', upholdFee: 6 },
+  ],
+  withdrawals: [
+    { key: 'mastercard', name: 'Mastercard', jurisdiction: 'All', upholdFee: 6 },
+    { key: 'paypal',     name: 'PayPal',     jurisdiction: 'US',  upholdFee: 6 },
+  ],
+};
+// draft partner fees: { deposits: { mastercard: 6, paypal: 6, ... }, withdrawals: {...} }
+let draftMethodFees = {
+  deposits:    { mastercard: 6, paypal: 6, applepay: 6, googlepay: 6, bank: 6 },
+  withdrawals: { mastercard: 6, paypal: 6 },
+};
+let savedMethodFees = {
+  deposits:    { mastercard: 6, paypal: 6, applepay: 6, googlepay: 6, bank: 6 },
+  withdrawals: { mastercard: 6, paypal: 6 },
+};
+let editingMethodRow = { deposits: null, withdrawals: null }; // key of row in edit mode
+
+/* ── Logs state ── */
+let logsPage = 1;
+const LOGS_PER_PAGE = 10;
+const LOGS_TOTAL = 1761;
+const LOGS_PAGES = 10;
+const LOG_ENTRIES = Array.from({ length: LOGS_PER_PAGE }, (_, i) => ({
+  date: 'September 26, 2026',
+  time: '02:00:20 PM +00:00',
+  author: 'John Doe',
+  initials: 'JD',
+  plan: 'Standard',
+  logId: `log_8f2a91c${i}`,
+}));
+const LOG_JSON_PAYLOAD = `{ "log_id": "log_8f2a91c3", "timestamp": "2026-09-26T14:00:20Z", "action": "update_spread", "author": { "id": "usr_john_doe", "name": "John Doe", "source": "portal" }, "plan": { "id": "plan_standard_001", "name": "Standard" }, "changes": [ { "asset": "BTC", "tier": "tier_1", "field": "uphold_spread", "previous_value": 15, "new_value": 12, "unit": "bps" } ], "metadata": { "ip": "192.168.1.42", "user_agent": "Mozilla/5.0", "environment": "production" } }`;
+
+/* ── Asset data ── */
+const ASSET_CATEGORIES = ['All','AI','Boosted Staking','DAO','DeFi','Enterprise','Environmental','Finance','Gaming','Memecoin','Metaverse','NFT','Smartcoins','Store of value'];
+
+const ALL_ASSETS = [
+  // AI (10)
+  {t:'FET',  n:'Fetch.ai',           c:'#1D2235', cats:['AI']},
+  {t:'AGIX', n:'SingularityNET',     c:'#5E44FF', cats:['AI']},
+  {t:'OCEAN',n:'Ocean Protocol',     c:'#5F35C4', cats:['AI']},
+  {t:'RNDR', n:'Render',             c:'#ED3B46', cats:['AI']},
+  {t:'TAO',  n:'Bittensor',          c:'#333333', cats:['AI']},
+  {t:'NMR',  n:'Numeraire',          c:'#0DAFF7', cats:['AI']},
+  {t:'RLC',  n:'iExec RLC',          c:'#D4A01A', cats:['AI']},
+  {t:'CTXC', n:'Cortex',             c:'#6A1CB0', cats:['AI']},
+  {t:'ALT',  n:'AltLayer',           c:'#FF3434', cats:['AI']},
+  {t:'AKT',  n:'Akash Network',      c:'#FF4550', cats:['AI']},
+  // Boosted Staking (10)
+  {t:'ETH',  n:'Ethereum',           c:'#627EEA', cats:['Boosted Staking','Store of value','DeFi']},
+  {t:'SOL',  n:'Solana',             c:'#9945FF', cats:['Boosted Staking','Store of value']},
+  {t:'ADA',  n:'Cardano',            c:'#0033AD', cats:['Boosted Staking','Store of value','Environmental']},
+  {t:'DOT',  n:'Polkadot',           c:'#E6007A', cats:['Boosted Staking']},
+  {t:'ATOM', n:'Cosmos',             c:'#2E3148', cats:['Boosted Staking']},
+  {t:'MATIC',n:'Polygon',            c:'#8247E5', cats:['Boosted Staking','DeFi']},
+  {t:'AVAX', n:'Avalanche',          c:'#E84142', cats:['Boosted Staking']},
+  {t:'NEAR', n:'NEAR Protocol',      c:'#5C5C5C', cats:['Boosted Staking','Environmental']},
+  {t:'FLR',  n:'Flare',              c:'#E6405E', cats:['Boosted Staking','Environmental']},
+  {t:'OSMO', n:'Osmosis',            c:'#750BBB', cats:['Boosted Staking','DAO']},
+  // DAO (10)
+  {t:'MKR',  n:'Maker',              c:'#1AAB9B', cats:['DAO','DeFi']},
+  {t:'COMP', n:'Compound',           c:'#00D395', cats:['DAO','DeFi']},
+  {t:'YFI',  n:'Yearn Finance',      c:'#006AE3', cats:['DAO','DeFi']},
+  {t:'ENS',  n:'Ethereum Name Svc',  c:'#5298FF', cats:['DAO']},
+  {t:'ARB',  n:'Arbitrum',           c:'#2D374B', cats:['DAO']},
+  {t:'OP',   n:'Optimism',           c:'#FF0420', cats:['DAO']},
+  {t:'BAL',  n:'Balancer',           c:'#1E1E1E', cats:['DAO','DeFi']},
+  {t:'DYDX', n:'dYdX',               c:'#6966FF', cats:['DAO','DeFi']},
+  {t:'SUSHI',n:'SushiSwap',          c:'#FA52A0', cats:['DAO','DeFi']},
+  {t:'YGG',  n:'Yield Guild Games',  c:'#F5B000', cats:['DAO','Gaming']},
+  // DeFi (10 additional)
+  {t:'AAVE', n:'Aave',               c:'#B6509E', cats:['DeFi','DAO']},
+  {t:'LINK', n:'Chainlink',          c:'#2A5ADA', cats:['DeFi']},
+  {t:'CRV',  n:'Curve DAO',          c:'#FA3D13', cats:['DeFi','DAO']},
+  {t:'GRT',  n:'The Graph',          c:'#6747ED', cats:['DeFi']},
+  {t:'LDO',  n:'Lido DAO',           c:'#F68C2F', cats:['DeFi','DAO']},
+  {t:'SNX',  n:'Synthetix',          c:'#00D1FF', cats:['DeFi','DAO']},
+  {t:'1INCH',n:'1inch',              c:'#1B314F', cats:['DeFi']},
+  {t:'RUNE', n:'THORChain',          c:'#23DCC8', cats:['DeFi']},
+  {t:'INJ',  n:'Injective',          c:'#0082FA', cats:['DeFi']},
+  {t:'JUP',  n:'Jupiter',            c:'#11BF3B', cats:['DeFi']},
+  // Enterprise (10)
+  {t:'CSPR', n:'Casper',             c:'#FF473E', cats:['Enterprise']},
+  {t:'VET',  n:'VeChain',            c:'#15BDFF', cats:['Enterprise','Environmental']},
+  {t:'HBAR', n:'Hedera',             c:'#3A3A3A', cats:['Enterprise','Environmental']},
+  {t:'XLM',  n:'Stellar',            c:'#7B68EE', cats:['Enterprise','Environmental','Finance']},
+  {t:'XDC',  n:'XDC Network',        c:'#2F60CA', cats:['Enterprise']},
+  {t:'EGLD', n:'MultiversX',         c:'#1B46C2', cats:['Enterprise']},
+  {t:'QTUM', n:'Qtum',               c:'#2E9AD0', cats:['Enterprise']},
+  {t:'ZIL',  n:'Zilliqa',            c:'#49C1BF', cats:['Enterprise']},
+  {t:'IOTA', n:'IOTA',               c:'#131F37', cats:['Enterprise','Environmental']},
+  {t:'STRAX',n:'Stratis',            c:'#1388C7', cats:['Enterprise']},
+  // Environmental (additional)
+  {t:'ALGO', n:'Algorand',           c:'#333333', cats:['Environmental','Boosted Staking']},
+  {t:'CHZ',  n:'Chiliz',             c:'#CD0124', cats:['Environmental','Gaming']},
+  {t:'CELO', n:'Celo',               c:'#35D07F', cats:['Environmental']},
+  {t:'FLOW', n:'Flow',               c:'#00EF8B', cats:['Environmental','Gaming','NFT','Metaverse']},
+  // Finance (10)
+  {t:'XRP',  n:'XRP',                c:'#0085C0', cats:['Finance','Store of value']},
+  {t:'USDT', n:'Tether',             c:'#26A17B', cats:['Finance','Smartcoins']},
+  {t:'USDC', n:'USD Coin',           c:'#2775CA', cats:['Finance','Smartcoins']},
+  {t:'DAI',  n:'Dai',                c:'#F5AC37', cats:['Finance','Smartcoins','DeFi']},
+  {t:'PAXG', n:'PAX Gold',           c:'#D4AF37', cats:['Finance','Smartcoins','Store of value']},
+  {t:'EURS', n:'STASIS Euro',        c:'#0071C5', cats:['Finance','Smartcoins']},
+  {t:'XSGD', n:'XSGD',              c:'#0B3E82', cats:['Finance','Smartcoins']},
+  {t:'TUSD', n:'TrueUSD',            c:'#002868', cats:['Finance','Smartcoins']},
+  {t:'PYUSD',n:'PayPal USD',         c:'#0070BA', cats:['Finance','Smartcoins']},
+  {t:'FDUSD',n:'First Digital USD',  c:'#1060FF', cats:['Finance','Smartcoins']},
+  // Gaming (10)
+  {t:'AXS',  n:'Axie Infinity',      c:'#0055D4', cats:['Gaming','Metaverse','NFT']},
+  {t:'MANA', n:'Decentraland',       c:'#FF2D55', cats:['Gaming','Metaverse','NFT']},
+  {t:'SAND', n:'The Sandbox',        c:'#04ADEF', cats:['Gaming','Metaverse','NFT']},
+  {t:'ENJ',  n:'Enjin Coin',         c:'#7866D5', cats:['Gaming','Metaverse','NFT']},
+  {t:'GALA', n:'Gala',               c:'#444444', cats:['Gaming']},
+  {t:'ILV',  n:'Illuvium',           c:'#27A5F1', cats:['Gaming','Metaverse']},
+  {t:'IMX',  n:'Immutable X',        c:'#17B5CB', cats:['Gaming','NFT']},
+  {t:'SUPER',n:'SuperFarm',          c:'#7B50F4', cats:['Gaming','NFT']},
+  {t:'ALICE',n:'My Neighbor Alice',  c:'#1A9BD0', cats:['Gaming','Metaverse']},
+  {t:'WAXP', n:'WAX',                c:'#F5922F', cats:['Gaming','NFT','Metaverse','Environmental']},
+  // Memecoin (10)
+  {t:'DOGE', n:'Dogecoin',           c:'#C2A633', cats:['Memecoin','Store of value']},
+  {t:'SHIB', n:'Shiba Inu',          c:'#FFA409', cats:['Memecoin']},
+  {t:'PEPE', n:'Pepe',               c:'#038900', cats:['Memecoin']},
+  {t:'FLOKI',n:'Floki',              c:'#F1B90B', cats:['Memecoin']},
+  {t:'BONK', n:'Bonk',               c:'#F2A900', cats:['Memecoin']},
+  {t:'WIF',  n:'dogwifhat',          c:'#D27B4C', cats:['Memecoin']},
+  {t:'MEME', n:'Memecoin',           c:'#F5B642', cats:['Memecoin']},
+  {t:'BOME', n:'Book of Meme',       c:'#E8C22C', cats:['Memecoin']},
+  {t:'DOGS', n:'Dogs',               c:'#F7931A', cats:['Memecoin']},
+  {t:'NEIRO',n:'Neiro',              c:'#FFAA37', cats:['Memecoin']},
+  // Metaverse (additional)
+  {t:'APE',  n:'ApeCoin',            c:'#065AF3', cats:['Metaverse','NFT','DAO']},
+  {t:'BLOK', n:'Bloktopia',          c:'#9F2ECC', cats:['Metaverse']},
+  // NFT (additional)
+  {t:'BLUR', n:'Blur',               c:'#FF8700', cats:['NFT']},
+  {t:'LOOKS',n:'LooksRare',          c:'#0CE466', cats:['NFT']},
+  {t:'RARI', n:'Rarible',            c:'#FEDA03', cats:['NFT']},
+  {t:'X2Y2', n:'X2Y2',              c:'#9B2FFF', cats:['NFT']},
+  // Smartcoins (additional)
+  {t:'FRAX', n:'Frax',               c:'#333333', cats:['Smartcoins','DeFi']},
+  {t:'LUSD', n:'Liquity USD',        c:'#2EB6AE', cats:['Smartcoins','DeFi']},
+  {t:'EURC', n:'Euro Coin',          c:'#2775CA', cats:['Smartcoins','Finance']},
+  // Store of value (additional)
+  {t:'BTC',  n:'Bitcoin',            c:'#F7931A', cats:['Store of value']},
+  {t:'BNB',  n:'BNB',                c:'#F3BA2F', cats:['Store of value']},
+  {t:'LTC',  n:'Litecoin',           c:'#BFBBBB', cats:['Store of value']},
+  {t:'BCH',  n:'Bitcoin Cash',       c:'#8DC351', cats:['Store of value']},
+  {t:'XMR',  n:'Monero',             c:'#FF6600', cats:['Store of value']},
+  {t:'TRX',  n:'TRON',               c:'#EF0027', cats:['Store of value']},
+  {t:'HYPE', n:'Hyperliquid',        c:'#00C870', cats:['Store of value','DeFi']},
+];
+
+const PLAN_ASSETS = [
+  {t:'BTC',  n:'Bitcoin',   c:'#F7931A'},
+  {t:'ETH',  n:'Ethereum',  c:'#627EEA'},
+  {t:'XRP',  n:'XRP',       c:'#0085C0'},
+  {t:'SOL',  n:'Solana',    c:'#9945FF'},
+  {t:'ADA',  n:'Cardano',   c:'#0033AD'},
+  {t:'CSPR', n:'Casper',    c:'#FF473E'},
+];
+
+/* ── Navigation ── */
+function goHome() {
+  screen = 'home';
+  setActiveNav('nav-home');
+  render();
+}
+function goPricing() {
+  screen = 'pricing';
+  pricingTab = 'performance';
+  setActiveNav('nav-pricing');
+  render();
+}
+function goPricingDetails() {
+  screen = 'pricing';
+  pricingTab = 'pricing-details';
+  setActiveNav('nav-pricing');
+  render();
+}
+function goPlanDetails() {
+  screen = 'plan-details';
+  planTab = 'trade';
+  render();
+}
+function setPlanTab(tab) {
+  planTab = tab;
+  render();
+}
+function setActiveNav(id) {
+  document.querySelectorAll('.sb-nav').forEach(el => el.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+}
+
+/* ── Filtered assets ── */
+function filteredAssets() {
+  return ALL_ASSETS.filter(a => {
+    const catMatch = assetFilter === 'All' || a.cats.includes(assetFilter);
+    const q = assetSearch.toLowerCase();
+    const searchMatch = !q || a.n.toLowerCase().includes(q) || a.t.toLowerCase().includes(q);
+    return catMatch && searchMatch;
+  });
+}
+function catCount(cat) {
+  if (cat === 'All') return ALL_ASSETS.length;
+  return ALL_ASSETS.filter(a => a.cats.includes(cat)).length;
+}
+
+/* ── SVGs ── */
+const infoSVG = `<svg class="info-svg" width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="6.5" stroke="#9ca3af" stroke-width="1.2"/><path d="M7.5 7v4M7.5 5v.5" stroke="#9ca3af" stroke-width="1.3" stroke-linecap="round"/></svg>`;
+const chevronSVG = `<svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>`;
+const searchSVG = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="#9ca3af" stroke-width="1.4"/><path d="M10 10l3 3" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>`;
+
+/* ── Render ── */
+function render() {
+  const wrap = document.getElementById('page-wrap');
+  if (screen === 'home')         wrap.innerHTML = renderHome();
+  else if (screen === 'pricing') wrap.innerHTML = renderPricing();
+  else if (screen === 'plan-details') wrap.innerHTML = renderPlanDetails();
+  attachTooltips();
+}
+
+/* ── Home screen ── */
+function renderHome() {
+  return `
+  <div class="home-content">
+    <div class="home-greeting">Hi, John Doe!</div>
+    <div class="home-greeting-sub">Welcome back to your enterprise portal.</div>
+    <div class="home-build-title">What you can build</div>
+    <div class="home-build-sub">Build enterprise-grade crypto products with Uphold's API suite.</div>
+    <div class="home-cards">
+      ${homeCard(
+        '#f0f9ef',
+        buyIllustrationSVG(),
+        'Buy, sell and hold crypto',
+        'buy-sell',
+        'Buy, sell and hold',
+        'Full trading experience, no exchange infrastructure needed. 300+ assets.',
+        ['Enable users to buy, sell and trade assets directly inside your product.',
+         'Embed a full multi-asset exchange without building market infrastructure.',
+         'Real-time price quotes and instant execution.',
+         'Support for crypto, fiat, equities and commodities.'],
+        'Buy, sell and hold'
+      )}
+      ${homeCard(
+        '#eff6ff',
+        sendFiatIllustrationSVG(),
+        'Send fiat &amp; Settle funds',
+        'send-fiat',
+        'Send fiat &amp; Settle funds',
+        'Cross-border money movement with stablecoin-speed settlement.',
+        ['Move flat money across borders with real-time transaction APIs.',
+         'Settle using stablecoins as a rail for fast, low-cost transfers.',
+         'Automate disbursements from a single operating account.',
+         'Full transaction history and audit trails for compliance.'],
+        'Send fiat &amp; Settle funds'
+      )}
+      ${homeCard(
+        '#fdf4ff',
+        sendCryptoIllustrationSVG(),
+        'Send crypto',
+        'send-crypto',
+        'Send crypto',
+        'On-chain disbursements at enterprise scale.',
+        ['Send crypto on-chain to any wallet address programmatically at scale.',
+         'Handle multi-asset on-chain disbursements at scale.',
+         'Automate token distributions, airdrops or staking rewards.',
+         'Stablecoin B2B settlement to replace slow wire transfers.'],
+        'Send crypto'
+      )}
+    </div>
+  </div>`;
+}
+
+function homeCard(bgColor, illustration, pillarLabel, key, title, subtitle, points, linkLabel) {
+  return `
+  <div class="home-card">
+    <div class="home-card-img" style="background:${bgColor};border-radius:12px 12px 0 0">${illustration}</div>
+    <div class="home-card-body">
+      <div class="home-card-header">
+        <div class="home-card-pill">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6.5l3 3 5-5" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          ${pillarLabel}
+        </div>
+      </div>
+      <div class="home-card-title">${title}</div>
+      <div class="home-card-points">
+        ${points.map(p => `<div class="home-card-point">
+          <svg class="home-card-point-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#dcfce7"/><path d="M5 8.5l2 2 4-4" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          ${p}
+        </div>`).join('')}
+      </div>
+      <div class="home-card-link">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.3 11.7L11.7 2.3M11.7 2.3H5.3M11.7 2.3V8.7" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        ${linkLabel}
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ── Pricing screen ── */
+function renderPricing() {
+  const tabs = `
+    <div class="tabs-bar">
+      <button class="tab-btn ${pricingTab==='performance'?'active':''}" onclick="setPricingTab('performance')">Performance</button>
+      <button class="tab-btn ${pricingTab==='pricing-details'?'active':''}" onclick="setPricingTab('pricing-details')">Pricing details</button>
+      <button class="tab-btn ${pricingTab==='logs'?'active':''}" onclick="setPricingTab('logs')">Logs</button>
+    </div>`;
+
+  let content = '';
+  if (pricingTab === 'performance') content = renderPerfTab();
+  else if (pricingTab === 'pricing-details') content = renderPricingDetailsTab();
+  else content = renderLogsTab();
+
+  return `
+    <div class="pricing-wrap">
+      <div class="pricing-title">Pricing</div>
+      ${tabs}
+      ${content}
+    </div>`;
+}
+
+function setPricingTab(tab) {
+  pricingTab = tab;
+  assetFilter = 'All';
+  assetSearch = '';
+  logsPage = 1;
+  render();
+}
+
+function renderLogsTab() {
+  const rows = LOG_ENTRIES.map((e, i) => `
+    <div class="log-row" onclick="openLogModal(${i})">
+      <div>
+        <div class="log-date-main">${e.date}</div>
+        <div class="log-date-sub">${e.time}</div>
+      </div>
+      <div class="log-author-cell">
+        <div class="log-avatar">${e.initials}</div>
+        <span class="log-author-name">${e.author}</span>
+      </div>
+      <div class="log-plan">${e.plan}</div>
+      <div class="log-chevron">&#8250;</div>
+    </div>`).join('');
+
+  // Pagination
+  const totalPages = LOGS_PAGES;
+  const cur = logsPage;
+  const pageNums = [1,2,3,4,5];
+  const pageBtns = pageNums.map(p =>
+    `<button class="logs-page-btn${p===cur?' active':''}" onclick="setLogsPage(${p})">${p}</button>`
+  ).join('');
+  const pagination = `
+    <div class="logs-pagination">
+      <button class="logs-page-btn arrow" onclick="setLogsPage(Math.max(1,logsPage-1))">&#8249;</button>
+      ${pageBtns}
+      <span class="logs-page-dots">…</span>
+      <button class="logs-page-btn${cur===totalPages?' active':''}" onclick="setLogsPage(${totalPages})">${totalPages}</button>
+      <button class="logs-page-btn arrow" onclick="setLogsPage(Math.min(${totalPages},logsPage+1))">&#8250;</button>
+    </div>`;
+
+  return `<div class="logs-wrap">
+    <div class="logs-heading">Logs</div>
+    <div class="logs-filter-row">
+      <div class="logs-filter-label">Author</div>
+      <select class="logs-author-select"><option>All</option><option>John Doe</option></select>
+    </div>
+    <div class="logs-count">${LOGS_TOTAL.toLocaleString()} logs</div>
+    <div class="logs-table-outer">
+      <div class="logs-col-hdrs"><div>Date</div><div>Author</div><div>Plan</div><div></div></div>
+      ${rows}
+    </div>
+    ${pagination}
+  </div>`;
+}
+
+function setLogsPage(p) {
+  logsPage = p;
+  render();
+}
+
+function openLogModal(idx) {
+  const e = LOG_ENTRIES[idx];
+  document.getElementById('log-modal-title').textContent = `Log from ${e.date}`;
+  document.getElementById('log-modal-json').textContent = LOG_JSON_PAYLOAD;
+  document.getElementById('log-modal-overlay').style.display = 'flex';
+}
+
+function closeLogModal() {
+  document.getElementById('log-modal-overlay').style.display = 'none';
+}
+
+function handleLogOverlayClick(ev) {
+  if (ev.target === document.getElementById('log-modal-overlay')) closeLogModal();
+}
+
+function copyLogJSON() {
+  navigator.clipboard.writeText(LOG_JSON_PAYLOAD).catch(() => {});
+  const btn = document.querySelector('.log-modal-copy');
+  if (btn) { btn.textContent = 'Copied!'; setTimeout(() => { btn.textContent = 'Copy'; }, 1500); }
+}
+
+function renderPerfTab() {
+  return `
+    <div class="perf-section">
+      <div class="perf-title">Performance</div>
+      <div class="perf-sub">View revenue, absorbed costs, and outstanding balances from this organization pricing configuration.</div>
+      <div class="perf-group-label">Markup spreads</div>
+      <div class="perf-cards-row" style="max-width:840px">
+        <div class="perf-card">
+          <div class="perf-card-value">$4,821.50</div>
+          <div class="perf-card-label">Net revenue (MTD)</div>
+        </div>
+        <div class="perf-card">
+          <div class="perf-card-value">$4,821.50</div>
+          <div class="perf-card-label">Spread markup earned</div>
+        </div>
+      </div>
+      <div class="perf-group-label">Markdown spreads</div>
+      <div class="perf-cards-row" style="max-width:840px">
+        <div class="perf-card">
+          <div class="perf-card-value neg">– $312.00</div>
+          <div class="perf-card-label">Spread absorbed (MTD)</div>
+        </div>
+        <div class="perf-card">
+          <div class="perf-card-value">$4,509.50</div>
+          <div class="perf-card-label">Balance due / receivable</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderPricingDetailsTab() {
+  const assets = filteredAssets();
+  const cats = ASSET_CATEGORIES;
+
+  const pills = cats.map(cat => {
+    const count = catCount(cat);
+    return `<button class="cat-pill ${assetFilter===cat?'active':''}" onclick="setAssetFilter('${cat}')">${cat}<span class="cat-pill-count">${count}</span></button>`;
+  }).join('');
+
+  const displayedAssets = assets.slice(0, 20);
+  const hiddenCount = assets.length - displayedAssets.length;
+
+  const gridLimited = displayedAssets.map(a => `
+    <div class="asset-item">
+      <div class="asset-icon-circle" style="background:${a.c}">${a.t.substring(0,3)}</div>
+      <div class="asset-info">
+        <div class="asset-name">${a.n}</div>
+        <div class="asset-ticker">${a.t}</div>
+      </div>
+    </div>`).join('');
+
+  return `
+    <div class="pricing-details-wrap">
+      <div class="section-heading">Pricing details</div>
+      <div class="section-sub">Manage your organization's pricing configuration.</div>
+
+      <div style="margin-bottom:24px">
+        <div class="assets-section-title">Assets</div>
+        <div class="assets-section-sub">Assets available for your organization.</div>
+        <div class="assets-search">
+          ${searchSVG}
+          <input type="text" placeholder="Search for assets" value="${assetSearch}" oninput="setAssetSearch(this.value)">
+        </div>
+        <div class="cat-pills">${pills}</div>
+        <div class="assets-count">${assets.length} assets</div>
+        <div class="assets-grid-limited">${gridLimited}</div>
+      </div>
+
+      <div>
+        <div class="plan-section-title">Pricing plan</div>
+        <div class="plan-section-sub">View spread and fees details.</div>
+        <div class="plan-summary-card">
+          <div class="plan-card-hdr">
+            <div class="plan-card-hdr-left">
+              <div class="plan-icon-circle">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="#3b82f6" stroke-width="1.4"/><path d="M10 6v8M8 8h3a1 1 0 010 2H9a1 1 0 010 2h3" stroke="#3b82f6" stroke-width="1.4" stroke-linecap="round"/></svg>
+              </div>
+              <span class="plan-name">Standard plan</span>
+              <button class="plan-view-btn" onclick="goPlanDetails()">View plan details</button>
+            </div>
+            <span class="plan-last-updated">Last updated at September 26, 2025.</span>
+          </div>
+          <div class="plan-cols">
+            <div class="plan-col">
+              <div class="plan-col-hdr">
+                <span class="plan-col-title">Trade spread</span>
+                <span class="plan-chip pos">+ 6 bps</span>
+              </div>
+              <div class="plan-col-subhdr">Threshold tiers:</div>
+              <div class="plan-tier-line">Less than $10,000</div>
+              <div class="plan-tier-line">$10,000 - $50,000</div>
+              <div class="plan-tier-line">$50,000 - $100,000</div>
+              <div class="plan-tier-line">$100,000 - $500,000</div>
+              <div class="plan-tier-line">Greater than $500,000</div>
+            </div>
+            <div class="plan-col">
+              <div class="plan-col-hdr">
+                <span class="plan-col-title">Deposits fee</span>
+                <span class="plan-chip pos">+ 6 bps</span>
+              </div>
+              <div class="plan-col-subhdr">Methods:</div>
+              <div class="plan-tier-line">Card</div>
+              <div class="plan-tier-line">Bank transfer (SEPA)</div>
+              <div class="plan-tier-line">Apple Pay</div>
+              <div class="plan-tier-line">Google Pay</div>
+            </div>
+            <div class="plan-col">
+              <div class="plan-col-hdr">
+                <span class="plan-col-title">Withdrawal fee</span>
+                <span class="plan-chip absorb">Absorb all fees</span>
+              </div>
+              <div class="plan-col-subhdr">Methods:</div>
+              <div class="plan-tier-line">Bank transfer (ACH)</div>
+              <div class="plan-tier-line">Bank transfer (FPS)</div>
+              <div class="plan-tier-line">Bank transfer (SEPA)</div>
+              <div class="plan-tier-line">Crypto wallet</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function setAssetFilter(cat) {
+  assetFilter = cat;
+  render();
+}
+function setAssetSearch(val) {
+  assetSearch = val;
+  render();
+}
+
+/* ── Plan details screen ── */
+function renderPlanDetails() {
+  // Build tier headers from state (0 = Less than first threshold, 1..3 = ranges, 4 = Greater than)
+  const thead = `
+    <tr>
+      <th><span class="asset-th">Assets</span></th>
+      ${[0,1,2,3,4].map(i => renderTierHeader(i)).join('')}
+    </tr>`;
+
+  function cell(baseBps, partnerBps) {
+    const total = baseBps + partnerBps;
+    return `<td class="spread-cell">
+      <div class="sc-uphold-lbl">Uphold spread</div>
+      <div class="sc-spread-row"><span class="sc-base">${baseBps} bps</span><span class="sc-pfee" style="${chipStyle(partnerBps)}">${chipLabel(partnerBps)}</span></div>
+      <div class="sc-eq">=</div>
+      <div class="sc-total-lbl">Total</div>
+      <div class="sc-total-val" style="${totalStyle(total)}">${total} bps</div>
+    </td>`;
+  }
+
+  const rows = PLAN_ASSETS.map(a => `
+    <tr>
+      <td class="asset-td">
+        <div class="asset-td-inner">
+          <div class="asset-icon-circle" style="background:${a.c};width:32px;height:32px;font-size:10px">${a.t.substring(0,3)}</div>
+          <span style="font-size:13.5px;font-weight:600;color:#1d2738">${a.t}</span>
+        </div>
+      </td>
+      ${cell(6,draftFee)}${cell(6,draftFee)}${cell(6,draftFee)}${cell(6,draftFee)}${cell(6,draftFee)}
+    </tr>`).join('');
+
+  const fallbackRow = `
+    <tr class="fallback-row">
+      <td class="asset-td fallback-td">
+        <div class="asset-td-inner">
+          <span class="fallback-label">Fallback</span>
+          <span class="tooltip-wrap" onmouseenter="showTip(event,'The fallback rate applies to all assets not listed above.')" onmouseleave="hideTip()">${infoSVG}<span class="tooltip-text">The fallback rate applies to all assets not listed above.</span></span>
+        </div>
+      </td>
+      ${[0,1,2,3,4].map(() => { const fb=draftFee,ft=6+fb; return `<td class="spread-cell">
+        <div class="sc-uphold-lbl">Uphold spread</div>
+        <div class="sc-spread-row"><span class="sc-base">6 bps</span><span class="sc-pfee" style="${chipStyle(fb)}">${chipLabel(fb)}</span></div>
+        <div class="sc-eq">=</div>
+        <div class="sc-total-lbl">Total</div>
+        <div class="sc-total-val" style="${totalStyle(ft)}">${ft} bps</div>
+      </td>`; }).join('')}
+    </tr>`;
+
+  const pfeeTooltip = 'The starting point for a transaction below your lowest tier.';
+
+  return `
+    <div class="plan-details-wrap">
+      <div class="breadcrumb">
+        <span class="bc-link" onclick="goPricingDetails()">Pricing</span>
+        <span class="bc-sep">/</span>
+        <span class="bc-current">Standard plan</span>
+      </div>
+
+      <div class="plan-details-hdr">
+        <div class="plan-icon">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="9" stroke="#3b82f6" stroke-width="1.5"/><path d="M11 7v8M9 9h3a1.5 1.5 0 010 3h-2a1.5 1.5 0 010 3h3" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="plan-title-grp">
+          <div class="plan-title">Standard plan</div>
+          <div class="plan-updated">Last updated at September 26, 2025.</div>
+        </div>
+      </div>
+
+      <div class="plan-tabs-bar">
+        <button class="tab-btn ${planTab==='trade'?'active':''}" onclick="setPlanTab('trade')">Trade</button>
+        <button class="tab-btn ${planTab==='deposits'?'active':''}" onclick="setPlanTab('deposits')">Deposits</button>
+        <button class="tab-btn ${planTab==='withdrawals'?'active':''}" onclick="setPlanTab('withdrawals')">Withdrawals</button>
+      </div>
+
+      ${planTab === 'trade' ? `
+      <div class="spreads-title">Spreads</div>
+      <div class="spreads-toolbar">
+        <div class="spreads-tb-left">
+          <div class="spreads-tb-label">Spreads per ticket size</div>
+          <div class="spreads-tb-sub">Set the Uphold base spread per asset per tier.</div>
+        </div>
+        <div class="spreads-tb-right">
+          <div class="pf-group">
+            <div class="pf-label-row">
+              <span class="pf-label">Partner fee</span>
+              <span class="tooltip-wrap" onmouseenter="showTip(event,'${pfeeTooltip}')" onmouseleave="hideTip()">${infoSVG}<span class="tooltip-text">${pfeeTooltip}</span></span>
+            </div>
+            <div class="pf-input-box">
+              <input class="pf-fee-input" type="number" value="${draftFee}" min="0" max="999" oninput="onFeeInput(this.value)" onfocus="this.select()">
+              <span class="pf-input-unit">bps</span>
+            </div>
+          </div>
+          <div class="absorb-grp" onclick="toggleAbsorbAll()" style="cursor:pointer">
+            <div class="absorb-lbl">Absorb all spreads</div>
+            <div style="display:flex;align-items:center;gap:8px">
+              <div class="toggle-switch">
+                <div class="toggle-track" style="background:${absorbAll?'#22c55e':'#d1d5db'}"></div>
+                <div class="toggle-thumb" style="left:${absorbAll?'21px':'3px'}"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="spread-table-outer">
+        <table class="spread-table">
+          <thead>${thead}</thead>
+          <tbody>${rows}${fallbackRow}</tbody>
+        </table>
+      </div>` : planTab === 'deposits' ? renderDepositsTab() : renderWithdrawalsTab()}
+    </div>`;
+}
+
+/* ── Tier helpers ── */
+function fmtDollar(n) {
+  return '$' + n.toLocaleString('en-US');
+}
+function tiersAreDirty() {
+  return tierThresholds.some((v, i) => v !== savedTierThresholds[i]);
+}
+function isOverallDirty() {
+  return draftFee !== partnerFee || tiersAreDirty() || methodFeesDirty('deposits') || methodFeesDirty('withdrawals');
+}
+function isTierConflicting(i) {
+  const v = tierThresholds[i];
+  if (v <= 0) return true;
+  if (i > 0 && v <= tierThresholds[i - 1]) return true;
+  if (i < tierThresholds.length - 1 && v >= tierThresholds[i + 1]) return true;
+  return false;
+}
+
+function renderTierHeader(i) {
+  const isLast = i === tierThresholds.length;
+  const gtTooltip = "Automatically set to your highest tier\\'s upper limit. Any amount above that uses this value.";
+  if (isLast) {
+    const lastVal = tierThresholds[tierThresholds.length - 1];
+    return `<th class="col-hdr-tier" id="col-hdr-${i}">
+      <div class="tier-hdr-content">
+        <span class="tier-hdr-label">Greater than</span>
+        <span class="tier-hdr-val">${fmtDollar(lastVal)} <span class="tooltip-wrap" onmouseenter="showTip(event,'${gtTooltip}')" onmouseleave="hideTip()">${infoSVG}</span></span>
+      </div>
+    </th>`;
+  }
+  if (editingTierIdx === i) {
+    const val = tierThresholds[i];
+    return `<th class="col-hdr-tier editing" id="col-hdr-${i}">
+      <div class="tier-hdr-edit">
+        <span class="tier-hdr-edit-label">Upper limit</span>
+        <div class="tier-hdr-input-row" id="tier-inp-row-${i}">
+          <span class="tier-hdr-inp-dollar">$</span>
+          <input class="tier-hdr-inp" id="tier-inp-${i}" type="number" value="${val}"
+            oninput="onTierInput(${i}, this.value)"
+            onblur="onTierBlur(${i})"
+            onkeydown="if(event.key==='Enter')this.blur();if(event.key==='Escape'){cancelTierEdit(${i});this.blur()}">
+        </div>
+        <div class="tier-err-msg" id="tier-err-${i}" style="display:none">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="6" fill="#ef4444"/><path d="M6 3v4M6 8.5v.5" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></svg>
+          <span>Adjust conflicting amount.</span>
+        </div>
+      </div>
+    </th>`;
+  }
+  let label, valText;
+  if (i === 0) {
+    label = 'Less than'; valText = fmtDollar(tierThresholds[0]);
+  } else {
+    label = 'Tier'; valText = `${fmtDollar(tierThresholds[i-1])} – ${fmtDollar(tierThresholds[i])}`;
+  }
+  return `<th class="col-hdr-tier" id="col-hdr-${i}">
+    <div class="tier-hdr-content">
+      <span class="tier-hdr-label">${label}</span>
+      <span class="tier-hdr-val">${valText}</span>
+    </div>
+    <div class="tier-hdr-actions">
+      <button class="tier-edit-pill" onclick="editTier(${i},event)">Edit</button>
+    </div>
+  </th>`;
+}
+
+function editTier(i, e) {
+  e.stopPropagation();
+  editingTierIdx = i;
+  render();
+  setTimeout(() => { const inp = document.getElementById('tier-inp-' + i); if (inp) { inp.focus(); inp.select(); } }, 0);
+}
+
+function onTierInput(i, rawVal) {
+  const n = parseInt(rawVal, 10);
+  const inputRow = document.getElementById('tier-inp-row-' + i);
+  const errEl = document.getElementById('tier-err-' + i);
+  if (isNaN(n) || n <= 0) {
+    if (inputRow) inputRow.classList.add('error');
+    if (errEl) errEl.style.display = 'flex';
+    return;
+  }
+  // Temporarily set to check conflicts
+  const prev = tierThresholds[i];
+  tierThresholds[i] = n;
+  const conflicting = isTierConflicting(i);
+  tierThresholds[i] = prev; // revert; commit on blur
+  if (inputRow) inputRow.classList.toggle('error', conflicting);
+  if (errEl) errEl.style.display = conflicting ? 'flex' : 'none';
+  // Live-update "Greater than" header
+  if (i === tierThresholds.length - 1) {
+    const gtHdr = document.querySelector('#col-hdr-' + tierThresholds.length + ' .tier-hdr-val');
+    if (gtHdr) gtHdr.childNodes[0].textContent = fmtDollar(n) + ' ';
+  }
+}
+
+function onTierBlur(i) {
+  const inp = document.getElementById('tier-inp-' + i);
+  const n = inp ? parseInt(inp.value, 10) : NaN;
+  if (!isNaN(n) && n > 0) {
+    const prev = tierThresholds[i];
+    tierThresholds[i] = n;
+    if (isTierConflicting(i)) tierThresholds[i] = prev; // revert if conflict
+  }
+  editingTierIdx = null;
+  render();
+  updateActionBar();
+}
+
+function cancelTierEdit(i) {
+  editingTierIdx = null;
+}
+
+/* ── Partner fee editing ── */
+function chipStyle(fee) {
+  return fee < 0
+    ? 'background:#fef3c7;color:#92400e'
+    : 'background:#dbeafe;color:#1d4ed8';
+}
+function chipLabel(fee) {
+  return fee < 0 ? `- ${Math.abs(fee)} bps` : `+ ${fee} bps`;
+}
+function totalStyle(total) {
+  return total === 0 ? 'color:#9ca3af' : 'color:#1d2738';
+}
+
+function patchTableCells() {
+  const baseBps = 6;
+  document.querySelectorAll('.spread-table tbody tr').forEach(row => {
+    const isFallback = row.classList.contains('fallback-row');
+    const fee = isFallback ? (absorbAll ? -baseBps : draftFee) : draftFee;
+    const total = baseBps + fee;
+    row.querySelectorAll('.sc-pfee').forEach(chip => {
+      chip.style.cssText = chipStyle(fee);
+      chip.textContent = chipLabel(fee);
+    });
+    row.querySelectorAll('.sc-total-val').forEach(el => {
+      el.style.cssText = totalStyle(total);
+      el.textContent = `${total} bps`;
+    });
+  });
+}
+
+function onFeeInput(val) {
+  const n = parseInt(val, 10);
+  draftFee = isNaN(n) ? 0 : Math.min(Math.max(n, -999), 999);
+  // If user manually edits while absorb is on, turn it off
+  if (absorbAll) { absorbAll = false; syncToggleUI(); }
+  updateActionBar();
+  patchTableCells();
+}
+
+function toggleAbsorbAll() {
+  absorbAll = !absorbAll;
+  if (absorbAll) {
+    draftFee = -6; // negate Uphold base spread → total = 0
+    // Update input value without re-render
+    const inp = document.querySelector('.pf-fee-input');
+    if (inp) inp.value = draftFee;
+  }
+  syncToggleUI();
+  updateActionBar();
+  patchTableCells();
+}
+
+function syncToggleUI() {
+  const track = document.querySelector('.toggle-track');
+  const thumb = document.querySelector('.toggle-thumb');
+  if (!track || !thumb) return;
+  track.style.background = absorbAll ? '#22c55e' : '#d1d5db';
+  thumb.style.left = absorbAll ? '21px' : '3px';
+}
+
+function updateActionBar() {
+  const bar = document.getElementById('action-bar');
+  const dirty = isOverallDirty();
+  bar.style.display = dirty ? 'flex' : 'none';
+  const countEl = document.getElementById('ab-change-count');
+  if (countEl) {
+    let n = 0;
+    if (draftFee !== partnerFee) n++;
+    tierThresholds.forEach((v, i) => { if (v !== savedTierThresholds[i]) n++; });
+    for (const kind of ['deposits', 'withdrawals']) {
+      FEES_ROWS[kind].forEach(r => { if (draftMethodFees[kind][r.key] !== savedMethodFees[kind][r.key]) n++; });
+    }
+    countEl.textContent = n === 1 ? '1 unsaved change' : `${n} unsaved changes`;
+  }
+}
+
+function discardChanges() {
+  draftFee = partnerFee;
+  absorbAll = false;
+  tierThresholds = [...savedTierThresholds];
+  editingTierIdx = null;
+  for (const kind of ['deposits', 'withdrawals']) {
+    FEES_ROWS[kind].forEach(r => { draftMethodFees[kind][r.key] = savedMethodFees[kind][r.key]; });
+    editingMethodRow[kind] = null;
+  }
+  document.getElementById('action-bar').style.display = 'none';
+  render();
+}
+
+function openSaveModal() {
+  document.getElementById('save-modal-overlay').style.display = 'flex';
+}
+
+function closeSaveModal() {
+  document.getElementById('save-modal-overlay').style.display = 'none';
+}
+
+function handleModalOverlayClick(e) {
+  if (e.target === document.getElementById('save-modal-overlay')) closeSaveModal();
+}
+
+function confirmSave() {
+  partnerFee = draftFee;
+  savedTierThresholds = [...tierThresholds];
+  editingTierIdx = null;
+  for (const kind of ['deposits', 'withdrawals']) {
+    FEES_ROWS[kind].forEach(r => { savedMethodFees[kind][r.key] = draftMethodFees[kind][r.key]; });
+    editingMethodRow[kind] = null;
+  }
+  closeSaveModal();
+  document.getElementById('action-bar').style.display = 'none';
+  render();
+}
+
+/* ── Payment method icons ── */
+const METHOD_ICONS = {
+  mastercard: `<svg width="40" height="40" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="20" fill="#fff"/><circle cx="16" cy="20" r="9" fill="#EB001B"/><circle cx="24" cy="20" r="9" fill="#F79E1B"/><path d="M20 13.5a9 9 0 010 13A9 9 0 0120 13.5z" fill="#FF5F00"/></svg>`,
+  paypal: `<svg width="40" height="40" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="20" fill="#fff"/><text x="20" y="26" text-anchor="middle" font-size="18" font-weight="700" font-family="Arial,sans-serif" fill="#003087">P</text><text x="23" y="26" text-anchor="middle" font-size="18" font-weight="700" font-family="Arial,sans-serif" fill="#009cde"> </text></svg>`,
+  applepay: `<svg width="40" height="40" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="20" fill="#1a1a1a"/><text x="20" y="27" text-anchor="middle" font-size="13" font-weight="500" font-family="-apple-system,sans-serif" fill="#fff">Pay</text></svg>`,
+  googlepay: `<svg width="40" height="40" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="20" fill="#fff"/><text x="14" y="25" font-size="16" font-weight="700" font-family="Arial,sans-serif" fill="#4285F4">G</text><text x="23" y="25" font-size="10" font-weight="600" font-family="Arial,sans-serif" fill="#34A853">P</text></svg>`,
+  bank: `<svg width="40" height="40" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="20" fill="#e8edf5"/><path d="M12 28h16M14 22v6M18 22v6M22 22v6M26 22v6M12 22h16M20 12l8 6H12l8-6z" stroke="#4b5563" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+};
+
+function methodFeesDirty(kind) {
+  return FEES_ROWS[kind].some(r => draftMethodFees[kind][r.key] !== savedMethodFees[kind][r.key]);
+}
+
+function openMethodFeeEdit(kind, key) {
+  editingMethodRow[kind] = key;
+  render();
+  setTimeout(() => {
+    const inp = document.getElementById('mfee-inp-' + kind + '-' + key);
+    if (inp) { inp.focus(); inp.select(); }
+  }, 0);
+}
+
+function onMethodFeeInput(kind, key, val) {
+  const n = parseInt(val, 10);
+  draftMethodFees[kind][key] = isNaN(n) ? 0 : Math.min(Math.max(n, -999), 999);
+  // patch total live
+  const row = FEES_ROWS[kind].find(r => r.key === key);
+  const total = row.upholdFee + draftMethodFees[kind][key];
+  const totEl = document.getElementById('mfee-total-' + kind + '-' + key);
+  if (totEl) {
+    totEl.textContent = total + ' %';
+    totEl.className = 'fees-edit-total' + (total === 0 ? ' zero' : '');
+  }
+  updateActionBar();
+}
+
+function closeMethodFeeEdit(kind, key) {
+  editingMethodRow[kind] = null;
+  render();
+  updateActionBar();
+}
+
+function renderFeesTab(kind) {
+  const rows = FEES_ROWS[kind];
+  const cards = rows.map(r => {
+    const pFee = draftMethodFees[kind][r.key];
+    const total = r.upholdFee + pFee;
+    const isEditing = editingMethodRow[kind] === r.key;
+    const icon = `<div class="fees-method-icon">${METHOD_ICONS[r.key]}</div>`;
+
+    if (isEditing) {
+      return `<div class="fees-card">
+        <div class="fees-card-edit">
+          <div class="fees-edit-row">
+            <div class="fees-method-cell">${icon}<span class="fees-method-name">${r.name}</span></div>
+            <span class="fees-jurisdiction">${r.jurisdiction}</span>
+            <span class="fees-uphold-val">${r.upholdFee} %</span>
+            <div class="fees-pfee-box">
+              <input class="fees-pfee-inp" id="mfee-inp-${kind}-${r.key}" type="number"
+                value="${pFee}"
+                oninput="onMethodFeeInput('${kind}','${r.key}',this.value)"
+                onblur="closeMethodFeeEdit('${kind}','${r.key}')"
+                onkeydown="if(event.key==='Enter'||event.key==='Escape')this.blur()">
+              <span class="fees-pfee-unit">%</span>
+            </div>
+            <span class="fees-edit-total${total === 0 ? ' zero' : ''}" id="mfee-total-${kind}-${r.key}">${total} %</span>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    const chipCls = pFee < 0 ? 'neg' : 'pos';
+    const chipLbl = pFee < 0 ? `− ${Math.abs(pFee)} %` : `+ ${pFee} %`;
+    const totalCls = total === 0 ? ' zero' : '';
+    return `<div class="fees-card fees-card-saved" onclick="openMethodFeeEdit('${kind}','${r.key}')">
+      <div class="fees-card-row">
+        <div class="fees-method-cell">${icon}<span class="fees-method-name">${r.name}</span></div>
+        <span class="fees-jurisdiction">${r.jurisdiction}</span>
+        <span class="fees-uphold-val">${r.upholdFee} %</span>
+        <span class="fees-partner-chip ${chipCls}">${chipLbl}</span>
+        <span class="fees-total-val${totalCls}">${total} %</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  const colHdrs = `<div class="fees-col-hdrs">
+    <div>Method</div><div>Jurisdiction</div><div>Uphold fee</div><div>Partner fee</div><div>Total</div>
+  </div>`;
+
+  return `<div class="fees-section-title">Fees</div>${colHdrs}${cards}`;
+}
+
+function renderDepositsTab() { return renderFeesTab('deposits'); }
+function renderWithdrawalsTab() { return renderFeesTab('withdrawals'); }
+
+/* ── Tooltip ── */
+function showTip(e, text) {
+  const tip = document.getElementById('g-tooltip');
+  tip.textContent = text;
+  tip.style.display = 'block';
+  positionTip(e);
+}
+function positionTip(e) {
+  const tip = document.getElementById('g-tooltip');
+  const x = e.clientX + 12;
+  const y = e.clientY - 8;
+  const tw = tip.offsetWidth;
+  const th = tip.offsetHeight;
+  tip.style.left = Math.min(x, window.innerWidth - tw - 12) + 'px';
+  tip.style.top = Math.max(8, y - th) + 'px';
+}
+function hideTip() {
+  document.getElementById('g-tooltip').style.display = 'none';
+}
+function attachTooltips() {
+  document.querySelectorAll('.tooltip-wrap').forEach(el => {
+    el.addEventListener('mousemove', positionTip);
+  });
+}
+
+/* ── Illustrations ── */
+function buyIllustrationSVG() {
+  return `<svg width="160" height="140" viewBox="0 0 160 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="80" cy="110" rx="55" ry="12" fill="#e5e7eb" opacity=".4"/>
+    <circle cx="80" cy="62" r="40" fill="#d1fae5" opacity=".6"/>
+    <circle cx="80" cy="62" r="28" fill="#6ee7b7" opacity=".5"/>
+    <path d="M68 62c0-6.6 5.4-12 12-12s12 5.4 12 12-5.4 12-12 12-12-5.4-12-12z" fill="#fff" opacity=".8"/>
+    <path d="M80 55v14M77 57h4.5a2.5 2.5 0 010 5H79a2.5 2.5 0 010 5H83" stroke="#059669" stroke-width="1.8" stroke-linecap="round"/>
+    <circle cx="104" cy="38" r="14" fill="#fef9c3" stroke="#fde047" stroke-width="1"/>
+    <path d="M104 32v12M101 34h4a1.5 1.5 0 010 3h-2a1.5 1.5 0 010 3h3" stroke="#ca8a04" stroke-width="1.4" stroke-linecap="round"/>
+    <circle cx="58" cy="88" r="10" fill="#dbeafe" stroke="#93c5fd" stroke-width="1"/>
+    <path d="M58 83v10M56 85h3a1 1 0 010 2h-1.5a1 1 0 010 2h2" stroke="#2563eb" stroke-width="1.3" stroke-linecap="round"/>
+  </svg>`;
+}
+function sendFiatIllustrationSVG() {
+  return `<svg width="160" height="140" viewBox="0 0 160 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="80" cy="112" rx="52" ry="10" fill="#e5e7eb" opacity=".4"/>
+    <rect x="42" y="44" width="76" height="52" rx="10" fill="#dbeafe" opacity=".7"/>
+    <rect x="50" y="52" width="60" height="36" rx="7" fill="#fff"/>
+    <path d="M60 70h40M60 62h20M60 78h28" stroke="#93c5fd" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="106" cy="52" r="14" fill="#ede9fe" stroke="#c4b5fd" stroke-width="1"/>
+    <path d="M100 52l4 4 8-8" stroke="#7c3aed" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M36 82l10-6 8 4 10-8 10 6 10-10" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`;
+}
+function sendCryptoIllustrationSVG() {
+  return `<svg width="160" height="140" viewBox="0 0 160 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="80" cy="112" rx="52" ry="10" fill="#e5e7eb" opacity=".4"/>
+    <circle cx="80" cy="64" r="36" fill="#f3e8ff" opacity=".6"/>
+    <circle cx="80" cy="64" r="24" fill="#e9d5ff" opacity=".7"/>
+    <path d="M72 64l8-8 8 8M80 56v16" stroke="#7c3aed" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="106" cy="40" r="12" fill="#fce7f3" stroke="#f9a8d4" stroke-width="1"/>
+    <path d="M101 40l4 4 6-7" stroke="#be185d" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="52" cy="88" r="10" fill="#dcfce7" stroke="#86efac" stroke-width="1"/>
+    <path d="M48 88l3 3 5-5" stroke="#16a34a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M90 50l16-10M70 78l-16 10" stroke="#c4b5fd" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="3 2"/>
+  </svg>`;
+}
+
+/* ── Init ── */
+setActiveNav('nav-home');
+render();
+</script>
+</body>
+</html>

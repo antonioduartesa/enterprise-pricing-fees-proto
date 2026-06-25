@@ -1,0 +1,3269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enterprise Portal — Partners & Pricing</title>
+<style>
+/* ══════════════════════════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;font-size:14px;color:#1a2234;background:#f0f2fa;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* ══════════════════════════════════════════════════════════
+   APP HEADER — single slim header (logo + user pill)
+══════════════════════════════════════════════════════════ */
+.app-header{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:#f0f2fa;flex-shrink:0;}
+.app-header-logo{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.app-user-pill{display:flex;align-items:center;gap:7px;background:#e1e3ef;border:none;border-radius:9999px;padding:7px 16px 7px 12px;font-size:13.5px;font-weight:600;color:#1d2738;cursor:pointer;font-family:inherit;transition:background .15s;}
+.app-user-pill:hover{background:#d5d8ea;}
+
+/* ══════════════════════════════════════════════════════════
+   BANNER
+══════════════════════════════════════════════════════════ */
+.prod-banner{height:36px;background:#fff8eb;border-bottom:1px solid #fde68a;display:flex;align-items:center;padding:0 20px;gap:10px;font-size:12.5px;color:#92400e;font-weight:500;flex-shrink:0;}
+.prod-badge{background:#ef4444;color:#fff;font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;letter-spacing:.01em;}
+.banner-user{margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12.5px;color:#92400e;font-weight:500;}
+
+/* ══════════════════════════════════════════════════════════
+   LAYOUT
+══════════════════════════════════════════════════════════ */
+.app-body{display:flex;flex:1;overflow:hidden;}
+.sidebar{width:220px;min-width:220px;background:#fff;border-right:1px solid #e5e7eb;display:flex;flex-direction:column;overflow-y:auto;padding-bottom:16px;flex-shrink:0;}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:16px 16px 14px;}
+.logo-text .main{display:block;font-size:13px;font-weight:600;color:#111;}
+.logo-text .sub{display:block;font-size:10px;color:#9ca3af;}
+.sidebar-label{font-size:11px;color:#9ca3af;padding:8px 16px 3px;text-transform:uppercase;letter-spacing:.04em;font-weight:500;}
+.sidebar-dd{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;margin:1px 8px;border-radius:7px;cursor:pointer;}
+.sidebar-dd:hover{background:#f9fafb;}
+.sidebar-dd-inner{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:#374151;}
+.sidebar-div{height:1px;background:#f3f4f6;margin:6px 0;}
+.nav-item{display:flex;align-items:center;gap:9px;padding:7px 12px;margin:1px 8px;border-radius:7px;cursor:pointer;font-size:13px;color:#4b5563;}
+.nav-item:hover{background:#f3f4f6;}
+.nav-item svg{color:#6b7280;flex-shrink:0;}
+
+/* ══════════════════════════════════════════════════════════
+   TOPBAR
+══════════════════════════════════════════════════════════ */
+.main-wrapper{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{height:44px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;padding:0 28px;flex-shrink:0;}
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;}
+.bc-link{color:#35415f;cursor:pointer;text-decoration:underline;text-underline-offset:3px;transition:color .12s;}
+.bc-link:hover{color:#111;}
+.bc-current{color:#697BAA;font-weight:600;}
+.bc-sep{color:#a5b0cf;}
+.bc-in-card{margin-bottom:28px;}
+.topbar-right{display:flex;align-items:center;gap:7px;font-size:13px;color:#374151;font-weight:500;}
+.main-content{flex:1;overflow-y:auto;}
+
+/* ══════════════════════════════════════════════════════════
+   BUTTONS
+   Note: border:1.5px solid transparent from source 1 (partners)
+         spread-plan overrides inline where needed
+══════════════════════════════════════════════════════════ */
+.btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;border-radius:8px;cursor:pointer;font-family:inherit;padding:8px 16px;border:1.5px solid transparent;transition:all .15s;text-decoration:none;}
+.btn-primary{background:#3CC13B;color:#fff;border-color:#3CC13B;}
+.btn-primary:hover{background:#2da82c;border-color:#2da82c;}
+.btn-outline{background:#fff;border-color:#d1d5db;color:#374151;}
+.btn-outline:hover{background:#f9fafb;}
+.btn-sm{padding:6px 14px;font-size:12.5px;}
+
+/* Dark pill save bar buttons */
+.btn-save-pill{background:#3CC13B;color:#fff;border:none;border-radius:20px;padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .15s;}
+.btn-save-pill:hover{background:#2da82c;}
+.btn-discard-pill{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.3);border-radius:20px;padding:7px 16px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;transition:all .15s;}
+.btn-discard-pill:hover{border-color:rgba(255,255,255,.6);}
+
+/* ── Delete tier confirmation modal ───────────────────────── */
+.modal-overlay{position:fixed;inset:0;background:rgba(39,48,54,.4);z-index:2000;display:none;align-items:center;justify-content:center;}
+.modal-overlay.visible{display:flex;}
+.modal-card{background:#fff;border-radius:16px;width:520px;max-width:calc(100vw - 32px);box-shadow:0 8px 24px rgba(132,148,165,.22);display:flex;flex-direction:column;}
+.modal-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:24px;border-bottom:1px solid #e1e3ef;}
+.modal-title{font-size:20px;font-weight:700;color:#1d2738;line-height:1.3;flex:1;}
+.modal-close-btn{width:32px;height:32px;border-radius:50%;background:rgba(165,176,207,.16);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#6b7280;flex-shrink:0;transition:background .15s;}
+.modal-close-btn:hover{background:rgba(165,176,207,.3);}
+.modal-body{padding:24px;font-size:15px;color:#35415f;line-height:1.55;}
+.modal-body p{margin:0 0 8px;}
+.modal-body p:last-child{margin:0;}
+.modal-ftr{display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:20px 24px;border-top:1px solid #e1e3ef;}
+.modal-btn-cancel{background:transparent;border:1.5px solid #49cc68;color:#39a854;border-radius:9999px;padding:8px 20px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;line-height:1.4;}
+.modal-btn-cancel:hover{background:rgba(73,204,104,.06);}
+.modal-btn-delete{background:#ff6e4c;border:none;color:#fff;border-radius:9999px;padding:9px 20px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .15s;line-height:1.4;}
+.modal-btn-delete:hover{background:#f05a39;}
+.modal-btn-save{background:#3CC13B;border:none;color:#fff;border-radius:9999px;padding:9px 20px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .15s;line-height:1.4;}
+.modal-btn-save:hover{background:#2da82c;}
+
+/* ══════════════════════════════════════════════════════════
+   SAVE BAR — dark pill (partners / pricing screens)
+   id="save-bar"  class=".save-bar-pill"
+══════════════════════════════════════════════════════════ */
+.save-bar-pill{position:fixed;bottom:20px;left:50vw;transform:translateX(-50%);background:#1e293b;border-radius:40px;padding:8px 8px 8px 20px;display:none;align-items:center;gap:8px;z-index:500;box-shadow:0 8px 32px rgba(0,0,0,.25);white-space:nowrap;}
+.save-bar-pill.visible{display:flex;}
+.save-bar-lbl{font-size:13px;color:#fff;font-weight:400;}
+
+/* save-bar-spread now reuses .save-bar-pill — no separate styles needed */
+
+/* ══════════════════════════════════════════════════════════
+   TOAST (unified)
+══════════════════════════════════════════════════════════ */
+.g-toast{position:fixed;top:20px;right:28px;background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:12px 18px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,.12);z-index:2000;font-size:13px;color:#111827;font-weight:500;transition:opacity .25s,transform .25s;opacity:0;transform:translateY(-8px);pointer-events:none;min-width:240px;}
+.g-toast.show{opacity:1;transform:translateY(0);}
+.toast-check{width:22px;height:22px;border-radius:50%;background:#22c55e;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+/* ══════════════════════════════════════════════════════════
+   BADGES
+══════════════════════════════════════════════════════════ */
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:500;white-space:nowrap;}
+.badge-kyb-pending{background:#fff8eb;color:#d97706;}
+.badge-kyb-completed{background:#f0fdf4;color:#16a34a;}
+.badge-kyb-declined{background:#fff1f2;color:#e11d48;}
+.badge-not-signed{background:#fff8eb;color:#d97706;}
+.badge-signed{background:#f0fdf4;color:#16a34a;}
+
+/* ══════════════════════════════════════════════════════════
+   SCREEN: PARTNERS LIST
+══════════════════════════════════════════════════════════ */
+.partners-page{padding:32px 40px;background:#fff;min-height:100%;}
+@media(max-width:900px){.partners-page{padding:24px 20px;}}
+.partners-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+.partners-title{font-size:22px;font-weight:700;color:#111827;}
+.search-wrap{display:flex;align-items:center;gap:10px;border:1.5px solid #e5e7eb;border-radius:10px;padding:0 16px;height:44px;background:#fff;margin-bottom:16px;transition:border-color .15s;}
+.search-wrap:focus-within{border-color:#9ca3af;}
+.search-wrap input{border:none;outline:none;flex:1;font-size:14px;font-family:inherit;color:#374151;}
+.search-wrap input::placeholder{color:#9ca3af;}
+.filters-row{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;}
+.filter-sel{display:flex;align-items:center;justify-content:space-between;gap:6px;border:1.5px solid #e5e7eb;border-radius:8px;padding:7px 12px;font-size:13px;color:#374151;background:#fff;cursor:pointer;min-width:130px;transition:border-color .15s;}
+.filter-sel:hover{border-color:#9ca3af;}
+.filter-lbl{font-size:11px;color:#9ca3af;font-weight:500;display:block;margin-bottom:2px;}
+.filter-val{font-size:13px;color:#374151;}
+.partners-count{font-size:13.5px;color:#697BAA;font-weight:500;margin-bottom:14px;}
+.table-scroll{overflow-x:auto;}
+.table-header{display:grid;grid-template-columns:1fr 200px 180px 180px;padding:6px 20px;margin-bottom:4px;min-width:720px;}
+.th{font-size:12px;font-weight:500;color:#697BAA;}
+.partner-row{display:grid;grid-template-columns:1fr 200px 180px 180px;padding:18px 20px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;cursor:pointer;align-items:center;transition:border-color .15s,box-shadow .15s;min-width:720px;}
+.partner-row:hover{border-color:#9ca3af;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.partner-name{font-size:14px;font-weight:600;color:#111827;line-height:1.45;}
+.products-text{font-size:14px;font-weight:400;color:#697baa;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.pagination{display:flex;align-items:center;justify-content:center;gap:3px;margin-top:24px;padding-bottom:8px;}
+.pg-btn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;border:1.5px solid transparent;color:#6b7280;background:transparent;font-family:inherit;transition:all .15s;}
+.pg-btn:hover:not(.active):not(.ellipsis){background:#f3f4f6;}
+.pg-btn.active{background:#3CC13B;color:#fff;}
+.pg-btn.ellipsis{cursor:default;letter-spacing:.05em;}
+.pg-arrow{width:34px;height:34px;border:1.5px solid #e5e7eb;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#6b7280;transition:border-color .15s;}
+.pg-arrow:hover{border-color:#9ca3af;}
+
+/* ══════════════════════════════════════════════════════════
+   SCREENS: PARTNER DETAIL / PRICING — CONTENT CARD
+══════════════════════════════════════════════════════════ */
+.content-card{background:#fff;border-radius:12px;border:1px solid #e5e7eb;margin:24px 28px;padding:32px 40px 40px;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+@media(max-width:900px){.content-card{margin:16px;padding:24px 20px 28px;}}
+
+/* Partner header */
+.partner-page-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;gap:20px;flex-wrap:wrap;}
+.partner-title{font-size:22px;font-weight:700;color:#111827;line-height:1.3;margin-bottom:8px;max-width:540px;}
+.product-area{display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.product-select{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 14px;font-size:13.5px;color:#374151;background:#fff;cursor:pointer;min-width:180px;transition:border-color .15s;}
+.product-select:hover{border-color:#9ca3af;}
+
+/* Tabs — font-size:13.5px (spread plan value) */
+.tabs-bar{display:flex;border-bottom:1.5px solid #e5e7eb;margin-bottom:32px;}
+.tab-btn{padding:10px 18px;font-size:13.5px;color:#6b7280;cursor:pointer;border-bottom:2.5px solid transparent;margin-bottom:-1.5px;background:none;border-top:none;border-left:none;border-right:none;font-family:inherit;font-weight:400;transition:color .15s;}
+.tab-btn.active{color:#3CC13B;border-bottom-color:#3CC13B;font-weight:500;}
+.tab-btn:hover:not(.active){color:#374151;}
+
+/* Product details */
+.section-title{font-size:17px;font-weight:700;color:#111827;margin-bottom:20px;}
+.product-details-card{border:1.5px solid #e5e7eb;border-radius:12px;padding:24px 28px;margin-bottom:28px;}
+.pd-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:20px;}
+@media(max-width:900px){.pd-grid{grid-template-columns:repeat(2,1fr);}}
+.pd-label{font-size:11.5px;color:#6b7280;font-weight:500;margin-bottom:6px;}
+.pd-value{font-size:14px;color:#374151;font-weight:500;}
+.pd-sel{display:flex;align-items:center;justify-content:space-between;gap:6px;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 12px;font-size:13px;color:#374151;cursor:pointer;background:#fff;transition:border-color .15s;}
+.pd-sel:hover{border-color:#9ca3af;}
+
+/* Members */
+.members-section{margin-top:4px;}
+.member-pills{display:flex;gap:16px;margin-bottom:20px;}
+.m-pill{display:flex;align-items:center;gap:4px;height:32px;padding:0 12px;border-radius:9999px;font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all .15s;background:#e1e3ef;color:#1d2738;}
+.m-pill.active{background:#49cc68;color:#fff;}
+.m-pill-count{opacity:.48;}
+.members-count-text{font-size:14px;font-weight:600;color:#697baa;margin-bottom:8px;}
+.members-hdr{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 40px;padding:0 24px;margin-bottom:8px;}
+.members-hdr-cell{font-size:12px;color:#697baa;font-weight:400;}
+.member-row{background:#fff;border-radius:16px;box-shadow:0 2px 8px rgba(132,148,165,.2);display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 40px;align-items:center;padding:0 24px;height:88px;position:relative;margin-bottom:8px;}
+.member-name-cell{display:flex;align-items:center;gap:12px;min-width:0;}
+.member-avatar-solid{width:32px;height:32px;border-radius:50%;background:#e1e3ef;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.member-avatar-dashed{width:32px;height:32px;border-radius:50%;border:1.5px dashed #e1e3ef;background:#f8f9fb;flex-shrink:0;}
+.member-avatar-initials{font-size:12px;font-weight:600;color:#1d2738;}
+.member-name{font-size:12px;font-weight:600;color:#35415f;}
+.member-invite-sent{font-size:12px;font-weight:600;color:#a5b0cf;}
+.member-email{font-size:14px;color:#697baa;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.member-role{font-size:14px;color:#697baa;}
+.member-status-tag{display:inline-flex;align-items:center;padding:0 8px;height:20px;border-radius:9999px;font-size:12px;font-weight:600;white-space:nowrap;}
+.member-status-tag.active{background:#d6fed2;color:#063b12;}
+.member-status-tag.pending{background:#e0ecff;color:#042a6c;}
+.member-status-tag.deactivated{background:#eef0f6;color:#35415f;}
+.member-last-date{font-size:14px;font-weight:700;color:#35415f;}
+.member-last-time{font-size:14px;color:#697baa;}
+.member-more-btn{width:32px;height:32px;border-radius:9999px;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#697baa;transition:background .15s;}
+.member-more-btn:hover{background:rgba(73,204,104,.08);}
+.member-more-menu{position:absolute;right:0;top:40px;background:#fff;border-radius:12px;box-shadow:0 8px 16px rgba(132,148,165,.2);padding:8px 0;z-index:200;min-width:160px;}
+.member-more-item{padding:16px;font-size:14px;font-weight:600;color:#35415f;cursor:pointer;}
+.member-more-item:hover{background:#f8f9fb;}
+
+/* Pricing */
+.pricing-section{margin-bottom:24px;}
+.section-hdr-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.revenue-card{border:1.5px solid #e5e7eb;border-radius:12px;padding:20px 24px;margin-bottom:24px;}
+.revenue-option-hdr{font-size:12.5px;color:#9ca3af;font-weight:500;margin-bottom:16px;text-transform:uppercase;letter-spacing:.04em;}
+.revenue-option{display:flex;align-items:flex-start;gap:13px;padding:14px 0;cursor:pointer;}
+.revenue-option+.revenue-option{border-top:1px solid #f3f4f6;}
+.radio-outer{width:19px;height:19px;border:2px solid #d1d5db;border-radius:50%;flex-shrink:0;margin-top:1px;transition:border-color .15s;display:flex;align-items:center;justify-content:center;}
+.radio-outer.selected{border-color:#3CC13B;background:#3CC13B;}
+.radio-inner{width:7px;height:7px;background:#fff;border-radius:50%;display:none;}
+.radio-outer.selected .radio-inner{display:block;}
+.rev-opt-title{font-size:14px;font-weight:600;color:#111827;margin-bottom:3px;}
+.rev-opt-sub{font-size:13px;color:#6b7280;line-height:1.5;}
+
+/* Limits */
+.limits-section{border-top:1px solid #e5e7eb;padding-top:24px;margin-top:4px;}
+.limits-title{font-size:15px;font-weight:600;color:#111827;margin-bottom:4px;}
+.limits-sub{font-size:13px;color:#697BAA;margin-bottom:20px;line-height:1.5;}
+.limits-table{width:auto;border-collapse:collapse;}
+.limits-table th{font-size:12.5px;font-weight:500;color:#374151;padding:0 0 10px;text-align:left;}
+.limits-table td{padding-top:7px;padding-bottom:7px;vertical-align:middle;}
+.limits-table td:first-child{font-size:14px;color:#374151;font-weight:400;white-space:nowrap;}
+.limits-table th:nth-child(2),.limits-table td:nth-child(2){padding-left:32px;padding-right:0;white-space:nowrap;}
+.limits-table th:nth-child(3),.limits-table td:nth-child(3){padding-left:16px;white-space:nowrap;}
+.lim-inp-wrap{border:1.5px solid #e5e7eb;border-radius:8px;padding:9px 13px;background:#fff;display:flex;align-items:center;gap:4px;max-width:200px;transition:border-color .15s,box-shadow .15s;}
+.lim-inp-wrap:focus-within{border-color:#3CC13B;box-shadow:0 0 0 3px rgba(60,193,59,.08);}
+.lim-inp{border:none;outline:none;font-family:inherit;font-size:13.5px;color:#374151;width:50px;background:transparent;}
+.lim-unit{font-size:13px;color:#9ca3af;}
+
+/* Standard plan */
+.std-plan-section{margin-top:32px;padding-top:28px;border-top:1px solid #f3f4f6;}
+.std-plan-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+.std-plan-title{font-size:17px;font-weight:700;color:#111827;}
+.std-plan-sub{font-size:13px;color:#697BAA;margin-bottom:18px;cursor:pointer;}
+.std-plan-card{border:1.5px solid #e5e7eb;border-radius:12px;padding:24px 28px;}
+.std-summary{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:24px;}
+.std-col-title{font-size:12px;font-weight:500;color:#6b7280;margin-bottom:10px;text-transform:uppercase;letter-spacing:.03em;}
+.std-row{display:flex;justify-content:space-between;margin-bottom:6px;}
+.std-row-lbl{font-size:13px;color:#374151;}
+.std-undef{font-size:13px;color:#697BAA;}
+/* Green outline pill — for "Edit spread plan" and similar */
+.btn-green-outline{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1.5px solid #49cc68;color:#2aa84a;border-radius:9999px;padding:7px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;}
+.btn-green-outline:hover{background:rgba(73,204,104,.07);}
+
+/* ══════════════════════════════════════════════════════════
+   PRICING TAB V2 — REVENUE MODEL + LIMITS
+══════════════════════════════════════════════════════════ */
+.pricing-page-title{font-size:28px;font-weight:700;color:#1d2738;margin-bottom:32px;}
+.psb-block{margin-bottom:40px;}
+.psb-title{font-size:20px;font-weight:600;color:#1d2738;margin-bottom:4px;}
+.psb-sub{font-size:14px;color:#697BAA;line-height:1.5;margin-bottom:24px;}
+.psb-option-lbl{font-size:14px;font-weight:600;color:#1d2738;margin-bottom:16px;}
+.psb-radio-option{display:flex;align-items:flex-start;gap:12px;cursor:pointer;margin-bottom:16px;}
+.psb-radio-option:last-child{margin-bottom:0;}
+.psb-radio-circle{width:20px;height:20px;border:2px solid #d1d4e5;border-radius:50%;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:border-color .15s,background .15s;}
+.psb-radio-circle.sel{border-color:#3CC13B;background:#3CC13B;}
+.psb-radio-dot{width:8px;height:8px;background:#fff;border-radius:50%;display:none;}
+.psb-radio-circle.sel .psb-radio-dot{display:block;}
+.psb-opt-title{font-size:14px;font-weight:600;color:#1d2738;margin-bottom:3px;}
+.psb-opt-sub{font-size:13.5px;color:#35415f;line-height:1.5;}
+/* Limits section */
+.lim2-section{margin-bottom:40px;}
+.lim2-title{font-size:20px;font-weight:600;color:#1d2738;margin-bottom:4px;}
+.lim2-sub{font-size:14px;color:#697BAA;margin-bottom:24px;}
+.lim2-card{border:1.5px solid #e1e3ef;border-radius:12px;padding:20px 24px;margin-bottom:16px;overflow:visible;}
+.lim2-card-layout{display:flex;gap:24px;align-items:flex-start;}
+.lim2-card-left{display:flex;align-items:center;gap:12px;flex-shrink:0;min-width:140px;}
+.lim2-card-content{flex:1;min-width:0;}
+.lim2-icon{width:36px;height:36px;border-radius:10px;background:#f0f2fa;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.lim2-name{font-size:14px;font-weight:600;color:#1d2738;}
+.lim2-kind{font-size:12.5px;color:#697BAA;}
+.lim2-meth-lbl{font-size:12px;font-weight:500;color:#697BAA;margin-bottom:6px;}
+/* Trade inputs */
+.lim2-trade-body{margin-top:20px;display:flex;align-items:flex-end;gap:16px;}
+.lim2-field{display:flex;flex-direction:column;gap:6px;}
+.lim2-field-lbl{font-size:12.5px;font-weight:500;color:#374151;}
+.lim2-bps-inp{border:1.5px solid #e1e3ef;border-radius:10px;padding:10px 14px;font-size:14px;color:#1d2738;font-family:inherit;width:136px;outline:none;transition:border-color .15s,box-shadow .15s;background:#fff;}
+.lim2-bps-inp:focus{border-color:#3CC13B;box-shadow:0 0 0 3px rgba(60,193,59,.08);}
+.lim2-bps-inp::placeholder{color:#9ca3af;}
+.lim2-del-btn{width:32px;height:32px;border-radius:50%;background:#e1e3ef;border:none;color:#35415f;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:background .15s;margin-bottom:1px;}
+.lim2-del-btn:hover{background:#d5d8ea;}
+/* Deposits/Withdrawals limits table */
+.lim2-dep-table{margin-top:16px;width:100%;overflow:visible;}
+.lim2-dep-hdr{display:grid;grid-template-columns:180px 120px 120px 36px;padding:0 0 8px;column-gap:12px;width:fit-content;}
+.lim2-dep-col{font-size:12px;font-weight:500;color:#697BAA;}
+.lim2-dep-row{display:grid;grid-template-columns:180px 120px 120px 36px;padding:10px 0;border-top:1px solid #f3f4f6;align-items:center;column-gap:12px;position:relative;width:fit-content;}
+.lim2-meth-inner{display:flex;align-items:center;gap:10px;min-width:0;overflow:hidden;}
+.lim2-meth-icon{display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex-shrink:0;}
+.lim2-meth-dd-wrap{position:relative;}
+.lim2-meth-trigger{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1.5px solid #e1e3ef;border-radius:10px;padding:9px 12px;font-size:13.5px;color:#374151;background:#fff;cursor:pointer;font-family:inherit;width:100%;transition:border-color .15s;white-space:nowrap;overflow:hidden;}
+.lim2-meth-trigger .lim2-ph{color:#9ca3af;}
+.lim2-meth-trigger.open{border-color:#3CC13B;box-shadow:0 0 0 3px rgba(60,193,59,.08);}
+.lim2-meth-list{display:none;position:absolute;top:calc(100% + 4px);left:0;background:#fff;border:1.5px solid #e1e3ef;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.1);z-index:400;min-width:100%;overflow:hidden;}
+.lim2-meth-list.open{display:block;}
+.lim2-meth-opt{padding:10px 14px;font-size:13.5px;color:#374151;cursor:pointer;transition:background .1s;display:flex;align-items:center;gap:10px;justify-content:space-between;}
+.lim2-meth-opt:hover{background:#f9fafb;}
+.lim2-meth-opt-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
+.lim2-meth-chk{display:flex;align-items:center;flex-shrink:0;}
+.lim2-num-wrap{border:1.5px solid #e1e3ef;border-radius:10px;padding:9px 12px;background:#fff;display:flex;align-items:center;gap:4px;transition:border-color .15s,box-shadow .15s;}
+.lim2-num-wrap:focus-within{border-color:#3CC13B;box-shadow:0 0 0 3px rgba(60,193,59,.08);}
+.lim2-num-inp{border:none;outline:none;font-family:inherit;font-size:13.5px;color:#374151;width:100%;background:transparent;}
+.lim2-num-inp::placeholder{color:#9ca3af;}
+.lim2-unit-lbl{font-size:13px;color:#9ca3af;flex-shrink:0;}
+.lim2-row-del{width:28px;height:28px;border-radius:50%;background:#e1e3ef;border:none;color:#35415f;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:background .15s;}
+.lim2-row-del:hover{background:#d5d8ea;}
+/* Assets section */
+.lim2-assets-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:0;}
+.lim2-assets-select-wrap{min-width:200px;flex-shrink:0;position:relative;}
+.lim2-assets-select-lbl{font-size:12.5px;font-weight:500;color:#374151;margin-bottom:6px;}
+.lim2-assets-dd{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1.5px solid #e1e3ef;border-radius:10px;padding:10px 14px;font-size:13.5px;color:#9ca3af;background:#fff;cursor:pointer;min-width:200px;transition:border-color .15s;}
+.lim2-assets-dd.open{border-color:#3CC13B;box-shadow:0 0 0 3px rgba(60,193,59,.08);}
+.lim2-assets-empty{border:1.5px solid #e1e3ef;border-radius:12px;padding:48px 0;text-align:center;margin-top:4px;}
+.lim2-assets-empty-txt{font-size:14px;color:#697BAA;font-weight:500;}
+/* Assets section redesign */
+.pa-search-bar{display:flex;align-items:center;gap:8px;border:1.5px solid #e1e3ef;border-radius:10px;padding:10px 14px;background:#fff;margin:14px 0 10px;}
+.pa-search-bar input{border:none;outline:none;font-family:inherit;font-size:13.5px;color:#374151;flex:1;background:transparent;}
+.pa-search-bar input::placeholder{color:#9ca3af;}
+.pa-cat-pills{display:flex;gap:8px;flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;margin-bottom:14px;}
+.pa-cat-pills::-webkit-scrollbar{height:0;}
+.pa-cat-pill{display:flex;align-items:center;gap:4px;height:28px;padding:0 12px;border-radius:9999px;font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:inherit;background:#e1e3ef;color:#1d2738;white-space:nowrap;flex-shrink:0;}
+.pa-cat-pill.active{background:#49cc68;color:#fff;}
+.pa-cat-pill-count{opacity:.6;}
+.pa-asset-row-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #f3f4f6;}
+.pa-asset-row-item:last-child{border-bottom:none;}
+.pa-asset-ic{display:flex;align-items:center;flex-shrink:0;}
+.pa-asset-ic svg{width:28px;height:28px;display:block;}
+.pa-asset-info{display:flex;flex-direction:column;gap:2px;}
+.pa-asset-fullname{font-size:13.5px;font-weight:600;color:#1d2738;}
+.pa-asset-ticker{font-size:11.5px;color:#9ca3af;font-weight:500;}
+/* Edit assets modal */
+.ea-overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:800;display:flex;align-items:center;justify-content:center;}
+.ea-modal{background:#fff;border-radius:20px;width:540px;max-width:90vw;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+.ea-modal-hdr{display:flex;align-items:center;justify-content:space-between;padding:24px 24px 16px;}
+.ea-modal-title{font-size:17px;font-weight:700;color:#1d2738;}
+.ea-modal-body{padding:0 24px;flex:1;overflow:hidden;display:flex;flex-direction:column;min-height:0;}
+.ea-modal-ftr{padding:16px 24px;display:flex;justify-content:flex-end;gap:12px;border-top:1px solid #f3f4f6;}
+.ea-cat-pills{display:flex;gap:8px;flex-wrap:nowrap;overflow-x:auto;padding-bottom:8px;margin-bottom:8px;}
+.ea-cat-pills::-webkit-scrollbar{height:0;}
+.ea-cat-pill{display:flex;align-items:center;gap:4px;height:28px;padding:0 12px;border-radius:9999px;font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:inherit;background:#e1e3ef;color:#1d2738;white-space:nowrap;flex-shrink:0;}
+.ea-cat-pill.active{background:#49cc68;color:#fff;}
+.ea-count-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0 12px;border-bottom:1px solid #f3f4f6;}
+.ea-count{font-size:12.5px;color:#697BAA;font-weight:500;}
+.ea-all-lbl{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12.5px;color:#374151;font-weight:600;user-select:none;}
+.ea-list{overflow-y:auto;flex:1;}
+.ea-list::-webkit-scrollbar{width:4px;}
+.ea-list::-webkit-scrollbar-thumb{background:#e5e7eb;border-radius:2px;}
+.ea-item{display:flex;align-items:center;gap:12px;padding:10px 0;cursor:pointer;border-bottom:1px solid #f9fafb;}
+.ea-item:last-child{border-bottom:none;}
+.ea-item-ic{width:28px;height:28px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.ea-item-ic svg{width:28px;height:28px;display:block;}
+.ea-item-info{flex:1;}
+.ea-item-name{font-size:13.5px;font-weight:600;color:#1d2738;}
+.ea-item-ticker{font-size:11.5px;color:#9ca3af;}
+/* Product details section header */
+.pd-section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+/* Assets dropdown panel */
+.pa-dd-panel{position:absolute;top:calc(100% + 6px);right:0;width:280px;background:#fff;border:1.5px solid #e1e3ef;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:500;padding:12px;}
+.pa-search{display:flex;align-items:center;gap:8px;background:#f0f2fa;border-radius:9999px;padding:8px 14px;margin-bottom:12px;}
+.pa-search input{border:none;outline:none;background:transparent;font-family:inherit;font-size:13.5px;color:#374151;width:100%;}
+.pa-search input::placeholder{color:#9ca3af;}
+.pa-count-row{display:flex;align-items:center;justify-content:space-between;padding:4px 6px 10px;border-bottom:1px solid #f3f4f6;}
+.pa-count{font-size:12.5px;color:#697BAA;}
+.pa-all{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#2aa84a;cursor:pointer;}
+.pa-opt-list{max-height:240px;overflow-y:auto;}
+.pa-opt{display:flex;align-items:center;gap:10px;padding:10px 6px;cursor:pointer;border-radius:8px;transition:background .1s;}
+.pa-opt:hover{background:#f9fafb;}
+.pa-opt-ic{display:flex;align-items:center;flex-shrink:0;}
+.pa-opt-ic svg{width:22px;height:22px;display:block;}
+.pa-opt-name{font-size:13.5px;color:#1d2738;font-weight:600;flex:1;}
+.pa-cb{width:18px;height:18px;border:1.5px solid #d1d4e5;border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:#fff;transition:all .12s;cursor:pointer;}
+.pa-cb svg{display:none;}
+.pa-cb.on{background:#3CC13B;border-color:#3CC13B;}
+.pa-cb.on svg{display:block;}
+/* Selected asset chips */
+.pa-chips{display:flex;flex-wrap:wrap;gap:24px;margin-top:24px;}
+.pa-chip{position:relative;display:flex;align-items:center;gap:10px;padding:10px 16px;border:1.5px solid transparent;border-radius:12px;transition:all .12s;}
+.pa-chip:hover{background:#fff;border-color:#e1e3ef;box-shadow:0 2px 10px rgba(0,0,0,.07);}
+.pa-chip-ic{display:flex;align-items:center;}
+.pa-chip-ic svg{width:26px;height:26px;display:block;}
+.pa-chip-del{display:none;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:#ff6e4c;border:none;color:#fff;cursor:pointer;flex-shrink:0;transition:background .15s;}
+.pa-chip-del:hover{background:#f05a39;}
+.pa-chip:hover .pa-chip-ic{display:none;}
+.pa-chip:hover .pa-chip-del{display:flex;}
+.pa-chip-name{font-size:13px;font-weight:700;color:#1d2738;}
+/* Pricing plan section */
+.lim2-plan-empty{border:1.5px solid #e1e3ef;border-radius:12px;padding:48px 0;text-align:center;margin-top:20px;}
+.lim2-plan-empty-txt{font-size:14px;color:#697BAA;margin-bottom:20px;}
+/* Pricing plan filled card */
+.pp-card{border:1px solid #e8eaf2;border-radius:16px;background:#fff;padding:20px 28px 28px;margin-top:20px;}
+.pp-card-hdr{display:flex;align-items:center;justify-content:space-between;padding-bottom:20px;border-bottom:1px solid #f1f3f9;margin-bottom:22px;}
+.pp-card-hdr-left{display:flex;align-items:center;gap:12px;}
+.pp-plan-icon{width:36px;height:36px;border-radius:10px;background:#f1f3f9;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.pp-plan-name{font-size:15px;font-weight:700;color:#111827;}
+.pp-plan-meta{font-size:12px;color:#9ca3af;margin-top:1px;}
+.pp-edit-btn{border:1.5px solid #3CC13B;background:transparent;color:#3CC13B;border-radius:8px;padding:5px 16px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .15s,color .15s;}
+.pp-edit-btn:hover{background:#f0fdf4;}
+.pp-cols{display:grid;grid-template-columns:1fr 1.2fr 1fr 1fr;gap:0;}
+.pp-col{}
+.pp-col-title{font-size:12px;font-weight:700;color:#111827;margin-bottom:10px;}
+.pp-col-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;font-size:13px;color:#697baa;}
+.pp-col-label{min-width:80px;flex-shrink:0;}
+.pp-tier-line{font-size:13px;color:#697baa;margin-bottom:5px;}
+.pp-method-line{font-size:13px;color:#697baa;margin-bottom:5px;}
+/* Partner fee chips on summary */
+.pp-chip{display:inline-flex;align-items:center;border-radius:999px;padding:1px 8px;font-size:11.5px;font-weight:600;white-space:nowrap;}
+.pp-chip.pos{background:#e8effc;color:#3b6fe0;}
+.pp-chip.neg{background:#fff8eb;color:#d97706;}
+.pp-chip.zero{background:#eef0f6;color:#35415f;}
+.pp-chip.absorb{background:#fff8eb;color:#d97706;}
+
+/* ── Deposits tab ─────────────────────────────────────────── */
+.dep-section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.dep-title{font-size:20px;font-weight:700;color:#111827;}
+.dep-table-outer{border:1.5px solid #e5e7eb;border-radius:12px;overflow:visible;background:#fff;}
+.dep-col-row{display:grid;padding:12px 20px 10px;column-gap:16px;border-bottom:1px solid #f3f4f6;}
+.dep-col-lbl{font-size:12px;font-weight:500;color:#697BAA;}
+.dep-data-row{display:grid;padding:12px 20px;column-gap:16px;align-items:center;position:relative;}
+.dep-row-sep{border-top:1px solid #f3f4f6;}
+/* Dropdown */
+.dep-dd-wrap{position:relative;}
+.dep-dd-trigger{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 12px;font-size:13.5px;color:#374151;background:#fff;cursor:pointer;font-family:inherit;width:100%;transition:border-color .15s;white-space:nowrap;overflow:hidden;}
+.dep-dd-trigger .dep-ph{color:#9ca3af;}
+.dep-dd-trigger.open{border-color:#3CC13B;box-shadow:0 0 0 3px rgba(60,193,59,.08);}
+.dep-dd-list{display:none;position:absolute;top:calc(100% + 4px);left:0;background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.1);z-index:400;min-width:100%;overflow:hidden;}
+.dep-dd-list.open{display:block;}
+.dep-dd-opt{padding:10px 14px;font-size:13.5px;color:#374151;cursor:pointer;transition:background .1s;white-space:nowrap;}
+.dep-dd-opt:hover{background:#f9fafb;}
+/* Inputs */
+.dep-inp-box{display:flex;align-items:center;gap:4px;border:1.5px solid #e5e7eb;border-radius:8px;padding:8px 12px;background:#fff;transition:border-color .15s,box-shadow .15s;}
+.dep-inp-box:focus-within{border-color:#3CC13B;box-shadow:0 0 0 3px rgba(60,193,59,.08);}
+.dep-num-inp{border:none;outline:none;font-family:inherit;font-size:13.5px;color:#374151;width:44px;background:transparent;}
+.dep-bps-lbl{font-size:13px;color:#9ca3af;}
+/* Total & saved row */
+.dep-total-txt{font-size:14px;font-weight:600;color:#111827;}
+.dep-sv-method{font-size:14px;font-weight:700;color:#111827;}
+.dep-sv-juris{font-size:13.5px;color:#3b82f6;}
+.dep-sv-base{font-size:13.5px;color:#374151;}
+.dep-sv-adj{font-size:13.5px;color:#697BAA;}
+.dep-val-chip{display:inline-flex;align-items:center;background:#eff6ff;color:#1e40af;border-radius:6px;padding:3px 10px;font-size:13px;font-weight:600;}
+.dep-val-chip.neg{background:#fff7ed;color:#c2410c;}
+.dep-sv-total{font-size:14px;font-weight:700;color:#111827;}
+.dep-saved-row{position:relative;}
+.dep-saved-row:hover{background:#f9fafb;}
+/* Per-field Edit pill overlay (used for Jurisdiction, Base spread, Spread adjustment, Value) */
+.dep-field-wrap{position:relative;display:flex;align-items:center;min-width:0;}
+.dep-field-lbl{font-size:13.5px;color:#374151;white-space:nowrap;transition:opacity .12s;}
+.dep-edit-pill{display:none;position:absolute;left:0;top:50%;transform:translateY(-50%);background:#3CC13B;color:#fff;border:none;border-radius:20px;padding:5px 16px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;z-index:2;transition:background .15s;}
+.dep-edit-pill:hover{background:#2da82c;}
+.dep-saved-row:hover .dep-edit-pill{display:block;}
+.dep-saved-row:hover .dep-field-lbl{opacity:.2;}
+/* Keep label visible for editing row's static fields */
+.dep-row-editing .dep-field-lbl{opacity:.2;}
+/* Trash and delete buttons */
+.dep-row-trash{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:transparent;border:none;color:#697baa;cursor:pointer;transition:background .15s,color .15s;opacity:0;flex-shrink:0;}
+.dep-saved-row:hover .dep-row-trash{opacity:1;}
+.dep-row-trash:hover{background:#e1e3ef;color:#35415f;}
+.dep-del-btn{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:#e1e3ef;border:none;color:#35415f;cursor:pointer;transition:background .15s;flex-shrink:0;}
+.dep-del-btn:hover{background:#d5d8ea;}
+
+/* ══════════════════════════════════════════════════════════
+   SCREEN: SPREAD PLAN — plan header
+══════════════════════════════════════════════════════════ */
+.plan-header{display:flex;align-items:center;gap:14px;margin-bottom:24px;}
+.plan-icon{width:42px;height:42px;background:#f1f5f9;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid #e2e8f0;}
+.plan-name{font-size:22px;font-weight:700;color:#111827;line-height:1.2;}
+.plan-meta{font-size:12.5px;color:#9ca3af;margin-top:3px;}
+
+/* Spread plan tabs (inner plan tabs, not app screen tabs) */
+.plan-tabs{display:flex;border-bottom:1.5px solid #e5e7eb;margin-bottom:28px;}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* Section heading */
+.section-heading{font-size:17px;font-weight:700;color:#111827;margin-bottom:6px;}
+.section-subtitle{font-size:13px;color:#6b7280;margin-bottom:20px;line-height:1.5;}
+
+/* ══════════════════════════════════════════════════════════
+   CUSTOM SELECT (spread plan)
+══════════════════════════════════════════════════════════ */
+.custom-select{position:relative;width:220px;}
+.cs-trigger{display:flex;align-items:center;justify-content:space-between;padding:9px 13px;border:1.5px solid #d1d5db;border-radius:8px;font-size:13.5px;color:#374151;background:#fff;cursor:pointer;user-select:none;transition:border-color .15s;}
+.cs-trigger:hover{border-color:#9ca3af;}
+.cs-trigger.open{border-color:#3CC13B;box-shadow:0 0 0 3px rgba(60,193,59,.08);}
+.cs-placeholder{color:#9ca3af;}
+.cs-chevron{flex-shrink:0;transition:transform .15s;color:#9ca3af;}
+.cs-trigger.open .cs-chevron{transform:rotate(180deg);}
+.cs-dropdown{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1.5px solid #e5e7eb;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.1);z-index:200;overflow:hidden;}
+.cs-dropdown.open{display:block;}
+.cs-option{padding:10px 14px;font-size:13.5px;color:#374151;cursor:pointer;transition:background .1s;display:flex;align-items:center;justify-content:space-between;}
+.cs-option:hover{background:#f9fafb;}
+.cs-option.selected{color:#111827;font-weight:500;}
+
+/* ══════════════════════════════════════════════════════════
+   SPREAD ADJUSTMENT ROW
+══════════════════════════════════════════════════════════ */
+.spread-adj-row{display:flex;align-items:flex-end;gap:16px;margin-bottom:0;}
+.form-field{display:flex;flex-direction:column;gap:6px;}
+.field-label{font-size:12px;font-weight:500;color:#6b7280;}
+
+/* Value field — always visible */
+.value-field-wrap{display:flex;flex-direction:column;gap:6px;}
+.vib-prefix{display:none;}
+.vib-prefix.visible{display:inline;}
+.value-input-box{display:flex;align-items:center;border:1.5px solid #d1d5db;border-radius:8px;background:#fff;padding:0 12px;height:40px;transition:border-color .15s,box-shadow .15s;width:200px;}
+.value-input-box:focus-within{border-color:#3CC13B;box-shadow:0 0 0 3px rgba(60,193,59,.08);}
+.vib-prefix{font-size:14px;font-weight:500;color:#9ca3af;flex-shrink:0;margin-right:4px;}
+.vib-input{border:none;outline:none;font-size:13.5px;font-weight:500;color:#111827;font-family:inherit;width:60px;background:transparent;}
+.vib-input::placeholder{color:#9ca3af;font-weight:400;}
+.vib-unit{font-size:13px;color:#9ca3af;margin-left:4px;flex-shrink:0;}
+.vib-clear{background:none;border:none;cursor:pointer;color:#9ca3af;padding:0;margin-left:auto;display:none;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;flex-shrink:0;transition:all .15s;}
+.vib-clear:hover{background:#f3f4f6;color:#374151;}
+.vib-clear.visible{display:flex;}
+
+/* Absorb toggle */
+.absorb-wrap{display:none;align-items:center;gap:8px;align-self:flex-end;padding-bottom:10px;}
+.absorb-wrap.visible{display:flex;}
+.absorb-label{font-size:13px;color:#374151;}
+.toggle-switch{position:relative;width:36px;height:20px;flex-shrink:0;cursor:pointer;}
+.toggle-switch input{opacity:0;width:0;height:0;position:absolute;}
+.toggle-track{position:absolute;inset:0;background:#d1d5db;border-radius:20px;transition:background .2s;}
+.toggle-switch input:checked + .toggle-track{background:#3CC13B;}
+.toggle-thumb{position:absolute;top:2px;left:2px;width:16px;height:16px;background:#fff;border-radius:50%;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s;}
+.toggle-switch input:checked ~ .toggle-thumb{transform:translateX(16px);}
+
+/* Helper text */
+.spread-helper{font-size:13px;color:#6b7280;margin-top:12px;display:none;line-height:1.55;}
+.spread-helper.visible{display:block;}
+
+/* ══════════════════════════════════════════════════════════
+   ASSETS SECTION
+══════════════════════════════════════════════════════════ */
+.assets-section-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;}
+.assets-hdr-left .assets-title{font-size:15px;font-weight:600;color:#111827;margin-bottom:4px;}
+.assets-hdr-left .assets-sub{font-size:13px;color:#9ca3af;}
+
+/* ══════════════════════════════════════════════════════════
+   SPREADS TOOLBAR (Trade tab)
+══════════════════════════════════════════════════════════ */
+.spreads-heading{font-size:21px;font-weight:700;color:#111827;margin-bottom:22px;}
+.spreads-toolbar{display:flex;align-items:flex-start;gap:28px;margin-bottom:34px;}
+.spreads-tb-left{width:200px;flex-shrink:0;}
+.spreads-tb-left .assets-title{font-size:15px;font-weight:600;color:#111827;margin-bottom:5px;}
+.spreads-tb-left .assets-sub{font-size:12.5px;color:#697baa;line-height:1.5;}
+.tb-field-label{font-size:12.5px;font-weight:600;color:#111827;}
+.asel-wrap{position:relative;width:180px;}
+.asel-trigger{display:flex;align-items:center;justify-content:space-between;padding:0 13px;height:40px;border:1.5px solid #d1d5db;border-radius:8px;font-size:13.5px;color:#374151;background:#fff;cursor:pointer;user-select:none;transition:border-color .15s;}
+.asel-trigger:hover{border-color:#9ca3af;}
+.asel-trigger.open{border-color:#3CC13B;box-shadow:0 0 0 3px rgba(60,193,59,.08);}
+.asel-helper{font-size:11.5px;color:#2aa84a;line-height:1.45;max-width:190px;}
+.asel-helper-link{text-decoration:underline;}
+.pf-box{width:180px;}
+.pf-input{width:100%;}
+.pf-helper{font-size:11.5px;color:#697baa;}
+.absorb-wrap2{display:flex;align-items:center;gap:8px;margin-top:30px;}
+
+/* ══════════════════════════════════════════════════════════
+   SPREAD TABLE
+══════════════════════════════════════════════════════════ */
+.spread-table{margin-top:20px;width:100%;}
+.spread-table-outer{overflow-x:auto;position:relative;}
+.spread-table-outer.scrolled .asset-col,
+.spread-table-outer.scrolled .fallback-col{box-shadow:4px 0 10px rgba(0,0,0,.08);}
+.spread-table-outer.scrolled .col-hdr-assets-plain{box-shadow:4px 0 10px rgba(0,0,0,.06);}
+
+/* Grid */
+.col-headers{display:grid;grid-template-columns:148px repeat(5,minmax(140px,1fr));margin-bottom:6px;min-width:700px;}
+.asset-row{display:grid;grid-template-columns:148px repeat(5,minmax(140px,1fr));min-width:700px;}
+.col-hdr{padding:8px 12px;font-size:11.5px;color:#9ca3af;line-height:1.45;}
+.col-hdr .tier-name{display:block;color:#6b7280;font-weight:600;font-size:11.5px;}
+.col-hdr .tier-range{display:block;color:#9ca3af;font-weight:400;font-size:11px;margin-top:1px;}
+
+/* Sticky assets column header — plain label */
+.col-hdr-assets-plain{position:sticky;left:0;z-index:3;background:#f0f2fa;padding:8px 12px;display:flex;align-items:center;}
+.col-hdr-assets-plain .cas-label{font-size:11.5px;color:#9ca3af;font-weight:500;}
+.asset-col{display:flex;align-items:center;gap:10px;padding:20px 16px;border-right:1px solid #f3f4f6;position:sticky;left:0;z-index:2;background:#fff;}
+/* Asset row delete hover */
+.asset-col-overlay{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(255,255,255,.88);}
+.asset-card:hover .asset-col-overlay{display:flex;}
+.asset-del-btn{width:32px;height:32px;border-radius:50%;background:#e1e3ef;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#35415f;flex-shrink:0;transition:background .15s;}
+.asset-del-btn:hover{background:#d5d8ea;}
+.fallback-col{display:flex;align-items:center;gap:7px;padding:20px 16px;border-right:1px solid #f3f4f6;position:sticky;left:0;z-index:2;background:#fff;}
+/* No asset empty state */
+.no-asset-col{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 12px;border-right:1px solid #f3f4f6;position:sticky;left:0;z-index:2;background:#fff;gap:7px;min-height:96px;}
+.no-asset-lbl{font-size:11.5px;color:#9ca3af;font-weight:500;white-space:nowrap;}
+
+/* ── Asset selection dropdown ────────────────────────────── */
+.asel-trigger .cas-chevron{transition:transform .15s;color:#9ca3af;flex-shrink:0;}
+.asel-trigger.open .cas-chevron{transform:rotate(180deg);}
+.asset-dropdown{position:absolute;top:calc(100% + 4px);left:0;z-index:400;background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.13);width:256px;display:flex;flex-direction:column;overflow:hidden;}
+.asset-dd-search{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid #f3f4f6;}
+.asset-dd-search-ico{color:#9ca3af;flex-shrink:0;}
+.asset-dd-search input{border:none;outline:none;font-size:13px;color:#111827;background:transparent;flex:1;font-family:inherit;}
+.asset-dd-search input::placeholder{color:#9ca3af;}
+.asset-dd-hdr{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;border-bottom:1px solid #f3f4f6;}
+.asset-dd-count{font-size:11.5px;color:#9ca3af;font-weight:500;}
+.asset-dd-all{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:#374151;font-weight:600;user-select:none;}
+.asset-dd-list{overflow-y:auto;max-height:220px;}
+.asset-dd-list::-webkit-scrollbar{width:4px;}
+.asset-dd-list::-webkit-scrollbar-thumb{background:#e5e7eb;border-radius:2px;}
+.asset-dd-item{display:flex;align-items:center;gap:10px;padding:8px 12px;cursor:pointer;transition:background .1s;}
+.asset-dd-item:hover{background:#f9fafb;}
+.asset-dd-item.checked{background:#f0fdf4;}
+.asset-dd-icon{width:24px;height:24px;flex-shrink:0;overflow:hidden;border-radius:50%;}
+.asset-dd-icon svg{display:block;width:24px !important;height:24px !important;}
+.asset-dd-name{font-size:13px;font-weight:600;color:#111827;flex:1;}
+.adc-check{width:16px;height:16px;border-radius:3px;border:1.5px solid #d1d5db;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:#fff;transition:all .12s;}
+.adc-check.checked{background:#3CC13B;border-color:#3CC13B;}
+
+/* Asset cards */
+.asset-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;margin-bottom:8px;}
+.asset-card:last-child{margin-bottom:0;}
+.asset-icon{width:32px;height:32px;border-radius:50%;flex-shrink:0;overflow:hidden;}
+.asset-name{font-size:13.5px;font-weight:600;color:#111827;}
+.fallback-lbl{font-size:13.5px;font-weight:600;color:#f59e0b;}
+
+/* Tier column header — base */
+.col-hdr-tier{position:relative;padding:8px 12px;min-height:52px;display:flex;flex-direction:column;justify-content:center;}
+/* Normal display */
+.tier-hdr-content{display:flex;flex-direction:column;gap:3px;}
+.tier-hdr-label{font-size:11px;font-weight:500;color:#6b7280;}
+.tier-hdr-val{font-size:12px;font-weight:700;color:#111827;}
+/* Hover actions overlay */
+.tier-hdr-actions{position:absolute;inset:0;display:none;align-items:center;justify-content:center;gap:6px;background:rgba(244,245,247,.93);border-radius:4px;pointer-events:none;}
+.col-hdr-tier:hover:not(.editing) .tier-hdr-actions{display:flex;}
+.col-hdr-tier:has(.tooltip-wrap:hover) .tier-hdr-actions{display:none;}
+.tier-hdr-actions button{pointer-events:auto;}
+.tier-edit-pill{background:#3CC13B;color:#fff;border:none;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .15s;}
+.tier-edit-pill:hover{background:#2da82c;}
+.tier-delete-btn{width:28px;height:28px;border-radius:50%;background:#e1e3ef;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#35415f;transition:background .15s;flex-shrink:0;}
+.tier-delete-btn:hover{background:#d5d8ea;}
+.tier-add-btn-new{width:28px;height:28px;border-radius:50%;background:#dcfce7;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#22c55e;transition:background .15s;flex-shrink:0;}
+.tier-add-btn-new:hover{background:#bbf7d0;}
+/* Edit state */
+.col-hdr-tier.editing{background:#fff;}
+.col-hdr-tier.editing .tier-hdr-content{display:none;}
+.tier-hdr-edit-label{font-size:11px;font-weight:500;color:#6b7280;margin-bottom:5px;display:block;}
+.tier-hdr-edit-row{display:flex;align-items:center;gap:8px;}
+.tier-hdr-edit-row .tier-hdr-input-row{flex:1;min-width:0;}
+.tier-hdr-input-row{display:flex;align-items:center;border:1.5px solid #3CC13B;border-radius:7px;padding:3px 8px;background:#fff;box-shadow:0 0 0 3px rgba(60,193,59,.08);gap:3px;height:32px;}
+.tier-hdr-inp-dollar{font-size:12.5px;color:#374151;font-weight:500;flex-shrink:0;}
+.tier-hdr-inp{border:none;outline:none;font-size:12.5px;font-weight:600;color:#111827;font-family:inherit;flex:1;min-width:0;width:55px;background:transparent;}
+.tier-hdr-inp::-webkit-outer-spin-button,.tier-hdr-inp::-webkit-inner-spin-button{-webkit-appearance:none;}
+.tier-hdr-inp-clear{background:none;border:none;cursor:pointer;color:#9ca3af;padding:0;display:flex;align-items:center;transition:color .15s;flex-shrink:0;}
+.tier-hdr-inp-clear:hover{color:#374151;}
+/* Tier edit — error state */
+.tier-hdr-input-row.error{border-color:#ef4444 !important;box-shadow:0 0 0 3px rgba(239,68,68,.1) !important;}
+.tier-err-msg{display:flex;align-items:flex-start;gap:4px;margin-top:6px;font-size:11.5px;color:#ef4444;line-height:1.35;}
+.col-hdr-tier.has-error .tier-hdr-label{color:#ef4444;}
+.col-hdr-tier.has-error .tier-hdr-val{color:#ef4444;}
+.col-hdr-tier.has-error .tier-hdr-edit-label{color:#ef4444;}
+/* Greater than column */
+.col-hdr-gt{position:relative;padding:8px 12px;min-height:52px;display:flex;flex-direction:column;justify-content:center;}
+.tier-gt-lbl-row{display:flex;align-items:center;gap:3px;margin-bottom:3px;}
+.tier-gt-lbl{font-size:11px;font-weight:500;color:#6b7280;}
+.tier-gt-val{font-size:12px;font-weight:700;color:#111827;}
+
+/* Tier cell — base */
+.tier-cell{padding:16px 12px;border-right:1px solid #f3f4f6;position:relative;min-height:108px;display:flex;align-items:center;transition:background .12s;}
+.tier-cell:last-child{border-right:none;}
+.tier-cell:not(.editing):hover{background:#fafafa;}
+.tier-cell.editing{background:#f9fafb;}
+.tc-inner{display:flex;flex-direction:column;gap:3px;width:100%;}
+.tc-label{font-size:11px;color:#9ca3af;margin-bottom:1px;}
+.tc-spread-row{display:flex;align-items:center;gap:5px;flex-wrap:nowrap;}
+.tc-base{font-size:13px;font-weight:600;color:#1a2234;}
+.tc-chip{display:inline-flex;align-items:center;background:#f1f5f9;color:#64748b;font-size:11px;font-weight:600;padding:2px 7px;border-radius:5px;white-space:nowrap;}
+.tc-chip.green{background:#dcfce7;color:#15803d;}
+.tc-chip.orange{background:#fff7ed;color:#ea580c;}
+.tc-eq{font-size:11px;color:#d1d5db;margin:1px 0;}
+.tc-total-row{display:flex;align-items:baseline;gap:4px;margin-top:1px;}
+.tc-total-lbl{font-size:11px;color:#9ca3af;}
+.tc-total-val{font-size:13.5px;font-weight:700;color:#111827;}
+
+/* Hover overlay — "Edit spread" button */
+.tc-hover-overlay{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(255,255,255,.88);border-radius:0;cursor:pointer;}
+.tier-cell:not(.editing):hover .tc-hover-overlay{display:flex;}
+.edit-spread-btn{background:#3CC13B;color:#fff;border:none;border-radius:20px;padding:6px 15px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;transition:background .15s;}
+.edit-spread-btn:hover{background:#2da82c;}
+
+/* Inline edit input */
+.tc-edit-row{display:flex;align-items:center;gap:4px;border:1.5px solid #3CC13B;border-radius:7px;padding:5px 9px;background:#fff;box-shadow:0 0 0 3px rgba(60,193,59,.08);margin-bottom:3px;width:fit-content;}
+.tc-edit-input{border:none;outline:none;font-size:13px;font-weight:600;color:#111827;width:44px;font-family:inherit;background:transparent;}
+.tc-edit-unit{font-size:12px;color:#9ca3af;flex-shrink:0;}
+
+/* Info icon + tooltip */
+.info-icon{display:inline-flex;align-items:center;color:#9ca3af;cursor:default;}
+.tooltip-wrap{display:inline-flex;align-items:center;padding:4px;margin:-4px;cursor:default;}
+/* Global tooltip — rendered at body level to escape any overflow container */
+#g-tooltip{position:fixed;z-index:9999;background:#1e293b;color:#fff;font-size:11.5px;font-weight:400;padding:6px 10px;border-radius:7px;pointer-events:none;display:none;max-width:220px;line-height:1.4;text-align:left;}
+/* Hide inline tooltip spans — content is read by JS and shown via #g-tooltip */
+.tooltip-wrap .tooltip{display:none;}
+
+/* ══════════════════════════════════════════════════════════
+   PLAN FEES TABS (Deposits & Withdrawals)
+══════════════════════════════════════════════════════════ */
+.pft-hdr-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.pft-heading{font-size:21px;font-weight:700;color:#111827;}
+.pft-rails{display:flex;align-items:center;gap:8px;font-size:13px;color:#374151;}
+.pft-col-hdrs{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr 90px 48px;gap:12px;padding:0 20px;margin-bottom:8px;font-size:11.5px;color:#9ca3af;}
+.pft-card{background:#fff;border:1px solid #eef0f6;border-radius:14px;margin-bottom:10px;box-shadow:0 1px 2px rgba(16,24,40,.04);}
+.pft-card-saved{cursor:pointer;transition:border-color .15s;}
+.pft-card-saved:hover{border-color:#d5d8ea;}
+.pft-row{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr 90px 48px;gap:12px;align-items:center;padding:18px 20px;min-height:78px;}
+.pft-method{display:flex;align-items:center;gap:10px;font-size:13.5px;font-weight:600;color:#111827;}
+.pft-method-icon{width:32px;height:32px;border-radius:50%;background:#f1f3f9;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;}
+.pft-cell{display:flex;flex-direction:column;gap:5px;align-items:flex-start;}
+.pft-dd-wrap{position:relative;width:120px;}
+.pft-dd-trigger{display:flex;align-items:center;justify-content:space-between;gap:6px;width:100%;height:36px;padding:0 12px;border:1.5px solid #d1d5db;border-radius:8px;background:#fff;font-size:13px;color:#374151;cursor:pointer;font-family:inherit;transition:border-color .15s;}
+.pft-dd-trigger:hover{border-color:#9ca3af;}
+.pft-dd-trigger.open{border-color:#3CC13B;box-shadow:0 0 0 3px rgba(60,193,59,.08);}
+.pft-ph{color:#9ca3af;}
+.pft-dd-list{display:none;position:absolute;top:calc(100% + 4px);left:0;width:180px;background:#fff;border:1px solid #e5e7eb;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:300;overflow:hidden;padding:4px 0;}
+.pft-dd-list.open{display:block;}
+.pft-dd-opt{padding:9px 14px;font-size:13px;color:#374151;cursor:pointer;transition:background .1s;}
+.pft-dd-opt:hover{background:#f9fafb;}
+.pft-fee-box{display:flex;align-items:center;gap:6px;width:110px;height:36px;padding:0 10px;border:1.5px solid #d1d5db;border-radius:8px;background:#fff;transition:border-color .15s;}
+.pft-fee-box:focus-within{border-color:#3CC13B;box-shadow:0 0 0 3px rgba(60,193,59,.08);}
+.pft-fee-inp{border:none;outline:none;flex:1;min-width:0;font-size:13px;color:#111827;font-family:inherit;background:transparent;}
+.pft-fee-inp::placeholder{color:#9ca3af;}
+.pft-minmax{font-size:10.5px;color:#9ca3af;white-space:nowrap;}
+.pft-total{font-size:13.5px;font-weight:700;color:#111827;}
+.pft-del-btn{width:34px;height:34px;border-radius:50%;background:#e1e3ef;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#35415f;transition:background .15s;}
+.pft-del-btn:hover{background:#d5d8ea;}
+.pft-display{font-size:13px;color:#697baa;}
+.pft-display.ph{color:#9ca3af;}
+.pft-chip{display:inline-block;background:#eef0f6;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:600;color:#35415f;}
+.pft-chip.pos{background:#e8effc;color:#3b6fe0;}
+.pft-chip.neg{background:#fff8eb;color:#d97706;}
+.pft-empty{padding:30px;text-align:center;font-size:13px;color:#9ca3af;background:#fff;border:1px solid #eef0f6;border-radius:14px;}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     APP HEADER — single slim header (logo + user)
+══════════════════════════════════════════════════════════ -->
+<div class="app-header">
+  <div class="app-header-logo" onclick="goToPartners()">
+    <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><rect width="30" height="30" rx="8" fill="#f0fdf4"/><path d="M9 15.5l4 4 8-9" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="logo-text"><span class="main">enterprise portal</span><span class="sub">by uphold</span></div>
+  </div>
+  <button class="app-user-pill">
+    <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="5" r="3" stroke="#1d2738" stroke-width="1.3"/><path d="M1.5 13.5c0-3.31 2.69-6 6-6s6 2.69 6 6" stroke="#1d2738" stroke-width="1.3" stroke-linecap="round"/></svg>
+    John Doe
+  </button>
+</div>
+<div class="main-content" id="main-content"></div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SAVE BAR — dark pill (partners / pricing screens)
+══════════════════════════════════════════════════════════ -->
+<div class="save-bar-pill" id="save-bar">
+  <span class="save-bar-lbl" id="save-bar-lbl">1 unsaved change</span>
+  <button class="btn-discard-pill" onclick="discardChanges()">Discard</button>
+  <button class="btn-save-pill" onclick="openSaveConfirm(saveChanges)">Save</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SAVE BAR — floating pill (spread-plan screen)
+══════════════════════════════════════════════════════════ -->
+<div class="save-bar-pill" id="save-bar-spread">
+  <span class="save-bar-lbl" id="save-bar-changes">1 unsaved change</span>
+  <button class="btn-discard-pill" onclick="discardSpreadChanges()">Discard</button>
+  <button class="btn-save-pill" id="spread-save-btn" onclick="openSaveConfirm(saveSpreadChanges)">Save</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     TOAST (unified — one element, dynamic message)
+══════════════════════════════════════════════════════════ -->
+<div class="g-toast" id="g-toast">
+  <div class="toast-check"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6.5l3 3 5-6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <span id="toast-msg">Changes successfully updated.</span>
+</div>
+<div id="g-tooltip"></div>
+
+<!-- ══════════════════════════════════════════════════════════
+     DELETE TIER CONFIRMATION MODAL
+══════════════════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════════════════════════
+     DELETE ASSET CONFIRMATION MODAL
+══════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="delete-asset-modal" onclick="closeAssetDeleteModal()">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <div class="modal-hdr">
+      <span class="modal-title">Delete asset</span>
+      <button class="modal-close-btn" onclick="closeAssetDeleteModal()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>Are you sure you want to delete [<strong id="delete-asset-name"></strong>]?</p>
+      <p>This action cannot be retrieved.</p>
+    </div>
+    <div class="modal-ftr">
+      <button class="modal-btn-cancel" onclick="closeAssetDeleteModal()">Cancel</button>
+      <button class="modal-btn-delete" onclick="confirmDeleteAsset()">Delete asset</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="delete-tier-modal" onclick="closeDeleteModal()">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <div class="modal-hdr">
+      <span class="modal-title">Delete ticket size tier</span>
+      <button class="modal-close-btn" onclick="closeDeleteModal()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>Are you sure you want to delete the <strong id="delete-tier-range"></strong> tier? Range values will be distributed among the other tiers.</p>
+      <p>This action cannot be retrieved.</p>
+    </div>
+    <div class="modal-ftr">
+      <button class="modal-btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+      <button class="modal-btn-delete" onclick="confirmDeleteTier()">Delete tier</button>
+    </div>
+  </div>
+</div>
+
+<!-- Limits (Pricing tab) — delete confirmation modal (trades / deposits / withdrawals) -->
+<div class="modal-overlay" id="lim-delete-modal" onclick="limCloseDeleteModal()">
+  <div class="modal-card" style="width:600px" onclick="event.stopPropagation()">
+    <div class="modal-hdr">
+      <span class="modal-title">Delete method</span>
+      <button class="modal-close-btn" onclick="limCloseDeleteModal()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>By deleting <strong id="lim-delete-method-name"></strong>, it will no longer be able to execute transactions through this method.</p>
+      <p>This action can't be undone.</p>
+    </div>
+    <div class="modal-ftr">
+      <button class="modal-btn-cancel" onclick="limCloseDeleteModal()">Cancel</button>
+      <button class="modal-btn-delete" onclick="limConfirmDelete()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- Save changes — confirmation modal (all action bars) -->
+<div class="modal-overlay" id="save-confirm-modal" onclick="closeSaveConfirm()">
+  <div class="modal-card" style="width:560px" onclick="event.stopPropagation()">
+    <div class="modal-hdr">
+      <span class="modal-title">Save changes</span>
+      <button class="modal-close-btn" onclick="closeSaveConfirm()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>These changes will take effect immediately for this partner's configuration.</p>
+      <p>This action can't be undone.</p>
+    </div>
+    <div class="modal-ftr">
+      <button class="modal-btn-cancel" onclick="closeSaveConfirm()">Cancel</button>
+      <button class="modal-btn-save" onclick="confirmSavePending()">Save changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- Assets (Pricing tab) — delete confirmation modal -->
+<div class="modal-overlay" id="pa-delete-modal" onclick="pricingAssetCloseDeleteModal()">
+  <div class="modal-card" style="width:500px" onclick="event.stopPropagation()">
+    <div class="modal-hdr">
+      <span class="modal-title">Delete asset</span>
+      <button class="modal-close-btn" onclick="pricingAssetCloseDeleteModal()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>Are you sure you want to delete <strong id="pa-delete-asset-name"></strong>?</p>
+      <p>This action can't be undone.</p>
+    </div>
+    <div class="modal-ftr">
+      <button class="modal-btn-cancel" onclick="pricingAssetCloseDeleteModal()">Cancel</button>
+      <button class="modal-btn-delete" onclick="pricingAssetConfirmDelete()">Delete asset</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   APP STATE
+   appScreen replaces 'screen' to avoid shadowing window.screen
+══════════════════════════════════════════════════════════════ */
+let appScreen   = 'partners'; // 'partners' | 'partner-detail' | 'pricing' | 'spread-plan'
+let activeTab   = 'product-details';
+let memberFilter   = 'all';
+let memberOpenMenu = null;
+
+const MEMBER_DATA = [
+  { id:1, initials:'JD', name:'James Davidson',   email:'james.davidson@partner.com',      role:'Admin',     status:'active',      lastDate:'June 15, 2026', lastTime:'10:42:18 AM +00:00' },
+  { id:2, initials:'ML', name:'Maria Lopez',      email:'maria.lopez@partner.com',         role:'Developer', status:'active',      lastDate:'June 14, 2026', lastTime:'03:17:55 PM +00:00' },
+  { id:3, initials:'',   name:'',                 email:'sandymiller@domain.com',           role:'Developer', status:'pending',     lastDate:'', lastTime:'' },
+  { id:4, initials:'',   name:'',                 email:'danielarcherlongemail@domain.com', role:'Developer', status:'pending',     lastDate:'', lastTime:'' },
+  { id:5, initials:'RK', name:'Robert Kim',       email:'robert.kim@partner.com',          role:'Finance',   status:'deactivated', lastDate:'March 3, 2026', lastTime:'09:00:00 AM +00:00' },
+];
+
+// ── Partners / pricing state ──────────────────────────────
+let pricingModel = null;   // null | 'wholesale' | 'revenue-share'
+let savedModel   = null;
+let pricingSaved = false;
+
+// ── Spread plan state ─────────────────────────────────────
+let partnerFee         = '';     // bps, may be negative ("-5")
+let savedPartnerFee    = '';
+let absorbSpreads      = false;
+let savedAbsorbSpreads = false;
+
+let pendingCellEdits = {};
+let savedCellEdits   = {};
+let openCells        = new Set();
+
+let tierThresholds      = [10000, 50000, 100000, 500000];
+let savedTierThresholds = [10000, 50000, 100000, 500000];
+let pendingTierEdits      = {};
+let pendingTierDeletions  = new Set(); // threshold indices staged for deletion (confirmed on Save)
+let editingTierIdx        = null;  // index of tier header currently in edit mode
+let deletingTierIdx       = null;  // index currently shown in delete confirmation modal
+
+const MAX_TIERS = 5;
+let TIERS = 5;  // current tier count; updated on add/remove
+
+// ── Asset catalog (alphabetical) ──────────────────────────
+const ALL_ASSETS_CATALOG = [
+  { key: 'ADA',  name: 'ADA',  fullName: 'Cardano',    baseBps: 6, category: 'Store of value' },
+  { key: 'BNB',  name: 'BNB',  fullName: 'BNB',        baseBps: 6, category: 'DeFi' },
+  { key: 'BTC',  name: 'BTC',  fullName: 'Bitcoin',    baseBps: 6, category: 'Store of value' },
+  { key: 'CSPR', name: 'CSPR', fullName: 'Casper',     baseBps: 6, category: 'Enterprise' },
+  { key: 'ETH',  name: 'ETH',  fullName: 'Ether',      baseBps: 6, category: 'DeFi' },
+  { key: 'SOL',  name: 'SOL',  fullName: 'Solana',     baseBps: 6, category: 'DeFi' },
+  { key: 'USDC', name: 'USDC', fullName: 'USD Coin',   baseBps: 6, category: 'Store of value' },
+  { key: 'USDT', name: 'USDT', fullName: 'USD Tether', baseBps: 6, category: 'Store of value' },
+  { key: 'XRP',  name: 'XRP',  fullName: 'XRP',        baseBps: 6, category: 'Store of value' },
+];
+const ASSET_CATEGORIES = ['All','AI','Boosted Staking','DAO','DeFi','Enterprise','Environmental','Finance','Gaming','Memecoin','Metaverse','NFT','Smartcoins','Store of value'];
+
+let savedAssetKeys    = new Set();   // committed asset selection
+let pendingAssetKeys  = null;        // null = no pending; Set = user is editing selection
+let assetDropdownOpen = false;
+let assetSearchQuery  = '';
+
+// ── Plan fees tabs state (Deposits & Withdrawals) ──────────
+// Rows mirror the methods added on the Pricing tab's Limits section.
+const PLAN_FEES_JURIS = ['All', 'EEA', 'UK', 'US', 'RoW'];
+let planFees      = { deposits: {}, withdrawals: {} }; // working: {method: {jur,uFee,pFee}}
+let savedPlanFees = { deposits: {}, withdrawals: {} }; // committed (presence = row saved/read-only)
+let planFeesDeleted      = { deposits: new Set(), withdrawals: new Set() };
+let savedPlanFeesDeleted = { deposits: new Set(), withdrawals: new Set() };
+let planFeesOpenDD  = { deposits: null, withdrawals: null };  // method whose jurisdiction dd is open
+let planFeesEditing = { deposits: new Set(), withdrawals: new Set() }; // saved rows reopened for edit
+
+// ── Limits state (Pricing tab) ─────────────────────────────
+let limitsTradeMin = '';
+let limitsTradeMax = '';
+let savedLimitsTradeMin = '';
+let savedLimitsTradeMax = '';
+
+const LIMITS_DEP_METHODS = ['Visa', 'Mastercard', 'Apple Pay', 'Google Pay', 'PayPal', 'Bank transfer (ACH)', 'Bank transfer (FPS)', 'Bank transfer (SEPA)', 'Pix', 'Venmo'];
+const LIMITS_WDR_METHODS = ['Visa', 'Mastercard', 'Apple Pay', 'Google Pay', 'PayPal', 'Bank transfer (ACH)', 'Bank transfer (FPS)', 'Bank transfer (SEPA)', 'Venmo'];
+
+function limMethodIcon(method) {
+  if (method === 'Visa') {
+    return `<svg width="20" height="20" viewBox="0 0 20 20"><rect width="20" height="20" rx="3" fill="#1a1f71"/><path d="M6.5 13l1.2-5.8h1.9L8.4 13H6.5zm5.6-5.7c-.4-.1-1-.3-1.7-.3-1.9 0-3.2 1-3.2 2.3 0 1 .9 1.6 1.6 1.9.7.4.9.6.9.9 0 .5-.5.7-1 .7-.7 0-1.1-.1-1.7-.4l-.2-.1-.3 1.6c.5.2 1.3.4 2.2.4 2 0 3.3-1 3.3-2.4 0-.8-.5-1.4-1.6-1.9-.7-.3-1.1-.5-1.1-.9 0-.3.3-.6 1-.6.6 0 1 .1 1.3.3l.2.1.3-1.6zm2.4-.1h-1.5c-.5 0-.8.1-.9.6L11 13h2s.3-.8.4-1h2.4c.1.3.2 1 .2 1H17l-1.5-5.8h-1zm-2 3.4c.2-.4.7-1.8.7-1.8l.2-.6.1.5s.4 1.6.4 2h-1.4z" fill="white"/></svg>`;
+  }
+  if (method === 'Mastercard') {
+    return `<svg width="20" height="20" viewBox="0 0 20 20"><circle cx="8" cy="10" r="5.5" fill="#EB001B"/><circle cx="12" cy="10" r="5.5" fill="#F79E1B" opacity=".9"/><path d="M10 5.8a5.5 5.5 0 0 1 0 8.4 5.5 5.5 0 0 1 0-8.4z" fill="#FF5F00"/></svg>`;
+  }
+  if (method === 'Apple Pay') {
+    return `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#000"/><path d="M12.1 6.1c.4-.5.7-1.2.6-1.9-.6 0-1.3.4-1.7.9-.4.4-.7 1.1-.6 1.8.7 0 1.3-.3 1.7-.8zm.6 1c-1 0-1.8.6-2.3.6-.5 0-1.2-.6-2-.5-1 0-2 .6-2.5 1.5-1.1 1.9-.3 4.7.7 6.2.5.8 1.1 1.6 1.9 1.6.8 0 1-.5 2-.5s1.2.5 2 .5 1.3-.7 1.8-1.5c.6-.9.8-1.7.8-1.8 0 0-1.6-.6-1.6-2.4 0-1.5 1.2-2.2 1.3-2.3-.7-1.1-1.8-1.2-2.1-1.4z" fill="#fff" transform="scale(0.82) translate(2.2,2.2)"/></svg>`;
+  }
+  if (method === 'Google Pay') {
+    return `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9.5" fill="#fff" stroke="#e1e3ef"/><path d="M14.5 10.1c0-.3 0-.6-.1-.9H10v1.8h2.5c-.1.6-.4 1.1-.9 1.4v1.1h1.5c.9-.8 1.4-2 1.4-3.4z" fill="#4285F4"/><path d="M10 14.7c1.3 0 2.3-.4 3.1-1.1l-1.5-1.1c-.4.3-1 .4-1.6.4-1.2 0-2.3-.8-2.6-1.9H5.8v1.2c.8 1.5 2.4 2.5 4.2 2.5z" fill="#34A853"/><path d="M7.4 11c-.2-.6-.2-1.3 0-1.9V7.9H5.8c-.7 1.3-.7 2.9 0 4.2L7.4 11z" fill="#FBBC04"/><path d="M10 7.2c.7 0 1.3.2 1.8.7l1.3-1.3C12.3 5.8 11.2 5.3 10 5.3c-1.8 0-3.4 1-4.2 2.6L7.4 9c.3-1 1.4-1.8 2.6-1.8z" fill="#EA4335"/></svg>`;
+  }
+  if (method === 'PayPal') {
+    return `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9.5" fill="#fff" stroke="#e1e3ef"/><path d="M13.3 7.1c.2-1.5-1-2.3-2.6-2.3H8c-.2 0-.4.2-.4.4l-1.1 8.1c0 .2.1.3.3.3h1.6l.3-2.4v.1c0-.2.2-.4.4-.4h.9c1.8 0 3.1-.8 3.5-2.8v-.2c-.1 0-.1 0 0 0 .1-.3.1-.6-.2-.8z" fill="#253B80"/><path d="M13.5 7.9c-.4 2-1.8 2.8-3.5 2.8h-.9c-.2 0-.4.2-.4.4l-.5 3.2c0 .1.1.3.2.3h1.5c.2 0 .3-.1.4-.3l.3-2.2c0-.2.2-.3.4-.3h.3c1.5 0 2.7-.7 3-2.4.1-.7.1-1.3-.3-1.7-.1-.1-.3-.2-.5-.3v.5z" fill="#179BD7"/></svg>`;
+  }
+  if (method === 'Pix') {
+    return `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#32BCAD"/><path d="M7 7.3l2.3-2.3c.4-.4 1-.4 1.4 0L13 7.3h-.8c-.4 0-.8.2-1.1.5l-.8.8c-.2.2-.4.2-.6 0l-.8-.8c-.3-.3-.7-.5-1.1-.5H7zm6 5.4l-2.3 2.3c-.4.4-1 .4-1.4 0L7 12.7h.8c.4 0 .8-.2 1.1-.5l.8-.8c.2-.2.4-.2.6 0l.8.8c.3.3.7.5 1.1.5h.8zm1.4-3.4c.4.4.4 1 0 1.4l-1 1h-1.2c-.2 0-.4-.1-.5-.2l-1.1-1.1c-.3-.3-.9-.3-1.2 0l-1.1 1.1c-.1.1-.3.2-.5.2H6.6l-1-1c-.4-.4-.4-1 0-1.4l1-1h1.2c.2 0 .4.1.5.2l1.1 1.1c.3.3.9.3 1.2 0l1.1-1.1c.1-.1.3-.2.5-.2h1.2l1 1z" fill="#fff"/></svg>`;
+  }
+  if (method === 'Venmo') {
+    return `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="10" fill="#3D95CE"/><path d="M13.5 5.5c.4.6.5 1.2.5 2 0 2.5-2.1 5.7-3.8 8h-3.9L5 6.2l3.4-.3.8 6.8c.8-1.3 1.8-3.3 1.8-4.7 0-.8-.1-1.3-.3-1.7l2.8-.8z" fill="#fff"/></svg>`;
+  }
+  // Bank transfers (ACH / FPS / SEPA)
+  return `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 8l7-4 7 4v1H3V8z" stroke="#1d2738" stroke-width="1.5" stroke-linejoin="round"/><path d="M4.5 9v5M8.2 9v5M11.8 9v5M15.5 9v5" stroke="#1d2738" stroke-width="1.5" stroke-linecap="round"/><path d="M3 15.5h14" stroke="#1d2738" stroke-width="1.5" stroke-linecap="round"/></svg>`;
+}
+
+let depositsLimitRows      = [];
+let savedDepositsLimitRows = [];
+let depositsLimitRailsOn   = true;
+let depositsLimitDDOpen    = null; // null | 'top'
+
+let withdrawalsLimitRows      = [];
+let savedWithdrawalsLimitRows = [];
+let withdrawalsLimitRailsOn   = true;
+let withdrawalsLimitDDOpen    = null; // null | 'top'
+
+// ── Assets state (Pricing tab) ─────────────────────────────
+let pricingAssetKeys        = new Set();
+let savedPricingAssetKeys   = new Set();
+let pricingAssetsSearch     = '';
+let pricingAssetsModalOpen  = false;
+let pricingAssetsModalDraft = null;   // Set while modal is open
+let pricingAssetsCategory   = 'all'; // 'all' | category string
+let pricingAssetDeleteKey   = null;
+
+function assetIcon(key) {
+  switch(key) {
+    case 'ADA':  return adaIcon();
+    case 'BNB':  return bnbIcon();
+    case 'BTC':  return btcIcon();
+    case 'CSPR': return csprIcon();
+    case 'ETH':  return ethIcon();
+    case 'SOL':  return solIcon();
+    case 'USDC': return usdcIcon();
+    case 'USDT': return usdtIcon();
+    case 'XRP':  return xrpIcon();
+    default: return `<svg width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="#e5e7eb"/></svg>`;
+  }
+}
+
+function activeAssets() {
+  const keys = pendingAssetKeys ?? savedAssetKeys;
+  return ALL_ASSETS_CATALOG.filter(a => keys.has(a.key));
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ASSET ICONS
+══════════════════════════════════════════════════════════════ */
+function btcIcon(){return`<svg width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="#f7931a"/><path d="M20.5 14.2c.3-1.8-1.2-2.8-3.3-3.4l.7-2.7-1.6-.4-.7 2.7-1.3-.3.7-2.7-1.6-.4-.7 2.7-2.6-.6-.4 1.7s1.2.3 1.1.3c.6.1.8.5.7.9l-1.7 6.8c-.1.3-.4.7-1 .6 0 0-1.1-.3-1.1-.3L9 21.1l2.5.6 1.4.4-.7 2.7 1.6.4.7-2.7 1.3.3-.7 2.7 1.6.4.7-2.7c2.8.5 4.9.3 5.8-2.1.7-1.9-.1-3-1.5-3.7.9-.2 1.6-.8 1.8-2zm-3.2 4.6c-.5 1.9-3.8.9-4.9.6l.9-3.4c1.1.3 4.5.9 4 2.8zm.5-4.6c-.5 1.7-3.3.8-4.2.6l.8-3.1c.9.2 3.9.6 3.4 2.5z" fill="white"/></svg>`;}
+function ethIcon(){return`<svg width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="#627eea"/><path d="M16 5.5L9.5 16.5 16 20.2l6.5-3.7L16 5.5zM9.5 17.7L16 26.5l6.5-8.8L16 21.4l-6.5-3.7z" fill="white" fill-opacity="0.9"/></svg>`;}
+function xrpIcon(){return`<svg width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="#346aa9"/><path d="M21 9h2.5l-5 5c-1.4 1.4-3.6 1.4-5 0L8.5 9H11l3.5 3.5c.8.8 2.2.8 3 0L21 9zM11 23H8.5l5-5c1.4-1.4 3.6-1.4 5 0l5 5H21l-3.5-3.5c-.8-.8-2.2-.8-3 0L11 23z" fill="white"/></svg>`;}
+function solIcon(){return`<svg width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="#9945ff"/><path d="M10 20.5h12.5l-2 2H10l2-2zm0-5.5h10.5l-2 2H10l2-2zm2-5.5h10.5L21 11.5H10l2-1.5z" fill="white"/></svg>`;}
+function adaIcon(){return`<svg width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="#0d1e3c"/><circle cx="16" cy="16" r="1.5" fill="white"/><circle cx="16" cy="10" r="1.2" fill="white"/><circle cx="16" cy="22" r="1.2" fill="white"/><circle cx="10.8" cy="13" r="1.2" fill="white"/><circle cx="21.2" cy="13" r="1.2" fill="white"/><circle cx="10.8" cy="19" r="1.2" fill="white"/><circle cx="21.2" cy="19" r="1.2" fill="white"/></svg>`;}
+function csprIcon(){return`<svg width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="#e5303b"/><path d="M20 9.5H12.5c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2H20c1.1 0 2-.9 2-2v-9c0-1.1-.9-2-2-2zm-3.8 8.8l-2.5-2.5 2.5-2.5 1.1 1.1-1.4 1.4 1.4 1.4-1.1 1.1zm3.6 0l-1.1-1.1 1.4-1.4-1.4-1.4 1.1-1.1 2.5 2.5-2.5 2.5z" fill="white"/></svg>`;}
+function bnbIcon(){return`<svg width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="#F3BA2F"/><path d="M16 9.5l2.1 2.1-4.7 4.7-2.1-2.1L16 9.5zm-6.5 4.4l2.1 2.1-2.1 2.1-2.1-2.1 2.1-2.1zm13 0l2.1 2.1-2.1 2.1-2.1-2.1 2.1-2.1zm-6.5 2.3l2.1 2.1-4.7 4.7-2.1-2.1 4.7-4.7zm-4.4 2.3l2.1 2.1-2.1 2.1-2.1-2.1 2.1-2.1zm8.8 0l2.1 2.1-2.1 2.1-2.1-2.1 2.1-2.1z" fill="#fff"/></svg>`;}
+function usdcIcon(){return`<svg width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="#2775CA"/><path d="M16 7c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm1.1 14.3v1.1h-1.7v-1.1c-1.9-.3-3.2-1.5-3.3-3.1h1.8c.1.9.9 1.5 2.3 1.5 1.3 0 2.1-.6 2.1-1.5 0-.8-.5-1.2-2-1.6l-.9-.2c-2-.5-3-1.4-3-2.9 0-1.5 1.1-2.6 3-2.9v-1h1.7v1c1.7.3 2.9 1.4 3 2.9h-1.8c-.1-.8-.8-1.4-2-1.4-1.2 0-1.9.6-1.9 1.4 0 .7.5 1.1 1.8 1.5l.9.2c2.1.5 3.1 1.5 3.1 3 0 1.6-1.2 2.8-3.1 3.1z" fill="#fff"/></svg>`;}
+function usdtIcon(){return`<svg width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="#26A17B"/><path d="M17.4 16.9v-.01c-.1 0-.6.04-1.4.04-.73 0-1.24-.03-1.42-.04v.01C11.23 16.77 9 16.2 9 15.52c0-.68 2.23-1.25 5.58-1.38v2.2c.18.01.7.04 1.43.04.87 0 1.3-.03 1.39-.04v-2.2c3.34.13 5.6.7 5.6 1.38 0 .68-2.26 1.25-5.6 1.38zM17.4 13.9v-1.96h3.96V9.5H10.64v2.44H14.6v1.96C10.84 14.06 8 14.78 8 15.63c0 .85 2.84 1.57 6.6 1.74v6.13h2.8v-6.13c3.75-.17 6.6-.89 6.6-1.74 0-.85-2.85-1.57-6.6-1.73z" fill="#fff"/></svg>`;}
+
+
+/* ══════════════════════════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════════════════════════ */
+function goToPartners() {
+  appScreen = 'partners';
+  render();
+}
+
+function goToPartner() {
+  appScreen = 'partner-detail';
+  activeTab = 'product-details';
+  render();
+}
+
+function goToTab(tab) {
+  activeTab = tab;
+  appScreen = (tab === 'pricing') ? 'pricing' : 'partner-detail';
+  render();
+}
+
+function goToSpreadPlan() {
+  // First visit: seed Trade assets from the Pricing tab's asset selection
+  if (savedAssetKeys.size === 0) {
+    const source = savedPricingAssetKeys.size > 0 ? savedPricingAssetKeys : pricingAssetKeys;
+    if (source.size > 0) savedAssetKeys = new Set(source);
+  }
+  appScreen = 'spread-plan';
+  render();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   UNIFIED SAVE / DISCARD
+   Routes to the correct handler based on appScreen
+══════════════════════════════════════════════════════════════ */
+function saveChanges() {
+  if (appScreen === 'spread-plan') {
+    saveSpreadChanges();
+  } else {
+    savePartnerChanges();
+  }
+}
+
+/* ── Save confirmation modal (all action bars) ───────────── */
+let pendingSaveFn = null;
+function openSaveConfirm(fn) {
+  pendingSaveFn = fn;
+  document.getElementById('save-confirm-modal').classList.add('visible');
+}
+function closeSaveConfirm() {
+  pendingSaveFn = null;
+  document.getElementById('save-confirm-modal').classList.remove('visible');
+}
+function confirmSavePending() {
+  const fn = pendingSaveFn;
+  closeSaveConfirm();
+  if (fn) fn();
+}
+
+function discardChanges() {
+  if (appScreen === 'spread-plan') {
+    discardSpreadChanges();
+  } else {
+    discardPartnerChanges();
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PARTNERS / PRICING — ACTIONS
+══════════════════════════════════════════════════════════════ */
+function selectModel(model) {
+  pricingModel = model;
+  render();
+  updateSaveBar();
+}
+
+function savePartnerChanges() {
+  savedModel              = pricingModel;
+  savedLimitsTradeMin     = limitsTradeMin;
+  savedLimitsTradeMax     = limitsTradeMax;
+  savedDepositsLimitRows  = JSON.parse(JSON.stringify(depositsLimitRows));
+  savedWithdrawalsLimitRows = JSON.parse(JSON.stringify(withdrawalsLimitRows));
+  savedPricingAssetKeys   = new Set(pricingAssetKeys);
+  pricingSaved = true;
+  hideSaveBar();
+  render();
+  showToast();
+}
+
+function discardPartnerChanges() {
+  pricingModel            = savedModel;
+  limitsTradeMin          = savedLimitsTradeMin;
+  limitsTradeMax          = savedLimitsTradeMax;
+  depositsLimitRows       = JSON.parse(JSON.stringify(savedDepositsLimitRows));
+  withdrawalsLimitRows    = JSON.parse(JSON.stringify(savedWithdrawalsLimitRows));
+  pricingAssetKeys        = new Set(savedPricingAssetKeys);
+  pricingAssetsModalOpen  = false;
+  pricingAssetsModalDraft = null;
+  hideSaveBar();
+  render();
+}
+
+/* ── Partner save bar ────────────────────────────────────── */
+function pricingDirty() {
+  if (pricingModel !== savedModel) return true;
+  if (limitsTradeMin !== savedLimitsTradeMin || limitsTradeMax !== savedLimitsTradeMax) return true;
+  // Only count rows that have a method selected (empty rows are UI scaffolding, not changes)
+  const depReal  = depositsLimitRows.filter(r => r.method);
+  const depSaved = savedDepositsLimitRows.filter(r => r.method);
+  if (JSON.stringify(depReal) !== JSON.stringify(depSaved)) return true;
+  const wdrReal  = withdrawalsLimitRows.filter(r => r.method);
+  const wdrSaved = savedWithdrawalsLimitRows.filter(r => r.method);
+  if (JSON.stringify(wdrReal) !== JSON.stringify(wdrSaved)) return true;
+  if (pricingAssetKeys.size !== savedPricingAssetKeys.size) return true;
+  for (const k of pricingAssetKeys) if (!savedPricingAssetKeys.has(k)) return true;
+  return false;
+}
+
+function updateSaveBar() {
+  if (appScreen === 'spread-plan') { hideSaveBar(); return; }
+  const bar = document.getElementById('save-bar');
+  const lbl = document.getElementById('save-bar-lbl');
+  if (pricingDirty()) {
+    lbl.textContent = '1 unsaved change';
+    bar.classList.add('visible');
+  } else {
+    bar.classList.remove('visible');
+  }
+}
+
+/* ── Limits — Trades ─────────────────────────────────────── */
+function setLimitsTradeMin(val) { limitsTradeMin = val; updateSaveBar(); }
+function setLimitsTradeMax(val) { limitsTradeMax = val; updateSaveBar(); }
+function clearTradeLimits() { limOpenDeleteModal('trades', null, 'Trades'); }
+
+/* ── Limits — delete confirmation modal ──────────────────── */
+let limDeletePending = null; // { kind: 'trades' | 'deposits' | 'withdrawals', idx }
+function limOpenDeleteModal(kind, idx, label) {
+  limDeletePending = { kind, idx };
+  document.getElementById('lim-delete-method-name').textContent = label;
+  document.getElementById('lim-delete-modal').classList.add('visible');
+}
+function limCloseDeleteModal() {
+  limDeletePending = null;
+  document.getElementById('lim-delete-modal').classList.remove('visible');
+}
+function limConfirmDelete() {
+  if (!limDeletePending) return;
+  const { kind, idx } = limDeletePending;
+  if (kind === 'trades') {
+    limitsTradeMin = ''; limitsTradeMax = '';
+    renderPricingInPlace();
+  } else if (kind === 'deposits') {
+    depositsLimitRows.splice(idx, 1);
+    if (!depositsLimitRows.length) depositsLimitRows.push({method:null,min:'',max:''});
+    renderContent();
+  } else if (kind === 'withdrawals') {
+    withdrawalsLimitRows.splice(idx, 1);
+    if (!withdrawalsLimitRows.length) withdrawalsLimitRows.push({method:null,min:'',max:''});
+    renderContent();
+  }
+  limCloseDeleteModal();
+  updateSaveBar();
+}
+
+/* ── Limits — shared re-render helper ───────────────────── */
+function renderPricingInPlace() {
+  if (appScreen !== 'pricing') return;
+  const el = document.querySelector('.pricing-section');
+  if (!el) return;
+  const parent = el.parentElement;
+  parent.innerHTML = renderPricingContent();
+}
+
+/* ── Limits — Deposits rows ──────────────────────────────── */
+/* ── Limits — Deposits rows ──────────────────────────────── */
+function depositsLimLimitToggleTopDD(e) {
+  if(e) e.stopPropagation();
+  depositsLimitDDOpen = depositsLimitDDOpen === 'top' ? null : 'top';
+  renderContent();
+}
+function depositsLimLimitToggleMethod(m,e) {
+  if(e) e.stopPropagation();
+  const idx = depositsLimitRows.findIndex(r => r.method === m);
+  if (idx >= 0) depositsLimitRows.splice(idx, 1);
+  else depositsLimitRows.push({method:m,min:'',max:''});
+  renderContent(); updateSaveBar();
+}
+function depositsLimLimitDeleteRow(idx) {
+  limOpenDeleteModal('deposits', idx, depositsLimitRows[idx]?.method || 'this method');
+}
+function depositsLimLimitSetMin(idx,val) { depositsLimitRows[idx].min = val; updateSaveBar(); }
+function depositsLimLimitSetMax(idx,val) { depositsLimitRows[idx].max = val; updateSaveBar(); }
+function depositsLimLimitToggleRails() { depositsLimitRailsOn = !depositsLimitRailsOn; updateSaveBar(); }
+
+/* ── Limits — Withdrawals rows ───────────────────────────── */
+function withdrawalsLimLimitToggleTopDD(e) {
+  if(e) e.stopPropagation();
+  withdrawalsLimitDDOpen = withdrawalsLimitDDOpen === 'top' ? null : 'top';
+  renderContent();
+}
+function withdrawalsLimLimitToggleMethod(m,e) {
+  if(e) e.stopPropagation();
+  const idx = withdrawalsLimitRows.findIndex(r => r.method === m);
+  if (idx >= 0) withdrawalsLimitRows.splice(idx, 1);
+  else withdrawalsLimitRows.push({method:m,min:'',max:''});
+  renderContent(); updateSaveBar();
+}
+function withdrawalsLimLimitDeleteRow(idx) {
+  limOpenDeleteModal('withdrawals', idx, withdrawalsLimitRows[idx]?.method || 'this method');
+}
+function withdrawalsLimLimitSetMin(idx,val) { withdrawalsLimitRows[idx].min = val; updateSaveBar(); }
+function withdrawalsLimLimitSetMax(idx,val) { withdrawalsLimitRows[idx].max = val; updateSaveBar(); }
+function withdrawalsLimLimitToggleRails() { withdrawalsLimitRailsOn = !withdrawalsLimitRailsOn; updateSaveBar(); }
+
+/* ── Assets (Pricing tab) ────────────────────────────────── */
+function paCheckSVG() {
+  return `<svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6.5l2.8 2.8L10 3.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
+
+/* ── Edit assets modal ───────────────────────────────────── */
+function openEditAssetsModal() {
+  pricingAssetsModalOpen  = true;
+  pricingAssetsModalDraft = new Set(pricingAssetKeys);
+  pricingAssetsSearch     = '';
+  pricingAssetsCategory   = 'all';
+  renderContent();
+}
+function closeEditAssetsModal() {
+  pricingAssetsModalOpen  = false;
+  pricingAssetsModalDraft = null;
+  pricingAssetsSearch     = '';
+  renderContent();
+}
+function cancelEditAssets() { closeEditAssetsModal(); }
+function saveEditAssets() {
+  if (pricingAssetsModalDraft !== null) pricingAssetKeys = new Set(pricingAssetsModalDraft);
+  pricingAssetsModalOpen  = false;
+  pricingAssetsModalDraft = null;
+  pricingAssetsSearch     = '';
+  renderContent();
+  updateSaveBar();
+}
+function setPricingAssetCategory(cat) {
+  pricingAssetsCategory = (cat === 'All') ? 'all' : cat;
+  renderContent();
+}
+
+function pricingAssetsSearchInput(val) {
+  pricingAssetsSearch = val;
+  if (pricingAssetsModalOpen) refreshModalList();
+  else refreshInlineAssets();
+}
+
+function pricingAssetToggle(key, e) {
+  if (e) e.stopPropagation();
+  if (pricingAssetsModalOpen && pricingAssetsModalDraft !== null) {
+    if (pricingAssetsModalDraft.has(key)) pricingAssetsModalDraft.delete(key);
+    else pricingAssetsModalDraft.add(key);
+    refreshModalList();
+    const c = document.getElementById('ea-count');
+    if (c) c.textContent = `${pricingAssetsModalDraft.size}/${ALL_ASSETS_CATALOG.length}`;
+  } else {
+    if (pricingAssetKeys.has(key)) pricingAssetKeys.delete(key);
+    else pricingAssetKeys.add(key);
+    renderContent(); updateSaveBar();
+  }
+}
+function pricingAssetsToggleAll(e) {
+  if (e) e.stopPropagation();
+  const target = (pricingAssetsModalOpen && pricingAssetsModalDraft !== null)
+    ? pricingAssetsModalDraft : pricingAssetKeys;
+  if (target.size === ALL_ASSETS_CATALOG.length) target.clear();
+  else ALL_ASSETS_CATALOG.forEach(a => target.add(a.key));
+  if (pricingAssetsModalOpen) {
+    refreshModalList();
+    const c = document.getElementById('ea-count');
+    if (c) c.textContent = `${pricingAssetsModalDraft.size}/${ALL_ASSETS_CATALOG.length}`;
+  } else { renderContent(); updateSaveBar(); }
+}
+
+function refreshModalList() {
+  const draft = pricingAssetsModalDraft ?? pricingAssetKeys;
+  const q = pricingAssetsSearch.toLowerCase();
+  const cat = pricingAssetsCategory;
+  const checkSvg = `<svg width="10" height="7" viewBox="0 0 10 7" fill="none"><path d="M1 3.5l3 3 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const items = ALL_ASSETS_CATALOG
+    .filter(a => {
+      const mc = cat === 'all' || a.category === cat;
+      const mq = !q || a.name.toLowerCase().includes(q) || a.fullName.toLowerCase().includes(q);
+      return mc && mq;
+    })
+    .map(a => {
+      const on = draft.has(a.key);
+      return `<div class="ea-item" onclick="pricingAssetToggle('${a.key}',event)">
+        <span class="ea-item-ic">${assetIcon(a.key)}</span>
+        <div class="ea-item-info">
+          <div class="ea-item-name">${a.fullName}</div>
+          <div class="ea-item-ticker">${a.key}</div>
+        </div>
+        <div class="pa-cb${on?' on':''}">${on?checkSvg:''}</div>
+      </div>`;
+    }).join('');
+  const list = document.getElementById('ea-opt-list');
+  if (list) list.innerHTML = items || `<div style="padding:20px;text-align:center;font-size:12px;color:#9ca3af;">No assets found</div>`;
+}
+
+function refreshInlineAssets() {
+  const q = pricingAssetsSearch.toLowerCase();
+  const cat = pricingAssetsCategory;
+  const visible = ALL_ASSETS_CATALOG.filter(a => {
+    const mc = cat === 'all' || a.category === cat;
+    const mq = !q || a.name.toLowerCase().includes(q) || a.fullName.toLowerCase().includes(q);
+    return mc && mq && pricingAssetKeys.has(a.key);
+  });
+  const el = document.getElementById('pa-inline-assets');
+  if (el) el.innerHTML = visible.map(a => `
+    <div class="pa-asset-row-item">
+      <span class="pa-asset-ic">${assetIcon(a.key)}</span>
+      <div class="pa-asset-info">
+        <span class="pa-asset-fullname">${a.fullName}</span>
+        <span class="pa-asset-ticker">${a.key}</span>
+      </div>
+    </div>`).join('');
+}
+
+function buildEditAssetsModal() {
+  const draft = pricingAssetsModalDraft ?? pricingAssetKeys;
+  const q = pricingAssetsSearch.toLowerCase();
+  const cat = pricingAssetsCategory;
+  const checkSvg = `<svg width="10" height="7" viewBox="0 0 10 7" fill="none"><path d="M1 3.5l3 3 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const catPills = ASSET_CATEGORIES.map(c => {
+    const cnt = c === 'All' ? ALL_ASSETS_CATALOG.length : ALL_ASSETS_CATALOG.filter(a => a.category === c).length;
+    const on = (c === 'All' && cat === 'all') || (c !== 'All' && cat === c);
+    return `<button class="ea-cat-pill${on?' active':''}" onclick="setPricingAssetCategory('${c}')">${c} <span>${cnt}</span></button>`;
+  }).join('');
+  const filtered = ALL_ASSETS_CATALOG.filter(a => {
+    const mc = cat === 'all' || a.category === cat;
+    const mq = !q || a.name.toLowerCase().includes(q) || a.fullName.toLowerCase().includes(q);
+    return mc && mq;
+  });
+  const allOn = draft.size === ALL_ASSETS_CATALOG.length;
+  const itemsHtml = filtered.map(a => {
+    const on = draft.has(a.key);
+    return `<div class="ea-item" onclick="pricingAssetToggle('${a.key}',event)">
+      <span class="ea-item-ic">${assetIcon(a.key)}</span>
+      <div class="ea-item-info">
+        <div class="ea-item-name">${a.fullName}</div>
+        <div class="ea-item-ticker">${a.key}</div>
+      </div>
+      <div class="pa-cb${on?' on':''}">${on?checkSvg:''}</div>
+    </div>`;
+  }).join('') || `<div style="padding:20px;text-align:center;font-size:12px;color:#9ca3af;">No assets found</div>`;
+  return `
+  <div class="ea-overlay" onclick="cancelEditAssets()">
+    <div class="ea-modal" onclick="event.stopPropagation()">
+      <div class="ea-modal-hdr">
+        <span class="ea-modal-title">Edit assets</span>
+        <button class="modal-close-btn" onclick="cancelEditAssets()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="ea-modal-body">
+        <div class="pa-search" style="margin-bottom:12px;">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="#9ca3af" stroke-width="1.4"/><path d="M9.5 9.5l3 3" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <input id="ea-search-inp" placeholder="Search for assets" value="${pricingAssetsSearch}"
+            oninput="pricingAssetsSearchInput(this.value)" onclick="event.stopPropagation()">
+        </div>
+        <div class="ea-cat-pills">${catPills}</div>
+        <div class="ea-count-row">
+          <span class="ea-count" id="ea-count">${draft.size}/${ALL_ASSETS_CATALOG.length}</span>
+          <label class="ea-all-lbl" onclick="event.stopPropagation();pricingAssetsToggleAll(event)">
+            <div class="pa-cb${allOn?' on':''}">${allOn?checkSvg:''}</div>
+            All
+          </label>
+        </div>
+        <div class="ea-list" id="ea-opt-list">${itemsHtml}</div>
+      </div>
+      <div class="ea-modal-ftr">
+        <button class="btn-green-outline" onclick="cancelEditAssets()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveEditAssets()">Save assets</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ── Legacy delete modal (kept for compat) ───────────────── */
+function pricingAssetOpenDelete(key) {
+  pricingAssetDeleteKey = key;
+  document.getElementById('pa-delete-asset-name').textContent = key;
+  document.getElementById('pa-delete-modal').classList.add('visible');
+}
+function pricingAssetCloseDeleteModal() {
+  pricingAssetDeleteKey = null;
+  document.getElementById('pa-delete-modal').classList.remove('visible');
+}
+function pricingAssetConfirmDelete() {
+  if (pricingAssetDeleteKey) pricingAssetKeys.delete(pricingAssetDeleteKey);
+  pricingAssetCloseDeleteModal();
+  renderContent(); updateSaveBar();
+}
+
+function hideSaveBar() {
+  document.getElementById('save-bar').classList.remove('visible');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SPREAD PLAN — ACTIONS
+══════════════════════════════════════════════════════════════ */
+function saveSpreadChanges() {
+  savedPartnerFee    = partnerFee;
+  savedAbsorbSpreads = absorbSpreads;
+  Object.assign(savedCellEdits, pendingCellEdits);
+  pendingCellEdits = {};
+  openCells.clear();
+  // Commit tier edits first (before deletions shift indices)
+  for (let i = 0; i < tierThresholds.length; i++) {
+    if (pendingTierEdits[i] !== undefined) tierThresholds[i] = pendingTierEdits[i];
+  }
+  pendingTierEdits = {};
+  // Commit pending deletions — splice in reverse order to preserve indices
+  const toDelete = Array.from(pendingTierDeletions).sort((a, b) => b - a);
+  for (const idx of toDelete) {
+    tierThresholds.splice(idx, 1);
+    // Also purge saved cell edits for the deleted tier column
+    for (const key of Object.keys(savedCellEdits)) {
+      if (key.endsWith('-' + idx)) delete savedCellEdits[key];
+    }
+  }
+  pendingTierDeletions = new Set();
+  savedTierThresholds = [...tierThresholds];
+  TIERS = tierThresholds.length + 1;
+  editingTierIdx = null;
+  // Commit asset selection
+  if (pendingAssetKeys !== null) {
+    savedAssetKeys = new Set(pendingAssetKeys);
+    pendingAssetKeys = null;
+  }
+  assetDropdownOpen = false;
+  assetSearchQuery  = '';
+  // Commit plan fees (Deposits & Withdrawals tabs). A tab only flips
+  // to the read-only saved view if the user actually edited it.
+  for (const kind of ['deposits', 'withdrawals']) {
+    if (planFeesKindDirty(kind)) {
+      for (const method of planFeesMethods(kind)) {
+        const e = planFees[kind][method] || { jur: null, uFee: '', pFee: '' };
+        savedPlanFees[kind][method] = { ...e };
+      }
+      savedPlanFeesDeleted[kind] = new Set(planFeesDeleted[kind]);
+    }
+    planFeesEditing[kind].clear();
+    planFeesOpenDD[kind] = null;
+  }
+  document.getElementById('save-bar-spread').classList.remove('visible');
+  renderHeaders();
+  renderTable();
+  renderDepositsTab();
+  renderWithdrawalsTab();
+  showToast();
+}
+
+function discardSpreadChanges() {
+  partnerFee    = savedPartnerFee;
+  absorbSpreads = savedAbsorbSpreads;
+  pendingCellEdits = {};
+  openCells.clear();
+  pendingTierEdits    = {};
+  pendingTierDeletions = new Set();
+  editingTierIdx      = null;
+  pendingAssetKeys    = null;
+  assetDropdownOpen   = false;
+  assetSearchQuery    = '';
+  // Reset plan fees tabs back to last saved state
+  for (const kind of ['deposits', 'withdrawals']) {
+    planFees[kind] = {};
+    for (const m in savedPlanFees[kind]) planFees[kind][m] = { ...savedPlanFees[kind][m] };
+    planFeesDeleted[kind] = new Set(savedPlanFeesDeleted[kind]);
+    planFeesEditing[kind].clear();
+    planFeesOpenDD[kind] = null;
+  }
+  renderDepositsTab();
+  renderWithdrawalsTab();
+  renderHeaders();
+
+  const feeInp = document.getElementById('partner-fee-inp');
+  if (feeInp) feeInp.value = savedPartnerFee;
+  const absorbInp = document.getElementById('absorb-toggle');
+  if (absorbInp) absorbInp.checked = savedAbsorbSpreads;
+
+  document.getElementById('save-bar-spread').classList.remove('visible');
+  renderTable();
+}
+
+/* ── Spread changes UI / bar ─────────────────────────────── */
+function countSpreadChanges() {
+  let n = 0;
+  if (partnerFee    !== savedPartnerFee)    n++;
+  if (absorbSpreads !== savedAbsorbSpreads) n++;
+  for (const key in pendingCellEdits) {
+    const asset       = ALL_ASSETS_CATALOG.find(a => key.startsWith(a.key + '-'));
+    const defaultBase = asset ? asset.baseBps : 6;
+    const saved       = savedCellEdits[key] ?? defaultBase;
+    if (pendingCellEdits[key] !== saved) n++;
+  }
+  for (let i = 0; i < tierThresholds.length; i++) {
+    if (pendingTierEdits[i] !== undefined && pendingTierEdits[i] !== savedTierThresholds[i]) n++;
+  }
+  n += pendingTierDeletions.size;
+  // Asset selection change
+  if (pendingAssetKeys !== null) {
+    const p = pendingAssetKeys, s = savedAssetKeys;
+    if (p.size !== s.size || [...p].some(k => !s.has(k)) || [...s].some(k => !p.has(k))) n++;
+  }
+  // Plan fees tabs (Deposits & Withdrawals)
+  n += planFeesDirtyCount();
+  return n;
+}
+
+function updateChangesUI() {
+  // Only relevant when on spread-plan screen
+  if (appScreen !== 'spread-plan') return;
+  updateSpreadBar();
+}
+
+function updateSpreadBar() {
+  const n       = countSpreadChanges();
+  const errors  = hasTierErrors();
+  const bar     = document.getElementById('save-bar-spread');
+  const lbl     = document.getElementById('save-bar-changes');
+  const saveBtn = document.getElementById('spread-save-btn');
+  if (n > 0 || errors) {
+    bar.classList.add('visible');
+    lbl.textContent = n + ' unsaved change' + (n !== 1 ? 's' : '');
+  } else {
+    bar.classList.remove('visible');
+  }
+  if (saveBtn) {
+    saveBtn.disabled      = errors;
+    saveBtn.style.opacity = errors ? '0.45' : '';
+    saveBtn.style.cursor  = errors ? 'not-allowed' : '';
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   UNIFIED TOAST
+══════════════════════════════════════════════════════════════ */
+let toastTimer;
+function showToast(msg) {
+  if (msg === undefined) msg = 'Changes successfully updated.';
+  const t = document.getElementById('g-toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   MAIN RENDER
+══════════════════════════════════════════════════════════════ */
+function render() {
+  renderContent();
+  // Refresh correct save bar for current screen
+  if (appScreen === 'spread-plan') {
+    hideSaveBar();       // hide pill bar
+    updateSpreadBar();   // refresh spread bar
+  } else {
+    // Hide spread bar when leaving spread-plan
+    document.getElementById('save-bar-spread').classList.remove('visible');
+    updateSaveBar();
+  }
+}
+
+/* ── Breadcrumbs (rendered inside content, below the header) ── */
+function breadcrumbHTML() {
+  if (appScreen === 'partner-detail') {
+    return `
+      <div class="breadcrumb bc-in-card">
+        <span class="bc-link" onclick="goToPartners()">Partners</span>
+        <span class="bc-sep">›</span>
+        <span class="bc-current">(Partner name)</span>
+      </div>`;
+  }
+  if (appScreen === 'pricing') {
+    return `
+      <div class="breadcrumb bc-in-card">
+        <span class="bc-link" onclick="goToPartners()">Partners</span>
+        <span class="bc-sep">›</span>
+        <span class="bc-link" onclick="goToPartner()">(Partner name)</span>
+        <span class="bc-sep">›</span>
+        <span class="bc-current">Pricing</span>
+      </div>`;
+  }
+  if (appScreen === 'spread-plan') {
+    return `
+      <div class="breadcrumb bc-in-card">
+        <span class="bc-link" onclick="goToPartners()">Partners</span>
+        <span class="bc-sep">›</span>
+        <span class="bc-link" onclick="goToPartner()">(Partner name)</span>
+        <span class="bc-sep">›</span>
+        <span class="bc-link" onclick="goToTab('pricing')">Pricing</span>
+        <span class="bc-sep">›</span>
+        <span class="bc-current">Standard plan</span>
+      </div>`;
+  }
+  return '';
+}
+
+/* ── Content area ────────────────────────────────────────── */
+function renderContent() {
+  const el = document.getElementById('main-content');
+
+  if (appScreen === 'partners') {
+    el.style.background = '#fff';
+    el.style.padding    = '';
+    el.innerHTML        = renderPartners();
+
+  } else if (appScreen === 'spread-plan') {
+    el.style.background = '#f0f2fa';
+    el.style.padding    = '24px 32px 80px';
+    el.innerHTML        = breadcrumbHTML() + spreadPlanHTML();
+    // Now that the DOM is live, attach render + scroll listener
+    renderHeaders();
+    renderTable();
+    renderDepositsTab();
+    renderWithdrawalsTab();
+    document.getElementById('spread-table-outer').addEventListener('scroll', function() {
+      this.classList.toggle('scrolled', this.scrollLeft > 4);
+    });
+
+  } else {
+    el.style.background = '#f0f2fa';
+    el.style.padding    = '';
+    const tab   = (appScreen === 'pricing') ? 'pricing' : 'product-details';
+    const inner = (tab === 'pricing') ? renderPricingContent() : renderProductDetails();
+    el.innerHTML = `
+      <div class="content-card">
+        ${breadcrumbHTML()}
+        ${renderPartnerHeader()}
+        ${renderTabs(tab)}
+        ${inner}
+      </div>`;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PARTNERS LIST
+══════════════════════════════════════════════════════════════ */
+function renderPartners() {
+  const ALL_PRODUCTS = ['B2B Payments', 'Business wallet', 'Topper', 'Placeholder'];
+  const rows = [
+    { kyb:'pending',   contract:'not-signed', products:['B2B Payments'] },
+    { kyb:'completed', contract:'signed',     products:['B2B Payments'] },
+    { kyb:'declined',  contract:'not-signed', products:ALL_PRODUCTS },
+    { kyb:'pending',   contract:'na',         products:['Business wallet'] },
+    { kyb:'pending',   contract:'signed',     products:ALL_PRODUCTS },
+    { kyb:'completed', contract:'signed',     products:ALL_PRODUCTS },
+    { kyb:'pending',   contract:'not-signed', products:ALL_PRODUCTS },
+    { kyb:'pending',   contract:'not-signed', products:ALL_PRODUCTS },
+    { kyb:'pending',   contract:'not-signed', products:ALL_PRODUCTS },
+    { kyb:'pending',   contract:'not-signed', products:ALL_PRODUCTS },
+  ];
+
+  const kybBadge = k => ({
+    pending:   `<span class="badge badge-kyb-pending">KYB pending</span>`,
+    completed: `<span class="badge badge-kyb-completed">KYB completed</span>`,
+    declined:  `<span class="badge badge-kyb-declined">KYB declined</span>`,
+  }[k]);
+
+  const contractBadge = c => c === 'signed'
+    ? `<span class="badge badge-signed">Signed</span>`
+    : c === 'na'
+    ? `<span style="font-size:14px;font-weight:400;color:#697baa;">Not applicable</span>`
+    : `<span class="badge badge-not-signed">1 not signed</span>`;
+
+  const rowsHTML = rows.map(r => `
+    <div class="partner-row" onclick="goToPartner()">
+      <div class="partner-name">Partner name organization<br>example in 2 lines</div>
+      <div>${kybBadge(r.kyb)}</div>
+      <div>${contractBadge(r.contract)}</div>
+      <div class="products-text">${r.products.join(', ')}</div>
+    </div>`).join('');
+
+  const filterLabel = (lbl, val) => `
+    <div class="filter-sel">
+      <div><div class="filter-lbl">${lbl}</div><div class="filter-val">${val}</div></div>
+      <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>
+    </div>`;
+
+  return `
+    <div class="partners-page">
+      <div class="partners-hdr">
+        <h1 class="partners-title">Partners</h1>
+        <button class="btn btn-primary">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Add partner
+        </button>
+      </div>
+
+      <div class="search-wrap">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="color:#9ca3af;flex-shrink:0"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.4"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <input placeholder="Search by legal business name or user email">
+      </div>
+
+      <div class="filters-row">
+        ${filterLabel('Uphold agent','All')}
+        ${filterLabel('Product','All')}
+        ${filterLabel('Integration','All')}
+        ${filterLabel('KYB','All')}
+        ${filterLabel('Contract','All')}
+      </div>
+
+      <p class="partners-count">1761 partners</p>
+
+      <div class="table-scroll">
+        <div class="table-header">
+          <div class="th">Account</div>
+          <div class="th">KYB</div>
+          <div class="th">Contract</div>
+          <div class="th">Products</div>
+        </div>
+        ${rowsHTML}
+      </div>
+
+      <div class="pagination">
+        <div class="pg-arrow">
+          <svg width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M7 1L1 6l6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <button class="pg-btn active">1</button>
+        <button class="pg-btn">2</button>
+        <button class="pg-btn">3</button>
+        <button class="pg-btn">4</button>
+        <button class="pg-btn">5</button>
+        <button class="pg-btn ellipsis">…</button>
+        <button class="pg-btn">10</button>
+        <div class="pg-arrow">
+          <svg width="8" height="12" viewBox="0 0 8 12" fill="none"><path d="M1 1l6 5-6 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PARTNER HEADER (shared across partner-detail / pricing)
+══════════════════════════════════════════════════════════════ */
+function renderPartnerHeader() {
+  return `
+    <div class="partner-page-hdr">
+      <div>
+        <div class="partner-title">Partner name organization example in a long line</div>
+        <span class="badge badge-kyb-pending">KYB Pending</span>
+      </div>
+      <div class="product-area">
+        <div>
+          <div style="font-size:12px;color:#6b7280;margin-bottom:6px;font-weight:500;">Select a product</div>
+          <div class="product-select">
+            <span style="font-size:13.5px;color:#374151;">B2B Payments</span>
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   TABS BAR
+══════════════════════════════════════════════════════════════ */
+function renderTabs(active) {
+  return `
+    <div class="tabs-bar">
+      <button class="tab-btn ${active === 'product-details' ? 'active' : ''}" onclick="goToTab('product-details')">Product details</button>
+      <button class="tab-btn ${active === 'pricing' ? 'active' : ''}" onclick="goToTab('pricing')">Pricing</button>
+    </div>`;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   MEMBERS SECTION
+══════════════════════════════════════════════════════════════ */
+function setMemberFilter(f) {
+  memberFilter = f;
+  memberOpenMenu = null;
+  renderContent();
+}
+
+function toggleMemberMenu(id, e) {
+  e.stopPropagation();
+  memberOpenMenu = memberOpenMenu === id ? null : id;
+  renderContent();
+}
+
+function buildMembersSection() {
+  const counts = {
+    all:         MEMBER_DATA.length,
+    active:      MEMBER_DATA.filter(m => m.status === 'active').length,
+    pending:     MEMBER_DATA.filter(m => m.status === 'pending').length,
+    deactivated: MEMBER_DATA.filter(m => m.status === 'deactivated').length,
+  };
+  const filtered = memberFilter === 'all' ? MEMBER_DATA : MEMBER_DATA.filter(m => m.status === memberFilter);
+
+  const pillsHTML = ['all','active','pending','deactivated'].map(f => `
+    <button class="m-pill${memberFilter === f ? ' active' : ''}" onclick="setMemberFilter('${f}')">
+      <span>${f.charAt(0).toUpperCase() + f.slice(1)}</span>
+      <span class="m-pill-count">${counts[f]}</span>
+    </button>`).join('');
+
+  const moreIconSVG = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="4" r="1.3" fill="currentColor"/><circle cx="8" cy="8" r="1.3" fill="currentColor"/><circle cx="8" cy="12" r="1.3" fill="currentColor"/></svg>`;
+
+  const rowsHTML = filtered.map(m => {
+    const isPending     = m.status === 'pending';
+    const isDeactivated = m.status === 'deactivated';
+    const avatarHTML = isPending
+      ? `<div class="member-avatar-dashed"></div>`
+      : `<div class="member-avatar-solid"><span class="member-avatar-initials">${m.initials}</span></div>`;
+    const nameHTML = isPending
+      ? `<span class="member-invite-sent">Invite sent</span>`
+      : `<span class="member-name">${m.name}</span>`;
+    const tagLabel = m.status.charAt(0).toUpperCase() + m.status.slice(1);
+    const lastHTML = isPending
+      ? `<div style="opacity:0;font-size:14px;">—</div>`
+      : `<div><div class="member-last-date">${m.lastDate}</div><div class="member-last-time">${m.lastTime}</div></div>`;
+    const menuItems = isPending
+      ? `<div class="member-more-item" onclick="event.stopPropagation()">Resend invite</div>`
+      : (isDeactivated
+        ? `<div class="member-more-item" onclick="event.stopPropagation()">Reactivate</div>`
+        : `<div class="member-more-item" onclick="event.stopPropagation()">Deactivate</div>`);
+    const menuHTML = memberOpenMenu === m.id
+      ? `<div class="member-more-menu">${menuItems}</div>` : '';
+
+    return `
+      <div class="member-row">
+        <div class="member-name-cell">${avatarHTML}${nameHTML}</div>
+        <div class="member-email">${m.email}</div>
+        <div class="member-role">${m.role}</div>
+        <div><span class="member-status-tag ${m.status}">${tagLabel}</span></div>
+        <div>${lastHTML}</div>
+        <div style="position:relative;display:flex;align-items:center;justify-content:center;">
+          <button class="member-more-btn" onclick="toggleMemberMenu(${m.id},event)">${moreIconSVG}</button>
+          ${menuHTML}
+        </div>
+      </div>`;
+  }).join('');
+
+  const countLabel = filtered.length === 1 ? '1 member' : `${filtered.length} members`;
+
+  return `
+    <div class="members-section" id="members-section">
+      <div style="font-size:20px;font-weight:600;color:#1d2738;margin-bottom:4px;">Members</div>
+      <div style="font-size:14px;color:#697baa;margin-bottom:20px;">All members listed on this product.</div>
+      <div class="member-pills">${pillsHTML}</div>
+      <div class="members-count-text">${countLabel}</div>
+      <div class="members-hdr">
+        <div class="members-hdr-cell">Name</div>
+        <div class="members-hdr-cell">Email</div>
+        <div class="members-hdr-cell">Role</div>
+        <div class="members-hdr-cell">Status</div>
+        <div class="members-hdr-cell">Last access</div>
+        <div></div>
+      </div>
+      ${rowsHTML}
+    </div>`;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PRODUCT DETAILS TAB
+══════════════════════════════════════════════════════════════ */
+function renderProductDetails() {
+  return `
+    <div class="pd-section-hdr">
+      <div class="section-title" style="margin-bottom:0;">Product details</div>
+      <button class="btn btn-primary">Add product</button>
+    </div>
+    <div class="product-details-card">
+      <div class="pd-grid">
+        <div>
+          <div class="pd-label">Product type</div>
+          <div class="pd-value">B2B Payments</div>
+        </div>
+        <div>
+          <div class="pd-label">Integration</div>
+          <div class="pd-value" style="color:#6b7280;">In progress</div>
+        </div>
+        <div>
+          <div class="pd-label">Contract</div>
+          <div><span class="badge badge-signed">Signed</span></div>
+        </div>
+        <div>
+          <div class="pd-label">Sales account email</div>
+          <div class="pd-sel">
+            <span style="font-size:13px;">tc0078@uphold.com</span>
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+        <div>
+          <div class="pd-label">Account manager email</div>
+          <div class="pd-sel">
+            <span style="font-size:13px;">tc0078@uphold.com</span>
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    ${buildMembersSection()}`;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PRICING TAB
+══════════════════════════════════════════════════════════════ */
+function renderPricingContent() {
+  const isWholesale = pricingModel === 'wholesale';
+  const trashSVG = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 4h10M5 4V3h4v1M5.5 6.5v4M8.5 6.5v4M3 4l.7 7.3a1 1 0 001 .92h4.6a1 1 0 001-.92L11 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const chevronSVG = `<svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>`;
+  const infoSVG = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#9ca3af" stroke-width="1.3"/><path d="M7 6.5v3.5M7 4.5v.5" stroke="#9ca3af" stroke-width="1.3" stroke-linecap="round"/></svg>`;
+
+  // ── Revenue model ──
+  const revenueSection = `
+    <div class="psb-block">
+      <div class="psb-title">Revenue model</div>
+      <div class="psb-sub">Select the revenue model agreed in this partner's contract.</div>
+      <div class="psb-option-lbl">Select an option</div>
+      <div class="psb-radio-option" onclick="selectModel('wholesale')">
+        <div class="psb-radio-circle ${pricingModel === 'wholesale' ? 'sel' : ''}"><div class="psb-radio-dot"></div></div>
+        <div>
+          <div class="psb-opt-title">Wholesale model</div>
+          <div class="psb-opt-sub">Uphold sets the base price. The partner adds their own margin.</div>
+        </div>
+      </div>
+      <div class="psb-radio-option" onclick="selectModel('revenue-share')">
+        <div class="psb-radio-circle ${pricingModel === 'revenue-share' ? 'sel' : ''}"><div class="psb-radio-dot"></div></div>
+        <div>
+          <div class="psb-opt-title">Revenue share model</div>
+          <div class="psb-opt-sub">The partner earns a percentage of Uphold's take rate.</div>
+        </div>
+      </div>
+    </div>`;
+
+  if (!isWholesale) {
+    return `<div class="pricing-section"><div class="pricing-page-title">Pricing</div>${revenueSection}</div>`;
+  }
+
+  // ── Trades card ──
+  const tradeTrash = (limitsTradeMin && limitsTradeMax) ? `
+    <button class="lim2-del-btn" onclick="clearTradeLimits()">${trashSVG}</button>` : '';
+  const tradesCard = `
+    <div class="lim2-card">
+      <div class="lim2-card-hdr">
+        <div class="lim2-icon-title">
+          <div class="lim2-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 6h12M3 6l3-3M3 6l3 3M15 12H3M15 12l-3-3M15 12l-3 3" stroke="#697BAA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><div class="lim2-name">Trades</div><div class="lim2-kind">Spread limits</div></div>
+        </div>
+      </div>
+      <div class="lim2-trade-body">
+        <div class="lim2-field">
+          <div class="lim2-field-lbl">Min</div>
+          <div class="lim2-num-wrap" style="width:160px">
+            <input class="lim2-num-inp" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="0" value="${limitsTradeMin}" oninput="setLimitsTradeMin(this.value)">
+            <span class="lim2-unit-lbl">bps</span>
+          </div>
+        </div>
+        <div class="lim2-field">
+          <div class="lim2-field-lbl">Max</div>
+          <div class="lim2-num-wrap" style="width:160px">
+            <input class="lim2-num-inp" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="0" value="${limitsTradeMax}" oninput="setLimitsTradeMax(this.value)">
+            <span class="lim2-unit-lbl">bps</span>
+          </div>
+        </div>
+        ${tradeTrash}
+      </div>
+    </div>`;
+
+  // ── Pricing plan filled card ──
+  function buildPricingPlanCard() {
+    // Conditions for filled state: at least one deposit or withdrawal method configured
+    // AND the spread plan has been opened/saved (savedTierThresholds exist and are non-zero)
+    const depMethods = savedDepositsLimitRows.filter(r => r.method).map(r => r.method);
+    const wdrMethods = savedWithdrawalsLimitRows.filter(r => r.method).map(r => r.method);
+    const hasMethods = depMethods.length > 0 || wdrMethods.length > 0;
+    // Only show the filled card once the user has actually configured something
+    // (hasMethods = at least one limits method, or a trade partner fee/absorb is set)
+    const hasConfig  = hasMethods || savedPartnerFee !== '' || savedAbsorbSpreads;
+
+    if (!hasConfig) {
+      return `<div class="lim2-plan-empty">
+        <div class="lim2-plan-empty-txt">Get started defining pricing settings for this organization</div>
+        <button class="btn-green-outline" onclick="goToSpreadPlan()">Edit pricing plan</button>
+      </div>`;
+    }
+
+    // ── Partner fee chips ──
+    function tradeChip() {
+      if (savedAbsorbSpreads) return `<span class="pp-chip absorb">Absorb all spreads</span>`;
+      const fee = parseInt(savedPartnerFee) || 0;
+      if (fee > 0) return `<span class="pp-chip pos">+ ${fee} bps</span>`;
+      if (fee < 0) return `<span class="pp-chip neg">− ${Math.abs(fee)} bps</span>`;
+      return `<span class="pp-chip zero">0 bps</span>`;
+    }
+    function depChip() {
+      if (depositsLimitRailsOn) return `<span class="pp-chip absorb">Uphold rails</span>`;
+      // Find first method with a partner fee set
+      const entry = Object.values(savedPlanFees.deposits)[0];
+      const fee = entry ? (parseInt(entry.pFee) || 0) : 0;
+      if (fee > 0) return `<span class="pp-chip pos">+ ${fee} %</span>`;
+      if (fee < 0) return `<span class="pp-chip neg">− ${Math.abs(fee)} %</span>`;
+      return `<span class="pp-chip zero">0 %</span>`;
+    }
+    function wdrChip() {
+      if (withdrawalsLimitRailsOn) return `<span class="pp-chip absorb">Uphold rails</span>`;
+      const entry = Object.values(savedPlanFees.withdrawals)[0];
+      const fee = entry ? (parseInt(entry.pFee) || 0) : 0;
+      if (fee > 0) return `<span class="pp-chip pos">+ ${fee} %</span>`;
+      if (fee < 0) return `<span class="pp-chip neg">− ${Math.abs(fee)} %</span>`;
+      return `<span class="pp-chip zero">0 %</span>`;
+    }
+
+    // ── Tier ranges ──
+    const tiers = savedTierThresholds;
+    const tierLabels = [];
+    if (tiers.length > 0) {
+      tierLabels.push(`Less than ${formatMoney(tiers[0])}`);
+      for (let i = 1; i < tiers.length; i++) {
+        tierLabels.push(`${formatMoney(tiers[i-1])} - ${formatMoney(tiers[i])}`);
+      }
+      tierLabels.push(`Greater than ${formatMoney(tiers[tiers.length - 1])}`);
+    }
+
+    return `
+      <div class="pp-card">
+        <div class="pp-card-hdr">
+          <div class="pp-card-hdr-left">
+            <div class="pp-plan-icon">
+              <svg width="18" height="18" viewBox="0 0 22 22" fill="none"><rect x="2" y="2" width="18" height="18" rx="5" stroke="#94a3b8" stroke-width="1.5"/><path d="M7 11h8M7 7.5h5M7 14.5h8" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div>
+              <div class="pp-plan-name">Standard plan</div>
+              <div class="pp-plan-meta">Last updated at September 26, 2025.</div>
+            </div>
+          </div>
+          <button class="pp-edit-btn" onclick="goToSpreadPlan()">Edit plan</button>
+        </div>
+        <div class="pp-cols">
+          <div class="pp-col">
+            <div class="pp-col-title">Partner fee</div>
+            <div class="pp-col-row"><span class="pp-col-label">Trade</span>${tradeChip()}</div>
+            <div class="pp-col-row"><span class="pp-col-label">Deposits</span>${depChip()}</div>
+            <div class="pp-col-row"><span class="pp-col-label">Withdrawals</span>${wdrChip()}</div>
+          </div>
+          <div class="pp-col">
+            <div class="pp-col-title">Trade ticket size</div>
+            ${tierLabels.map(l => `<div class="pp-tier-line">${l}</div>`).join('')}
+          </div>
+          <div class="pp-col">
+            <div class="pp-col-title">Deposit</div>
+            ${depMethods.length ? depMethods.map(m => `<div class="pp-method-line">${m}</div>`).join('') : '<div class="pp-method-line" style="color:#c4c9d6">No methods set</div>'}
+          </div>
+          <div class="pp-col">
+            <div class="pp-col-title">Withdrawal</div>
+            ${wdrMethods.length ? wdrMethods.map(m => `<div class="pp-method-line">${m}</div>`).join('') : '<div class="pp-method-line" style="color:#c4c9d6">No methods set</div>'}
+          </div>
+        </div>
+      </div>`;
+  }
+
+  // ── Deposits/Withdrawals limits card builder ──
+  const chkOnSVG  = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect width="18" height="18" rx="4" fill="#49CC68"/><path d="M4.5 9l3.5 3.5 5.5-6" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const chkOffSVG = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x=".75" y=".75" width="16.5" height="16.5" rx="3.25" stroke="#d1d5db" stroke-width="1.5"/></svg>`;
+
+  function buildLimCard(name, kind, iconSVG, rows, railsOn, ddOpen, ddPrefix, methods) {
+    const usedMethods = new Set(rows.map(r => r.method));
+    const singular = name === 'Deposits' ? 'deposit' : 'withdrawal';
+
+    const rowsHTML = rows.map((row, idx) => `
+      <div class="lim2-dep-row">
+        <div class="lim2-meth-inner">
+          <span class="lim2-meth-icon">${limMethodIcon(row.method)}</span>
+          <span>${row.method}</span>
+        </div>
+        <div class="lim2-num-wrap">
+          <input class="lim2-num-inp" type="text" inputmode="numeric" pattern="[0-9]*" value="${row.min}" placeholder="0" oninput="${ddPrefix}LimitSetMin(${idx},this.value)">
+          <span class="lim2-unit-lbl">%</span>
+        </div>
+        <div class="lim2-num-wrap">
+          <input class="lim2-num-inp" type="text" inputmode="numeric" pattern="[0-9]*" value="${row.max}" placeholder="0" oninput="${ddPrefix}LimitSetMax(${idx},this.value)">
+          <span class="lim2-unit-lbl">%</span>
+        </div>
+        <button class="lim2-row-del" onclick="${ddPrefix}LimitDeleteRow(${idx})">${trashSVG}</button>
+      </div>`).join('');
+
+    return `
+    <div class="lim2-card">
+      <div class="lim2-card-layout">
+        <div class="lim2-card-left">
+          <div class="lim2-icon">${iconSVG}</div>
+          <div><div class="lim2-name">${name}</div><div class="lim2-kind">${kind}</div></div>
+        </div>
+        <div class="lim2-card-content">
+          <div class="lim2-meth-lbl">${rows.length > 1 ? 'Methods' : 'Method'}</div>
+          <div class="lim2-meth-dd-wrap" style="max-width:320px;">
+            <button class="lim2-meth-trigger${ddOpen === 'top' ? ' open' : ''}" onclick="${ddPrefix}LimitToggleTopDD(event)">
+              <span class="lim2-ph">Select</span>
+              ${chevronSVG}
+            </button>
+            <div class="lim2-meth-list${ddOpen === 'top' ? ' open' : ''}">
+              ${methods.map(m => {
+                const sel = usedMethods.has(m);
+                return `<div class="lim2-meth-opt" onclick="${ddPrefix}LimitToggleMethod('${m.replace(/'/g,"\\'")}',event)">
+                  <span class="lim2-meth-opt-left"><span class="lim2-meth-icon">${limMethodIcon(m)}</span>${m}</span>
+                  <span class="lim2-meth-chk">${sel ? chkOnSVG : chkOffSVG}</span>
+                </div>`;
+              }).join('')}
+            </div>
+          </div>
+        </div>
+      </div>
+      ${rows.length > 0 ? `
+      <div class="lim2-dep-hdr" style="margin-top:16px;">
+        <div></div>
+        <div class="lim2-dep-col">Min</div>
+        <div class="lim2-dep-col">Max</div>
+        <div></div>
+      </div>
+      ${rowsHTML}` : `
+      <div style="text-align:center;padding:32px 0 8px;">
+        <span class="lim2-assets-empty-txt">Select ${singular} methods for this organization.</span>
+      </div>`}
+    </div>`;
+  }
+
+  const depIconSVG = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2v10M5 8l4 4 4-4" stroke="#697BAA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 14h12" stroke="#697BAA" stroke-width="1.5" stroke-linecap="round"/></svg>`;
+  const wdrIconSVG = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 16V6M5 10l4-4 4 4" stroke="#697BAA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 4h12" stroke="#697BAA" stroke-width="1.5" stroke-linecap="round"/></svg>`;
+
+  const depositsCard    = buildLimCard('Deposits',    'Fee limits', depIconSVG, depositsLimitRows,    depositsLimitRailsOn,    depositsLimitDDOpen,    'depositsLim',    LIMITS_DEP_METHODS);
+  const withdrawalsCard = buildLimCard('Withdrawals', 'Fee limits', wdrIconSVG, withdrawalsLimitRows, withdrawalsLimitRailsOn, withdrawalsLimitDDOpen, 'withdrawalsLim', LIMITS_WDR_METHODS);
+
+  // ── Assets section ──
+  const asCat = pricingAssetsCategory;
+  const asQ   = pricingAssetsSearch.toLowerCase();
+  const visibleSelected = ALL_ASSETS_CATALOG.filter(a => {
+    const mc = asCat === 'all' || a.category === asCat;
+    const mq = !asQ || a.name.toLowerCase().includes(asQ) || a.fullName.toLowerCase().includes(asQ);
+    return mc && mq && pricingAssetKeys.has(a.key);
+  });
+  const asCatPills = ASSET_CATEGORIES.map(c => {
+    const cnt = c === 'All'
+      ? pricingAssetKeys.size
+      : ALL_ASSETS_CATALOG.filter(a => a.category === c && pricingAssetKeys.has(a.key)).length;
+    const on = (c === 'All' && asCat === 'all') || (c !== 'All' && asCat === c);
+    return `<button class="pa-cat-pill${on?' active':''}" onclick="setPricingAssetCategory('${c}')">${c} <span class="pa-cat-pill-count">${cnt}</span></button>`;
+  }).join('');
+  const assetsBody = pricingAssetKeys.size === 0
+    ? `<div class="lim2-assets-empty">
+        <div class="lim2-assets-empty-txt" style="cursor:pointer;" onclick="openEditAssetsModal()">Edit assets for this organization</div>
+      </div>`
+    : `<div id="pa-inline-assets">${visibleSelected.map(a => `
+        <div class="pa-asset-row-item">
+          <span class="pa-asset-ic">${assetIcon(a.key)}</span>
+          <div class="pa-asset-info">
+            <span class="pa-asset-fullname">${a.fullName}</span>
+            <span class="pa-asset-ticker">${a.key}</span>
+          </div>
+        </div>`).join('')}</div>`;
+
+  const assetsSection = `
+    ${pricingAssetsModalOpen ? buildEditAssetsModal() : ''}
+    <div class="psb-block">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+          <div class="psb-title" style="margin-bottom:0;">Assets</div>
+          <button class="btn-green-outline" onclick="openEditAssetsModal()">Edit assets</button>
+        </div>
+        <div class="psb-sub" style="margin-bottom:0;">Configure which assets will be available for this organization.</div>
+      </div>
+      <div class="pa-search-bar">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="#9ca3af" stroke-width="1.4"/><path d="M9.5 9.5l3 3" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <input placeholder="Search for assets" value="${pricingAssetsSearch}" oninput="pricingAssetsSearchInput(this.value)">
+      </div>
+      <div class="pa-cat-pills">${asCatPills}</div>
+      ${assetsBody}
+    </div>`;
+
+  // ── Pricing plan section ──
+  const pricingPlanSection = `
+    <div class="psb-block">
+      <div class="psb-title">Pricing plan</div>
+      <div class="psb-sub" style="margin-bottom:0;">View spread and fees details.</div>
+      ${buildPricingPlanCard()}
+    </div>`;
+
+  return `
+    <div class="pricing-section">
+      <div class="pricing-page-title">Pricing</div>
+      ${revenueSection}
+      ${assetsSection}
+      <div class="lim2-section">
+        <div class="lim2-title">Trade limits</div>
+        <div class="lim2-sub">Set the minimum and maximum spread limits agreed in this partner's contract.</div>
+        ${tradesCard}
+      </div>
+      <div class="lim2-section">
+        <div class="lim2-title">Payment methods &amp; limits</div>
+        <div class="lim2-sub">Define which payment methods are available and set the minimum and maximum fee limits agreed in this partner's contract.</div>
+        ${depositsCard}
+        ${withdrawalsCard}
+      </div>
+      ${pricingPlanSection}
+    </div>`;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SPREAD PLAN — HTML TEMPLATE
+   Injected by renderContent() when appScreen === 'spread-plan'.
+   renderHeaders() and renderTable() are called immediately after.
+══════════════════════════════════════════════════════════════ */
+function spreadPlanHTML() {
+  return `
+    <!-- PLAN HEADER -->
+    <div class="plan-header">
+      <div class="plan-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="2" width="18" height="18" rx="5" stroke="#94a3b8" stroke-width="1.5"/><path d="M7 11h8M7 7.5h5M7 14.5h8" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div>
+        <div class="plan-name">Standard plan</div>
+        <div class="plan-meta">Last updated at September 26, 2025.</div>
+      </div>
+    </div>
+
+    <!-- PLAN TABS (trade / deposits / withdrawals) -->
+    <div class="plan-tabs">
+      <button class="tab-btn active" onclick="switchPlanTab('trade')">Trade</button>
+      <button class="tab-btn" onclick="switchPlanTab('deposits')">Deposits</button>
+      <button class="tab-btn" onclick="switchPlanTab('withdrawals')">Withdrawals</button>
+    </div>
+
+    <!-- TRADE TAB -->
+    <div class="tab-panel active" id="tab-trade">
+      <div class="spreads-heading">Spreads</div>
+
+      <!-- SPREADS TOOLBAR -->
+      <div class="spreads-toolbar">
+        <div class="spreads-tb-left">
+          <div class="assets-title">Spreads per ticket size</div>
+          <div class="assets-sub">Set the Uphold base spread per asset per tier.</div>
+        </div>
+        <div class="form-field">
+          <span class="field-label tb-field-label">Select assets</span>
+          <div class="asel-wrap" id="asset-select-wrap"></div>
+          <span class="asel-helper">Set up the <span class="asel-helper-link">available assets to be displayed here</span>.</span>
+        </div>
+        <div class="form-field">
+          <span class="field-label tb-field-label">Partner fee</span>
+          <div class="value-input-box pf-box">
+            <input class="vib-input pf-input" type="text" id="partner-fee-inp" placeholder="0 bps" value="${partnerFee}" oninput="onPartnerFeeInput(this.value)">
+          </div>
+          <span class="pf-helper">Negative values use &ldquo;-&rdquo;</span>
+        </div>
+        <div class="absorb-wrap2">
+          <span class="absorb-label">Absorb all spreads</span>
+          <span class="tooltip-wrap">
+            <svg class="info-icon" width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.8" stroke="#9ca3af" stroke-width="1.2"/><path d="M7 6.5v3M7 5v.5" stroke="#9ca3af" stroke-width="1.3" stroke-linecap="round"/></svg>
+            <span class="tooltip">Partner absorbs the full spread cost</span>
+          </span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="absorb-toggle" ${absorbSpreads ? 'checked' : ''} onchange="onAbsorbToggle(this.checked)">
+            <div class="toggle-track"></div>
+            <div class="toggle-thumb"></div>
+          </label>
+        </div>
+      </div>
+
+      <!-- TABLE -->
+      <div class="spread-table">
+        <div class="spread-table-outer" id="spread-table-outer">
+          <div class="col-headers" id="col-headers-row"></div>
+          <div id="asset-rows"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-deposits"><div id="deposits-content"></div></div>
+    <div class="tab-panel" id="tab-withdrawals"><div id="withdrawals-content"></div></div>`;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SPREAD PLAN — TAB SWITCHING (inner plan tabs)
+══════════════════════════════════════════════════════════════ */
+function switchPlanTab(id) {
+  document.querySelectorAll('.plan-tabs .tab-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', ['trade','deposits','withdrawals'][i] === id);
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  if (id === 'deposits')    renderDepositsTab();
+  if (id === 'withdrawals') renderWithdrawalsTab();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PLAN FEES TABS (Deposits & Withdrawals) — shared implementation
+   Rows mirror the methods added on the Pricing tab's Limits section.
+══════════════════════════════════════════════════════════════ */
+function planFeesMethods(kind) {
+  const rows = kind === 'deposits' ? depositsLimitRows : withdrawalsLimitRows;
+  const seen = new Set();
+  const out  = [];
+  rows.forEach(r => {
+    if (r.method && !seen.has(r.method) && !planFeesDeleted[kind].has(r.method)) {
+      seen.add(r.method);
+      out.push(r.method);
+    }
+  });
+  return out;
+}
+
+function planFeesEntry(kind, method) {
+  if (!planFees[kind][method]) {
+    const saved = savedPlanFees[kind][method];
+    planFees[kind][method] = saved ? { ...saved } : { jur: null, uFee: '', pFee: '' };
+  }
+  return planFees[kind][method];
+}
+
+function planFeesDirtyCount() {
+  let n = 0;
+  for (const kind of ['deposits', 'withdrawals']) {
+    for (const method in planFees[kind]) {
+      if (planFeesDeleted[kind].has(method)) continue;
+      const e = planFees[kind][method];
+      const s = savedPlanFees[kind][method] || { jur: null, uFee: '', pFee: '' };
+      if ((e.jur || null) !== (s.jur || null)) n++;
+      if ((parseInt(e.uFee) || 0) !== (parseInt(s.uFee) || 0)) n++;
+      if ((parseInt(e.pFee) || 0) !== (parseInt(s.pFee) || 0)) n++;
+    }
+    for (const m of planFeesDeleted[kind]) {
+      if (!savedPlanFeesDeleted[kind].has(m)) n++;
+    }
+  }
+  return n;
+}
+
+function planFeesKindDirty(kind) {
+  for (const method in planFees[kind]) {
+    if (planFeesDeleted[kind].has(method)) continue;
+    const e = planFees[kind][method];
+    const s = savedPlanFees[kind][method] || { jur: null, uFee: '', pFee: '' };
+    if ((e.jur || null) !== (s.jur || null)) return true;
+    if ((parseInt(e.uFee) || 0) !== (parseInt(s.uFee) || 0)) return true;
+    if ((parseInt(e.pFee) || 0) !== (parseInt(s.pFee) || 0)) return true;
+  }
+  for (const m of planFeesDeleted[kind]) {
+    if (!savedPlanFeesDeleted[kind].has(m)) return true;
+  }
+  return false;
+}
+
+function planFeesToggleDD(kind, method, e) {
+  e.stopPropagation();
+  planFeesOpenDD[kind] = planFeesOpenDD[kind] === method ? null : method;
+  renderPlanFeesTab(kind);
+}
+
+function planFeesSetJur(kind, method, jur, e) {
+  e.stopPropagation();
+  planFeesEntry(kind, method).jur = jur;
+  planFeesOpenDD[kind] = null;
+  renderPlanFeesTab(kind);
+  updateChangesUI();
+}
+
+function planFeesSetFee(kind, method, field, val) {
+  const entry = planFeesEntry(kind, method);
+  // Partner fee accepts a leading "-"; Uphold fee is digits only
+  entry[field] = field === 'pFee'
+    ? val.replace(/[^0-9-]/g, '').replace(/(?!^)-/g, '')
+    : val.replace(/[^0-9]/g, '');
+  // Patch the total in place so the input keeps focus
+  const tot = (parseInt(entry.uFee) || 0) + (parseInt(entry.pFee) || 0);
+  const id  = method.replace(/[^a-zA-Z0-9]/g, '_');
+  const el  = document.getElementById('pft-total-' + kind + '-' + id);
+  if (el) el.textContent = tot + ' %';
+  updateChangesUI();
+}
+
+function planFeesDeleteRow(kind, method, e) {
+  e.stopPropagation();
+  planFeesDeleted[kind].add(method);
+  delete planFees[kind][method];
+  planFeesEditing[kind].delete(method);
+  renderPlanFeesTab(kind);
+  updateChangesUI();
+}
+
+function planFeesEditRow(kind, method) {
+  planFeesEditing[kind].add(method);
+  planFeesEntry(kind, method);
+  renderPlanFeesTab(kind);
+}
+
+function planFeesToggleRails(kind) {
+  if (kind === 'deposits') depositsLimitRailsOn = !depositsLimitRailsOn;
+  else withdrawalsLimitRailsOn = !withdrawalsLimitRailsOn;
+  renderPlanFeesTab(kind);
+}
+
+function renderPlanFeesTab(kind) {
+  const el = document.getElementById(kind + '-content');
+  if (!el) return;
+
+  const railsOn = kind === 'deposits' ? depositsLimitRailsOn : withdrawalsLimitRailsOn;
+  const noun    = kind === 'deposits' ? 'Deposits' : 'Withdrawals';
+  const methods = planFeesMethods(kind);
+
+  const pctSVG   = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M11.5 2.5l-9 9" stroke="#35415f" stroke-width="1.4" stroke-linecap="round"/><circle cx="3.8" cy="3.8" r="1.7" stroke="#35415f" stroke-width="1.3"/><circle cx="10.2" cy="10.2" r="1.7" stroke="#35415f" stroke-width="1.3"/></svg>`;
+  const trashSVG = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 4h9M5.5 4V2.5h3V4M5 4l.5 8h3l.5-8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const chevSVG  = `<svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>`;
+  const infoSVG  = `<svg class="info-icon" width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.8" stroke="#9ca3af" stroke-width="1.2"/><path d="M7 6.5v3M7 5v.5" stroke="#9ca3af" stroke-width="1.3" stroke-linecap="round"/></svg>`;
+
+  let rows = '';
+  if (!methods.length) {
+    rows = `<div class="pft-empty">No methods added yet. Add payment methods on the Pricing tab's Limits section to configure fees here.</div>`;
+  }
+  methods.forEach(method => {
+    const id     = method.replace(/[^a-zA-Z0-9]/g, '_');
+    const saved  = savedPlanFees[kind][method];
+    const isEdit = !saved || planFeesEditing[kind].has(method);
+    const icon   = `<div class="pft-method-icon">${limMethodIcon(method)}</div>`;
+
+    if (isEdit) {
+      const entry  = planFeesEntry(kind, method);
+      const tot    = (parseInt(entry.uFee) || 0) + (parseInt(entry.pFee) || 0);
+      const ddOpen = planFeesOpenDD[kind] === method;
+      rows += `
+      <div class="pft-card"><div class="pft-row">
+        <div class="pft-method">${icon}<span>${method}</span></div>
+        <div class="pft-cell">
+          <div class="pft-dd-wrap">
+            <button class="pft-dd-trigger${ddOpen ? ' open' : ''}" onclick="planFeesToggleDD('${kind}','${method}',event)">
+              <span class="${entry.jur ? '' : 'pft-ph'}">${entry.jur || 'Select'}</span>
+              ${chevSVG}
+            </button>
+            <div class="pft-dd-list${ddOpen ? ' open' : ''}">
+              ${PLAN_FEES_JURIS.map(j => `<div class="pft-dd-opt" onclick="planFeesSetJur('${kind}','${method}','${j}',event)">${j}</div>`).join('')}
+            </div>
+          </div>
+        </div>
+        <div class="pft-cell">
+          <div class="pft-fee-box">
+            <input class="pft-fee-inp" type="text" value="${entry.uFee}" placeholder="0" oninput="planFeesSetFee('${kind}','${method}','uFee',this.value)">
+            ${pctSVG}
+          </div>
+          <span class="pft-minmax">Min 1% - Max 100%</span>
+        </div>
+        <div class="pft-cell">
+          <div class="pft-fee-box">
+            <input class="pft-fee-inp" type="text" value="${entry.pFee}" placeholder="0" oninput="planFeesSetFee('${kind}','${method}','pFee',this.value)">
+            ${pctSVG}
+          </div>
+        </div>
+        <div class="pft-total" id="pft-total-${kind}-${id}">${tot} %</div>
+        <button class="pft-del-btn" onclick="planFeesDeleteRow('${kind}','${method}',event)">${trashSVG}</button>
+      </div></div>`;
+    } else {
+      const uFee    = parseInt(saved.uFee) || 0;
+      const pFee    = parseInt(saved.pFee) || 0;
+      const chipCls = pFee > 0 ? ' pos' : pFee < 0 ? ' neg' : '';
+      const chipLbl = pFee < 0 ? `− ${Math.abs(pFee)} %` : `+ ${pFee} %`;
+      rows += `
+      <div class="pft-card pft-card-saved" onclick="planFeesEditRow('${kind}','${method}')"><div class="pft-row">
+        <div class="pft-method">${icon}<span>${method}</span></div>
+        <div class="pft-cell"><span class="pft-display${saved.jur ? '' : ' ph'}">${saved.jur || 'Select'}</span></div>
+        <div class="pft-cell"><span class="pft-display">${uFee} %</span></div>
+        <div class="pft-cell"><span class="pft-chip${chipCls}">${chipLbl}</span></div>
+        <div class="pft-total">${uFee + pFee} %</div>
+        <div></div>
+      </div></div>`;
+    }
+  });
+
+  el.innerHTML = `
+    <div class="pft-hdr-row">
+      <div class="pft-heading">Fees</div>
+      <div class="pft-rails">
+        <span>Uphold rails</span>
+        <span class="tooltip-wrap">${infoSVG}<span class="tooltip">${noun} will be processed through partner's own infrastructure.</span></span>
+        <label class="toggle-switch">
+          <input type="checkbox" ${railsOn ? 'checked' : ''} onchange="planFeesToggleRails('${kind}')">
+          <div class="toggle-track"></div><div class="toggle-thumb"></div>
+        </label>
+      </div>
+    </div>
+    <div class="pft-col-hdrs">
+      <div>Method</div><div>Jurisdiction</div><div>Uphold fee</div><div>Partner fee</div><div>Total</div><div></div>
+    </div>
+    ${rows}`;
+}
+
+function renderDepositsTab()    { renderPlanFeesTab('deposits'); }
+function renderWithdrawalsTab() { renderPlanFeesTab('withdrawals'); }
+
+/* ══════════════════════════════════════════════════════════════
+   SPREAD PLAN — CHIP & TOTAL HELPERS
+══════════════════════════════════════════════════════════════ */
+function chipFor(adjustBps, isMarkup, isMarkdown, typeActive) {
+  if (!typeActive) return { label:'0 bps', cls:'tc-chip' };
+  if (isMarkup)   return { label:'+ ' + adjustBps + ' bps', cls:'tc-chip green' };
+  return { label:'− ' + adjustBps + ' bps', cls:'tc-chip orange' };
+}
+
+function totalFor(baseBps, adjustBps, isMarkup, isMarkdown, typeActive) {
+  if (!typeActive) return baseBps;
+  if (isMarkup)    return baseBps + adjustBps;
+  if (isMarkdown)  return baseBps - adjustBps;
+  return baseBps;
+}
+
+function formatMoney(n) {
+  return '$' + Number(n).toLocaleString('en-US');
+}
+
+function effectiveThreshold(i) {
+  return pendingTierEdits[i] !== undefined ? pendingTierEdits[i] : tierThresholds[i];
+}
+
+function isTierConflicting(thIdx) {
+  const val     = effectiveThreshold(thIdx);
+  const visible = visibleTierIndices();
+  const vi      = visible.indexOf(thIdx);
+  if (vi < 0) return false; // pending deletion — not rendered
+  if (val <= 0) return true; // must be > 0
+  if (vi > 0) return val <= effectiveThreshold(visible[vi - 1]); // must be > previous tier
+  return false;
+}
+
+// A tier counts as "touched" (and can show errors) once the user has
+// typed a value into it. A freshly opened edit input stays neutral.
+function isTierTouched(thIdx) {
+  return pendingTierEdits[thIdx] !== undefined;
+}
+
+function hasTierErrors() {
+  return visibleTierIndices().some(i => isTierTouched(i) && isTierConflicting(i));
+}
+
+/* Returns the threshold indices that are NOT pending deletion, in order */
+function visibleTierIndices() {
+  const result = [];
+  for (let i = 0; i < tierThresholds.length; i++) {
+    if (!pendingTierDeletions.has(i)) result.push(i);
+  }
+  return result;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SPREAD PLAN — RENDER TIER HEADERS
+══════════════════════════════════════════════════════════════ */
+function renderHeaders() {
+  const container = document.getElementById('col-headers-row');
+  if (!container) return;
+
+  const visible = visibleTierIndices();
+  const n       = visible.length + 1; // visible editable tiers + GT
+  const gridTpl = `148px repeat(${n},minmax(140px,1fr))`;
+  container.style.gridTemplateColumns = gridTpl;
+  container.style.minWidth = (148 + n * 140) + 'px';
+
+  // Show add button when total visible columns (tiers + GT) is 4 or fewer
+  const canAdd = visible.length < MAX_TIERS - 1;
+  const gtVal  = visible.length > 0
+    ? Math.max(...visible.map(i => effectiveThreshold(i)))
+    : 0;
+
+  let html = `<div class="col-hdr-assets-plain">
+    <span class="cas-label">Assets</span>
+  </div>`;
+
+  const addBtnHTML = (thIdx, useMousedown) => `<button class="tier-add-btn-new" ${useMousedown ? 'onmousedown' : 'onclick'}="addTierAt(${thIdx},event)" title="Add tier">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="currentColor" stroke-width="1.3"/><path d="M6.5 4v5M4 6.5h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </button>`;
+
+  // ── Editable tier columns (visible only) ──
+  for (let vi = 0; vi < visible.length; vi++) {
+    const thIdx      = visible[vi];
+    const val        = effectiveThreshold(thIdx);
+    const label      = vi === 0 ? 'Less than' : 'Tier';
+    const prevThIdx  = vi > 0 ? visible[vi - 1] : null;
+    const displayVal = vi === 0
+      ? formatMoney(val)
+      : `${formatMoney(effectiveThreshold(prevThIdx))} - ${formatMoney(val)}`;
+    const isEditing  = editingTierIdx === thIdx;
+    const canDelete  = visible.length > 1;
+    const hasError   = isTierTouched(thIdx) && isTierConflicting(thIdx);
+    const errorMsg   = effectiveThreshold(thIdx) <= 0
+      ? 'Enter an amount higher than zero.'
+      : 'Adjust conflicting amount.';
+    const errIcon    = `<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="6.5" fill="#ef4444"/><path d="M6.5 3.5v4M6.5 9v.5" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg>`;
+
+    const labelHTML = vi === 0
+      ? `<span class="tier-hdr-label">Less than</span>
+         <span class="tooltip-wrap">
+           <svg class="info-icon" width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="#9ca3af" stroke-width="1.2"/><path d="M6.5 6v3.5M6.5 4.5v.5" stroke="#9ca3af" stroke-width="1.3" stroke-linecap="round"/></svg>
+           <span class="tooltip" style="white-space:normal;width:170px;text-align:left;">The starting point for any transaction below your lowest tier.</span>
+         </span>`
+      : `<span class="tier-hdr-label">${label}</span>`;
+
+    html += `<div class="col-hdr-tier${isEditing ? ' editing' : ''}${hasError ? ' has-error' : ''}" id="col-hdr-${thIdx}">
+      <div class="tier-hdr-content">
+        <div style="display:flex;align-items:center;gap:5px;">${labelHTML}</div>
+        <span class="tier-hdr-val">${displayVal}</span>
+      </div>
+      <div class="tier-hdr-actions">
+        <button class="tier-edit-pill" onclick="editTier(${thIdx},event)">Edit</button>
+        ${canDelete ? `<button class="tier-delete-btn" onclick="deleteTier(${thIdx},event)" title="Remove tier">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 3.5h9M5 3.5V2h3v1.5M4.5 3.5l.5 7.5h3l.5-7.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>` : ''}
+        ${canAdd ? addBtnHTML(thIdx) : ''}
+      </div>
+      ${isEditing ? `
+        <span class="tier-hdr-edit-label">${label}</span>
+        <div class="tier-hdr-edit-row">
+          <div class="tier-hdr-input-row${hasError ? ' error' : ''}">
+            <span class="tier-hdr-inp-dollar">$</span>
+            <input class="tier-hdr-inp" type="number" min="0"
+              id="tier-inp-${thIdx}"
+              value="${val}"
+              oninput="onTierInput(${thIdx},this.value)"
+              onblur="onTierInputBlur(${thIdx})">
+            <button class="tier-hdr-inp-clear" onmousedown="clearTierInputNew(${thIdx},event)" tabindex="-1">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 2l7 7M9 2l-7 7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+          ${canAdd ? addBtnHTML(thIdx, true) : ''}
+        </div>
+        ${hasError ? `<div class="tier-err-msg">${errIcon}<span>${errorMsg}</span></div>` : ''}
+      ` : ''}
+    </div>`;
+  }
+
+  // ── Greater than — read-only, auto-computed ──
+  html += `<div class="col-hdr-gt" id="col-hdr-gt">
+    <div class="tier-gt-lbl-row">
+      <span class="tier-gt-lbl">Greater than</span>
+      <span class="tooltip-wrap tt-left">
+        <svg class="info-icon" width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="#9ca3af" stroke-width="1.2"/><path d="M6.5 6v3.5M6.5 4.5v.5" stroke="#9ca3af" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <span class="tooltip" style="white-space:normal;width:190px;text-align:left;">Automatically set to your highest tier's upper limit. Any amount above that uses this value.</span>
+      </span>
+    </div>
+    <span class="tier-gt-val" id="gt-val">${formatMoney(gtVal)}</span>
+  </div>`;
+
+  container.innerHTML = html;
+
+  if (editingTierIdx !== null) {
+    const inp = document.getElementById('tier-inp-' + editingTierIdx);
+    if (inp) { inp.focus(); inp.select(); }
+  }
+
+  renderAssetSelect();
+}
+
+/* ── "Select assets" dropdown in the spreads toolbar ────── */
+function renderAssetSelect() {
+  const wrap = document.getElementById('asset-select-wrap');
+  if (!wrap) return;
+  const count = (pendingAssetKeys ?? savedAssetKeys).size;
+  wrap.innerHTML = `
+    <div class="asel-trigger${assetDropdownOpen ? ' open' : ''}" onclick="toggleAssetDropdown()">
+      <span class="${count ? '' : 'cs-placeholder'}">${count ? count + ' selected' : 'Select'}</span>
+      <svg class="cas-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>
+    </div>
+    ${assetDropdownOpen ? buildAssetDropdownHtml() : ''}`;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SPREAD PLAN — TIER EDITING (per-tier inline edit)
+══════════════════════════════════════════════════════════════ */
+
+function editTier(thIdx, e) {
+  e.stopPropagation();
+  editingTierIdx = thIdx;
+  renderHeaders();
+}
+
+function onTierInput(thIdx, raw) {
+  const n = parseInt(raw);
+  if (!isNaN(n) && n >= 0) pendingTierEdits[thIdx] = n;
+  else delete pendingTierEdits[thIdx];
+  updateGtHeader();
+  updateTierErrorUI(thIdx);
+  updateChangesUI();
+}
+
+// Patches only the error-related DOM on the editing tier — avoids full
+// re-render so the cursor position in the input isn't disturbed.
+function updateTierErrorUI(thIdx) {
+  const hdr = document.getElementById('col-hdr-' + thIdx);
+  if (!hdr) return;
+  const hasError = isTierTouched(thIdx) && isTierConflicting(thIdx);
+  hdr.classList.toggle('has-error', hasError);
+  const inputRow = hdr.querySelector('.tier-hdr-input-row');
+  if (inputRow) inputRow.classList.toggle('error', hasError);
+
+  const errIcon = `<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="6.5" fill="#ef4444"/><path d="M6.5 3.5v4M6.5 9v.5" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg>`;
+  let msgEl = hdr.querySelector('.tier-err-msg');
+  if (hasError) {
+    const val  = effectiveThreshold(thIdx);
+    const text = val <= 0 ? 'Enter an amount higher than zero.' : 'Adjust conflicting amount.';
+    if (!msgEl) {
+      msgEl = document.createElement('div');
+      msgEl.className = 'tier-err-msg';
+      hdr.appendChild(msgEl);
+    }
+    msgEl.innerHTML = `${errIcon}<span>${text}</span>`;
+  } else if (msgEl) {
+    msgEl.remove();
+  }
+}
+
+function onTierInputBlur(thIdx) {
+  editingTierIdx = null;
+  renderHeaders();
+  updateChangesUI();
+}
+
+function clearTierInputNew(thIdx, e) {
+  e.preventDefault(); // prevent blur before clearing
+  delete pendingTierEdits[thIdx];
+  const inp = document.getElementById('tier-inp-' + thIdx);
+  if (inp) { inp.value = tierThresholds[thIdx]; inp.focus(); }
+  updateGtHeader();
+  updateChangesUI();
+}
+
+function deleteTier(thIdx, e) {
+  e.stopPropagation();
+  const visible = visibleTierIndices();
+  if (visible.length <= 1) { showToast('Minimum 1 tier required'); return; }
+
+  // Build the display range label for this tier
+  const vi = visible.indexOf(thIdx);
+  let rangeLabel;
+  if (vi === 0) {
+    rangeLabel = 'Less than ' + formatMoney(effectiveThreshold(thIdx));
+  } else {
+    const prevThIdx = visible[vi - 1];
+    rangeLabel = formatMoney(effectiveThreshold(prevThIdx)) + ' – ' + formatMoney(effectiveThreshold(thIdx));
+  }
+
+  deletingTierIdx = thIdx;
+  document.getElementById('delete-tier-range').textContent = rangeLabel;
+  document.getElementById('delete-tier-modal').classList.add('visible');
+}
+
+/* ── Asset row deletion ──────────────────────────────────── */
+let deletingAssetKey = null;
+
+function promptDeleteAsset(key, e) {
+  e.stopPropagation();
+  deletingAssetKey = key;
+  const asset = ALL_ASSETS_CATALOG.find(a => a.key === key);
+  document.getElementById('delete-asset-name').textContent = asset ? asset.name : key;
+  document.getElementById('delete-asset-modal').classList.add('visible');
+}
+
+function confirmDeleteAsset() {
+  if (!deletingAssetKey) return;
+  const key = deletingAssetKey;
+  deletingAssetKey = null;
+  document.getElementById('delete-asset-modal').classList.remove('visible');
+  // Immediate commit — remove from saved and any in-progress pending selection
+  savedAssetKeys.delete(key);
+  if (pendingAssetKeys !== null) pendingAssetKeys.delete(key);
+  renderHeaders();
+  renderTable();
+  showToast();
+}
+
+function closeAssetDeleteModal() {
+  deletingAssetKey = null;
+  document.getElementById('delete-asset-modal').classList.remove('visible');
+}
+
+function confirmDeleteTier() {
+  if (deletingTierIdx === null) return;
+  pendingTierDeletions.add(deletingTierIdx);
+  deletingTierIdx = null;
+  document.getElementById('delete-tier-modal').classList.remove('visible');
+  editingTierIdx = null;
+  renderHeaders();
+  renderTable();
+  updateChangesUI();
+}
+
+function closeDeleteModal() {
+  deletingTierIdx = null;
+  document.getElementById('delete-tier-modal').classList.remove('visible');
+}
+
+function addTierAt(beforeIdx, e) {
+  e.stopPropagation();
+  e.preventDefault();
+  if (visibleTierIndices().length >= MAX_TIERS - 1) { showToast('Maximum 5 tiers reached'); return; }
+  tierThresholds.splice(beforeIdx, 0, 0);
+  savedTierThresholds.splice(beforeIdx, 0, 0);
+  // Shift pending edits at/above insert position
+  const shiftedEdits = {};
+  for (const k in pendingTierEdits) {
+    const idx = parseInt(k);
+    shiftedEdits[idx < beforeIdx ? idx : idx + 1] = pendingTierEdits[k];
+  }
+  pendingTierEdits = shiftedEdits;
+  // Shift pending deletions at/above insert position
+  const shiftedDels = new Set();
+  for (const idx of pendingTierDeletions) {
+    shiftedDels.add(idx < beforeIdx ? idx : idx + 1);
+  }
+  pendingTierDeletions = shiftedDels;
+  TIERS = tierThresholds.length + 1;
+  // Open the freshly added tier in edit mode so the user can type its value
+  editingTierIdx = beforeIdx;
+  renderHeaders();
+  renderTable();
+}
+
+function updateGtHeader() {
+  const visible = visibleTierIndices();
+  const gtVal = visible.length > 0 ? Math.max(...visible.map(i => effectiveThreshold(i))) : 0;
+  const el = document.getElementById('gt-val');
+  if (el) el.textContent = formatMoney(gtVal);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SPREAD PLAN — RENDER TABLE
+══════════════════════════════════════════════════════════════ */
+function renderTable() {
+  const container = document.getElementById('asset-rows');
+  if (!container) return;
+
+  const fee        = parseInt(partnerFee) || 0;
+  const adjustBps  = Math.abs(fee);
+  const isMarkup   = fee > 0;
+  const isMarkdown = fee < 0;
+  const typeActive = fee !== 0;
+
+  let html = '';
+
+  const displayAssets = activeAssets();
+  if (displayAssets.length === 0) {
+    // Empty state — no assets configured yet
+    html += `<div class="asset-card"><div class="asset-row">
+      <div class="no-asset-col">
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+          <path d="M13 2.5L22.5 7.75v10.5L13 23.5 3.5 18.25V7.75L13 2.5z" stroke="#d1d5db" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M13 2.5v21M3.5 7.75L13 13l9.5-5.25M13 13v10.5" stroke="#d1d5db" stroke-width="1.2" stroke-linejoin="round"/>
+        </svg>
+        <span class="no-asset-lbl">No asset selected</span>
+      </div>
+      ${buildCells('EMPTY', 6, adjustBps, isMarkup, isMarkdown, typeActive)}
+    </div></div>`;
+  } else {
+    displayAssets.forEach(asset => {
+      html += `<div class="asset-card"><div class="asset-row">
+        <div class="asset-col">
+          <div class="asset-icon">${assetIcon(asset.key)}</div>
+          <span class="asset-name">${asset.name}</span>
+          <div class="asset-col-overlay">
+            <button class="asset-del-btn" onclick="promptDeleteAsset('${asset.key}',event)" title="Remove ${asset.name}">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 4h9M5.5 4V2.5h3V4M5 4l.5 8h3l.5-8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+        ${buildCells(asset.key, asset.baseBps, adjustBps, isMarkup, isMarkdown, typeActive)}
+      </div></div>`;
+    });
+
+    // Fallback row — always +4 bps markup, independent of global setting
+    html += `<div class="asset-card"><div class="asset-row">
+      <div class="fallback-col">
+        <span class="fallback-lbl">Fallback</span>
+        <span class="tooltip-wrap">
+          <svg class="info-icon" width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.8" stroke="#d1d5db" stroke-width="1.2"/><path d="M7 6.5v3M7 5v.5" stroke="#d1d5db" stroke-width="1.3" stroke-linecap="round"/></svg>
+          <span class="tooltip">Applied when no specific asset rule matches</span>
+        </span>
+      </div>
+      ${buildCells('FALLBACK', 6, 4, true, false, typeActive)}
+    </div></div>`;
+  }
+
+  container.innerHTML = html;
+
+  // Apply dynamic grid template to all asset rows (use visible tier count)
+  const n = visibleTierIndices().length + 1;
+  const gridTpl = `148px repeat(${n},minmax(140px,1fr))`;
+  const minW    = (148 + n * 140) + 'px';
+  container.querySelectorAll('.asset-row').forEach(row => {
+    row.style.gridTemplateColumns = gridTpl;
+    row.style.minWidth = minW;
+  });
+}
+
+function buildCells(assetKey, defaultBaseBps, adjustBps, isMarkup, isMarkdown, typeActive) {
+  let html = '';
+  const chip = chipFor(adjustBps, isMarkup, isMarkdown, typeActive);
+  const visibleCount = visibleTierIndices().length + 1; // editable tiers + GT
+
+  for (let i = 0; i < visibleCount; i++) {
+    const cellKey   = `${assetKey}-${i}`;
+    const isEditing = openCells.has(cellKey);
+    const baseBps   = pendingCellEdits[cellKey] ?? savedCellEdits[cellKey] ?? defaultBaseBps;
+    const total     = totalFor(baseBps, adjustBps, isMarkup, isMarkdown, typeActive);
+
+    if (isEditing) {
+      html += `<div class="tier-cell editing" data-key="${cellKey}">
+        <div class="tc-inner">
+          <span class="tc-label">Uphold spread</span>
+          <div class="tc-edit-row">
+            <input class="tc-edit-input" type="number" value="${baseBps}" min="0"
+              id="inp-${cellKey}"
+              oninput="onCellInput('${cellKey}', this.value)">
+            <span class="tc-edit-unit">bps</span>
+          </div>
+          <span class="${chip.cls}">${chip.label}</span>
+          <span class="tc-eq">=</span>
+          <div class="tc-total-row">
+            <span class="tc-total-lbl">Total</span>
+            <span class="tc-total-val" id="tot-${cellKey}">${total} bps</span>
+          </div>
+        </div>
+      </div>`;
+    } else {
+      html += `<div class="tier-cell" data-key="${cellKey}">
+        <div class="tc-inner">
+          <span class="tc-label">Uphold spread</span>
+          <div class="tc-spread-row">
+            <span class="tc-base">${baseBps} bps</span>
+            <span class="${chip.cls}">${chip.label}</span>
+          </div>
+          <span class="tc-eq">=</span>
+          <div class="tc-total-row">
+            <span class="tc-total-lbl">Total</span>
+            <span class="tc-total-val">${total} bps</span>
+          </div>
+        </div>
+        <div class="tc-hover-overlay" onclick="openCell('${cellKey}')">
+          <button class="edit-spread-btn">Edit spread</button>
+        </div>
+      </div>`;
+    }
+  }
+  return html;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SPREAD PLAN — CELL EDITING
+══════════════════════════════════════════════════════════════ */
+function openCell(cellKey) {
+  if (cellKey.startsWith('FALLBACK')) return;
+  openCells.add(cellKey);
+  renderTable();
+  requestAnimationFrame(() => {
+    const inp = document.getElementById('inp-' + cellKey);
+    if (inp) { inp.focus(); inp.select(); }
+  });
+}
+
+function onCellInput(cellKey, raw) {
+  const n           = parseInt(raw);
+  const asset       = ALL_ASSETS_CATALOG.find(a => cellKey.startsWith(a.key + '-'));
+  const defaultBase = asset ? asset.baseBps : 6;
+
+  if (!isNaN(n) && n >= 0) {
+    pendingCellEdits[cellKey] = n;
+  } else {
+    delete pendingCellEdits[cellKey];
+  }
+
+  const fee        = parseInt(partnerFee) || 0;
+  const adjustBps  = Math.abs(fee);
+  const isMarkup   = fee > 0;
+  const isMarkdown = fee < 0;
+  const baseBps    = pendingCellEdits[cellKey] ?? savedCellEdits[cellKey] ?? defaultBase;
+  const total      = totalFor(baseBps, adjustBps, isMarkup, isMarkdown, fee !== 0);
+  const totEl      = document.getElementById('tot-' + cellKey);
+  if (totEl) totEl.textContent = total + ' bps';
+
+  updateChangesUI();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SPREAD PLAN — ASSET SELECTION DROPDOWN
+══════════════════════════════════════════════════════════════ */
+function buildAssetDropdownHtml() {
+  const pendingKeys = pendingAssetKeys ?? new Set(savedAssetKeys);
+  const filtered    = assetSearchQuery
+    ? ALL_ASSETS_CATALOG.filter(a => a.name.toLowerCase().includes(assetSearchQuery.toLowerCase()))
+    : ALL_ASSETS_CATALOG;
+  const total         = ALL_ASSETS_CATALOG.length;
+  const selectedCount = pendingKeys.size;
+  const allChecked    = selectedCount === total;
+  const checkSvg = `<svg width="10" height="7" viewBox="0 0 10 7" fill="none"><path d="M1 3.5l3 3 5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+  const itemsHtml = filtered.length
+    ? filtered.map(a => {
+        const isChecked = pendingKeys.has(a.key);
+        return `<div class="asset-dd-item${isChecked ? ' checked' : ''}" onclick="toggleAssetInPending('${a.key}')">
+          <div class="asset-dd-icon">${assetIcon(a.key)}</div>
+          <span class="asset-dd-name">${a.name}</span>
+          <div class="adc-check${isChecked ? ' checked' : ''}">${isChecked ? checkSvg : ''}</div>
+        </div>`;
+      }).join('')
+    : `<div style="padding:20px 12px;text-align:center;font-size:12px;color:#9ca3af;">No assets found</div>`;
+
+  return `<div class="asset-dropdown" onclick="event.stopPropagation()">
+    <div class="asset-dd-search">
+      <svg class="asset-dd-search-ico" width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.4"/><path d="M10 10l2.5 2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <input type="text" placeholder="Search for asset" value="${assetSearchQuery}"
+        id="asset-search-inp"
+        oninput="onAssetSearch(this.value)"
+        onclick="event.stopPropagation()">
+    </div>
+    <div class="asset-dd-hdr">
+      <span class="asset-dd-count">${selectedCount}/${total}</span>
+      <label class="asset-dd-all" onclick="event.stopPropagation();toggleAllAssets()">
+        <div class="adc-check${allChecked ? ' checked' : ''}">${allChecked ? checkSvg : ''}</div>
+        All
+      </label>
+    </div>
+    <div class="asset-dd-list">${itemsHtml}</div>
+  </div>`;
+}
+
+function toggleAssetDropdown() {
+  assetDropdownOpen = !assetDropdownOpen;
+  if (assetDropdownOpen) {
+    // Mirror saved state into pending so user edits from current state
+    if (pendingAssetKeys === null) pendingAssetKeys = new Set(savedAssetKeys);
+    assetSearchQuery = '';
+  }
+  renderHeaders();
+  if (assetDropdownOpen) {
+    requestAnimationFrame(() => {
+      const inp = document.getElementById('asset-search-inp');
+      if (inp) inp.focus();
+    });
+  }
+}
+
+function closeAssetDropdown() {
+  if (!assetDropdownOpen) return;
+  assetDropdownOpen = false;
+  assetSearchQuery  = '';
+  renderHeaders();
+}
+
+function toggleAssetInPending(key) {
+  if (pendingAssetKeys === null) pendingAssetKeys = new Set(savedAssetKeys);
+  if (pendingAssetKeys.has(key)) pendingAssetKeys.delete(key);
+  else pendingAssetKeys.add(key);
+  renderHeaders();
+  renderTable();
+  updateChangesUI();
+}
+
+function toggleAllAssets() {
+  if (pendingAssetKeys === null) pendingAssetKeys = new Set(savedAssetKeys);
+  const allSelected = ALL_ASSETS_CATALOG.every(a => pendingAssetKeys.has(a.key));
+  pendingAssetKeys  = allSelected ? new Set() : new Set(ALL_ASSETS_CATALOG.map(a => a.key));
+  renderHeaders();
+  renderTable();
+  updateChangesUI();
+}
+
+function onAssetSearch(val) {
+  assetSearchQuery = val;
+  renderHeaders();
+  requestAnimationFrame(() => {
+    const inp = document.getElementById('asset-search-inp');
+    if (inp) { inp.focus(); inp.setSelectionRange(val.length, val.length); }
+  });
+}
+
+/**
+ * closeDropdown — legacy no-op-safe helper still called from the
+ * global click handler; the cs-* elements no longer exist.
+ */
+function closeDropdown() {
+  const t = document.getElementById('cs-trigger');
+  const d = document.getElementById('cs-dropdown');
+  if (t) t.classList.remove('open');
+  if (d) d.classList.remove('open');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SPREAD PLAN — PARTNER FEE & ABSORB TOGGLE
+══════════════════════════════════════════════════════════════ */
+function onPartnerFeeInput(raw) {
+  // allow digits with optional leading "-"
+  partnerFee = raw.replace(/[^0-9-]/g, '').replace(/(?!^)-/g, '');
+  const inp = document.getElementById('partner-fee-inp');
+  if (inp && inp.value !== partnerFee) inp.value = partnerFee;
+  updateChangesUI();
+  renderTable();
+}
+
+function onAbsorbToggle(checked) {
+  absorbSpreads = checked;
+  updateChangesUI();
+}
+
+/* ══════════════════════════════════════════════════════════════
+   GLOBAL CLICK HANDLER
+   Closes dropdown (with null checks) and open cells.
+   Only re-renders table when on spread-plan screen.
+══════════════════════════════════════════════════════════════ */
+document.addEventListener('click', e => {
+  closeDropdown(); // null-safe, no-ops on other screens
+
+  if (appScreen === 'spread-plan' && openCells.size > 0
+      && !e.target.closest('.tier-cell.editing')
+      && !e.target.closest('.tc-hover-overlay')) {
+    openCells.clear();
+    renderTable();
+  }
+});
+
+/* ── Close asset dropdown on outside click ───────────────── */
+document.addEventListener('click', function(e) {
+  if (assetDropdownOpen && !e.target.closest('.asel-wrap') && !e.target.closest('.asel-trigger')) {
+    closeAssetDropdown();
+    updateChangesUI();
+  }
+});
+
+/* ── Close limits dropdowns on outside click ── */
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.lim2-meth-dd-wrap')) {
+    let changed = false;
+    if (depositsLimitDDOpen !== null)    { depositsLimitDDOpen = null;    changed = true; }
+    if (withdrawalsLimitDDOpen !== null) { withdrawalsLimitDDOpen = null; changed = true; }
+    if (changed && appScreen === 'pricing') renderContent();
+  }
+});
+
+/* ── Close pricing assets dropdown on outside click ── */
+document.addEventListener('click', function(e) {
+  if (pricingAssetsDDOpen && !e.target.closest('.lim2-assets-select-wrap')) {
+    pricingAssetsDDOpen = false;
+    pricingAssetsSearch = '';
+    if (appScreen === 'pricing') renderContent();
+  }
+});
+
+/* ── Close member ⋮ menu on outside click ── */
+document.addEventListener('click', function(e) {
+  if (memberOpenMenu !== null && !e.target.closest('.member-more-btn') && !e.target.closest('.member-more-menu')) {
+    memberOpenMenu = null;
+    if (appScreen === 'partner-detail') renderContent();
+  }
+});
+
+/* ── Close plan fees jurisdiction dropdowns on outside click ── */
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.pft-dd-wrap')) {
+    if (planFeesOpenDD.deposits)    { planFeesOpenDD.deposits = null;    renderPlanFeesTab('deposits'); }
+    if (planFeesOpenDD.withdrawals) { planFeesOpenDD.withdrawals = null; renderPlanFeesTab('withdrawals'); }
+  }
+});
+
+/* ══════════════════════════════════════════════════════════════
+   GLOBAL TOOLTIP — escapes any overflow container via fixed pos
+══════════════════════════════════════════════════════════════ */
+(function () {
+  const gt = document.getElementById('g-tooltip');
+  let hideTimer;
+
+  function showTooltip(wrap) {
+    clearTimeout(hideTimer);
+    const textEl = wrap.querySelector('.tooltip');
+    if (!textEl) return;
+    const text = textEl.textContent.trim();
+    if (!text) return;
+    gt.textContent = text;
+    gt.style.opacity = '0';
+    gt.style.display = 'block';
+
+    const r   = wrap.getBoundingClientRect();
+    const gtW = gt.offsetWidth;
+    const gtH = gt.offsetHeight;
+    const GAP = 6;
+
+    // Centered horizontally above the icon, clamped to viewport
+    let left = r.left + r.width / 2 - gtW / 2;
+    let top  = r.top - gtH - GAP;
+
+    // Clamp to viewport edges
+    left = Math.max(8, Math.min(left, window.innerWidth - gtW - 8));
+    if (top < 8) top = r.bottom + GAP; // flip below if too close to top
+
+    gt.style.left = left + 'px';
+    gt.style.top  = top  + 'px';
+    gt.style.opacity = '1';
+  }
+
+  function hideTooltip() {
+    hideTimer = setTimeout(() => { gt.style.opacity = '0'; gt.style.display = 'none'; }, 80);
+  }
+
+  document.addEventListener('mouseover', e => {
+    const wrap = e.target.closest('.tooltip-wrap');
+    if (wrap) showTooltip(wrap);
+  });
+  document.addEventListener('mouseout', e => {
+    const wrap = e.target.closest('.tooltip-wrap');
+    if (wrap) hideTooltip();
+  });
+})();
+
+/* ══════════════════════════════════════════════════════════════
+   INIT — single render() call
+══════════════════════════════════════════════════════════════ */
+render();
+</script>
+</body>
+</html>

@@ -323,8 +323,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 .lim2-assets-select-lbl{font-size:12.5px;font-weight:500;color:#374151;margin-bottom:6px;}
 .lim2-assets-dd{display:flex;align-items:center;justify-content:space-between;gap:8px;border:1.5px solid #e1e3ef;border-radius:10px;padding:10px 14px;font-size:13.5px;color:#9ca3af;background:#fff;cursor:pointer;min-width:200px;transition:border-color .15s;}
 .lim2-assets-dd.open{border-color:#3CC13B;box-shadow:0 0 0 3px rgba(60,193,59,.08);}
-.lim2-assets-empty{border:1.5px solid #e1e3ef;border-radius:12px;padding:48px 0;text-align:center;margin-top:4px;}
-.lim2-assets-empty-txt{font-size:14px;color:#697BAA;font-weight:500;}
+.lim2-assets-empty{border:1px solid #e8eaf2;border-radius:14px;padding:52px 0;text-align:center;margin-top:4px;}
+.lim2-assets-empty-txt{font-size:13.5px;color:#16a34a;font-weight:600;cursor:pointer;background:none;border:none;font-family:inherit;padding:0;}
+.lim2-assets-empty-txt:hover{color:#15803d;text-decoration:underline;}
 /* Assets section redesign */
 .pa-search-bar{display:flex;align-items:center;gap:8px;border:1.5px solid #e1e3ef;border-radius:10px;padding:10px 14px;background:#fff;margin:14px 0 10px;}
 .pa-search-bar input{border:none;outline:none;font-family:inherit;font-size:13.5px;color:#374151;flex:1;background:transparent;}
@@ -334,8 +335,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 .pa-cat-pill{display:flex;align-items:center;gap:4px;height:28px;padding:0 12px;border-radius:9999px;font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:inherit;background:#e1e3ef;color:#1d2738;white-space:nowrap;flex-shrink:0;}
 .pa-cat-pill.active{background:#49cc68;color:#fff;}
 .pa-cat-pill-count{opacity:.6;}
-.pa-asset-row-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #f3f4f6;}
-.pa-asset-row-item:last-child{border-bottom:none;}
+.pa-assets-grid{display:grid;grid-template-columns:repeat(5,1fr);}
+.pa-assets-count{font-size:13px;color:#697BAA;font-weight:500;margin:10px 0 6px;}
+.pa-asset-row-item{display:flex;align-items:center;gap:10px;padding:12px 8px;border-bottom:1px solid #f3f4f6;}
+.pa-assets-grid .pa-asset-row-item:nth-last-child(-n+5):nth-child(5n+1),
+.pa-assets-grid .pa-asset-row-item:nth-last-child(-n+5),
+.pa-assets-grid .pa-asset-row-item:nth-last-child(-n+5) ~ .pa-asset-row-item{border-bottom:none;}
 .pa-asset-ic{display:flex;align-items:center;flex-shrink:0;}
 .pa-asset-ic svg{width:28px;height:28px;display:block;}
 .pa-asset-info{display:flex;flex-direction:column;gap:2px;}
@@ -1365,14 +1370,17 @@ function refreshInlineAssets() {
     return mc && mq && pricingAssetKeys.has(a.key);
   });
   const el = document.getElementById('pa-inline-assets');
-  if (el) el.innerHTML = visible.map(a => `
-    <div class="pa-asset-row-item">
-      <span class="pa-asset-ic">${assetIcon(a.key)}</span>
-      <div class="pa-asset-info">
-        <span class="pa-asset-fullname">${a.fullName}</span>
-        <span class="pa-asset-ticker">${a.key}</span>
-      </div>
-    </div>`).join('');
+  if (el) {
+    el.className = 'pa-assets-grid';
+    el.innerHTML = visible.map(a => `
+      <div class="pa-asset-row-item">
+        <span class="pa-asset-ic">${assetIcon(a.key)}</span>
+        <div class="pa-asset-info">
+          <span class="pa-asset-fullname">${a.fullName}</span>
+          <span class="pa-asset-ticker">${a.key}</span>
+        </div>
+      </div>`).join('');
+  }
 }
 
 function buildEditAssetsModal() {
@@ -1797,8 +1805,10 @@ function renderPartnerHeader() {
   return `
     <div class="partner-page-hdr">
       <div>
-        <div class="partner-title">Partner name organization example in a long line</div>
-        <span class="badge badge-kyb-pending">KYB Pending</span>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+          <div class="partner-title" style="margin-bottom:0;max-width:none;">Partner name organization example in a long line</div>
+          <span class="badge badge-kyb-pending" style="flex-shrink:0;">KYB Pending</span>
+        </div>
       </div>
       <div class="product-area">
         <div>
@@ -1993,13 +2003,11 @@ function renderPricingContent() {
     <button class="lim2-del-btn" onclick="clearTradeLimits()">${trashSVG}</button>` : '';
   const tradesCard = `
     <div class="lim2-card">
-      <div class="lim2-card-hdr">
-        <div class="lim2-icon-title">
-          <div class="lim2-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 6h12M3 6l3-3M3 6l3 3M15 12H3M15 12l-3-3M15 12l-3 3" stroke="#697BAA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div><div class="lim2-name">Trades</div><div class="lim2-kind">Spread limits</div></div>
-        </div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+        <div class="lim2-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 6h12M3 6l3-3M3 6l3 3M15 12H3M15 12l-3-3M15 12l-3 3" stroke="#697BAA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div><div class="lim2-name">Trades</div><div class="lim2-kind">Spread range</div></div>
       </div>
-      <div class="lim2-trade-body">
+      <div class="lim2-trade-body" style="margin-top:0;">
         <div class="lim2-field">
           <div class="lim2-field-lbl">Min</div>
           <div class="lim2-num-wrap" style="width:160px">
@@ -2150,7 +2158,7 @@ function renderPricingContent() {
       </div>
       ${rowsHTML}` : `
       <div style="text-align:center;padding:32px 0 8px;">
-        <span class="lim2-assets-empty-txt">Select ${singular} methods for this organization.</span>
+        <span style="font-size:13.5px;color:#697BAA;font-weight:500;">Select ${singular} methods for this organization.</span>
       </div>`}
     </div>`;
   }
@@ -2158,8 +2166,8 @@ function renderPricingContent() {
   const depIconSVG = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2v10M5 8l4 4 4-4" stroke="#697BAA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 14h12" stroke="#697BAA" stroke-width="1.5" stroke-linecap="round"/></svg>`;
   const wdrIconSVG = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 16V6M5 10l4-4 4 4" stroke="#697BAA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 4h12" stroke="#697BAA" stroke-width="1.5" stroke-linecap="round"/></svg>`;
 
-  const depositsCard    = buildLimCard('Deposits',    'Fee limits', depIconSVG, depositsLimitRows,    depositsLimitRailsOn,    depositsLimitDDOpen,    'depositsLim',    LIMITS_DEP_METHODS);
-  const withdrawalsCard = buildLimCard('Withdrawals', 'Fee limits', wdrIconSVG, withdrawalsLimitRows, withdrawalsLimitRailsOn, withdrawalsLimitDDOpen, 'withdrawalsLim', LIMITS_WDR_METHODS);
+  const depositsCard    = buildLimCard('Deposits',    'Fee ranges', depIconSVG, depositsLimitRows,    depositsLimitRailsOn,    depositsLimitDDOpen,    'depositsLim',    LIMITS_DEP_METHODS);
+  const withdrawalsCard = buildLimCard('Withdrawals', 'Fee ranges', wdrIconSVG, withdrawalsLimitRows, withdrawalsLimitRailsOn, withdrawalsLimitDDOpen, 'withdrawalsLim', LIMITS_WDR_METHODS);
 
   // ── Assets section ──
   const asCat = pricingAssetsCategory;
@@ -2176,11 +2184,14 @@ function renderPricingContent() {
     const on = (c === 'All' && asCat === 'all') || (c !== 'All' && asCat === c);
     return `<button class="pa-cat-pill${on?' active':''}" onclick="setPricingAssetCategory('${c}')">${c} <span class="pa-cat-pill-count">${cnt}</span></button>`;
   }).join('');
-  const assetsBody = pricingAssetKeys.size === 0
+  const isEmpty = pricingAssetKeys.size === 0;
+  const assetsBody = isEmpty
     ? `<div class="lim2-assets-empty">
-        <div class="lim2-assets-empty-txt" style="cursor:pointer;" onclick="openEditAssetsModal()">Edit assets for this organization</div>
+        <div style="font-size:14px;font-weight:600;color:#374151;margin-bottom:16px;">Select assets for this organization</div>
+        <button class="btn-green-outline" onclick="openEditAssetsModal()">Select assets</button>
       </div>`
-    : `<div id="pa-inline-assets">${visibleSelected.map(a => `
+    : `<div class="pa-assets-count">${pricingAssetKeys.size} assets</div>
+       <div id="pa-inline-assets" class="pa-assets-grid">${visibleSelected.map(a => `
         <div class="pa-asset-row-item">
           <span class="pa-asset-ic">${assetIcon(a.key)}</span>
           <div class="pa-asset-info">
@@ -2195,15 +2206,15 @@ function renderPricingContent() {
       <div>
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
           <div class="psb-title" style="margin-bottom:0;">Assets</div>
-          <button class="btn-green-outline" onclick="openEditAssetsModal()">Edit assets</button>
+          ${!isEmpty ? `<button class="btn-green-outline" onclick="openEditAssetsModal()">Edit assets</button>` : ''}
         </div>
-        <div class="psb-sub" style="margin-bottom:0;">Configure which assets will be available for this organization.</div>
+        <div class="psb-sub">Configure which assets will be available for this organization.</div>
       </div>
-      <div class="pa-search-bar">
+      ${!isEmpty ? `<div class="pa-search-bar">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="#9ca3af" stroke-width="1.4"/><path d="M9.5 9.5l3 3" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>
         <input placeholder="Search for assets" value="${pricingAssetsSearch}" oninput="pricingAssetsSearchInput(this.value)">
       </div>
-      <div class="pa-cat-pills">${asCatPills}</div>
+      <div class="pa-cat-pills">${asCatPills}</div>` : ''}
       ${assetsBody}
     </div>`;
 
@@ -2221,13 +2232,13 @@ function renderPricingContent() {
       ${revenueSection}
       ${assetsSection}
       <div class="lim2-section">
-        <div class="lim2-title">Trade limits</div>
-        <div class="lim2-sub">Set the minimum and maximum spread limits agreed in this partner's contract.</div>
+        <div class="lim2-title">Trade spread range</div>
+        <div class="lim2-sub">Set the minimum and maximum spread range agreed in this partner's contract.</div>
         ${tradesCard}
       </div>
       <div class="lim2-section">
-        <div class="lim2-title">Payment methods &amp; limits</div>
-        <div class="lim2-sub">Define which payment methods are available and set the minimum and maximum fee limits agreed in this partner's contract.</div>
+        <div class="lim2-title">Payment methods &amp; fee ranges</div>
+        <div class="lim2-sub">Define which payment methods are available and set the minimum and maximum fee ranges agreed in this partner's contract.</div>
         ${depositsCard}
         ${withdrawalsCard}
       </div>

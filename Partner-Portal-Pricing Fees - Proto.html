@@ -8,65 +8,63 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;font-size:14px;color:#1a2234;background:#f0f2fa;display:flex;flex-direction:column;height:100vh;overflow:hidden}
 
-/* ── Production banner ── */
-.prod-banner{height:36px;background:#fff8eb;border-bottom:1px solid #fde68a;display:flex;align-items:center;padding:0 24px;gap:10px;font-size:12.5px;flex-shrink:0}
-.prod-env-label{font-weight:700;color:#dc2626;font-size:12.5px}
-.prod-banner-text{color:#78350f}
-.prod-user-btn{margin-left:auto;display:flex;align-items:center;gap:7px;background:#fff;border:1px solid #e5e7eb;border-radius:9999px;padding:5px 14px 5px 10px;font-size:13px;font-weight:600;color:#1d2738;cursor:pointer;font-family:inherit;transition:background .15s}
-.prod-user-btn:hover{background:#f9fafb}
-
 /* ── Layout ── */
 .app-body{display:flex;flex:1;overflow:hidden}
-.sidebar{width:220px;min-width:220px;background:#fff;border-right:1px solid #e5e7eb;display:flex;flex-direction:column;overflow-y:auto;padding-bottom:24px;flex-shrink:0}
+.sidebar{width:260px;min-width:260px;background:#f0f2fa;display:flex;flex-direction:column;overflow-y:auto;padding-bottom:24px;flex-shrink:0}
 .main-wrapper{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#f0f2fa}
-.main-content{flex:1;overflow-y:auto}
+.main-header{display:flex;align-items:center;justify-content:flex-end;padding:8px 24px;gap:20px;flex-shrink:0}
+.prod-env-banner{display:flex;align-items:center;gap:8px}
+.prod-env-label{font-weight:700;color:#d54020;font-size:14px}
+.prod-banner-text{font-size:14px;color:#35415f}
+.prod-user-btn{display:flex;align-items:center;gap:7px;background:#e1e3ef;border:none;border-radius:9999px;padding:6px 12px 6px 8px;font-size:14px;font-weight:600;color:#1d2738;cursor:pointer;font-family:inherit;transition:background .15s}
+.prod-user-btn:hover{background:#d5d8ea}
+.main-content{flex:1;overflow-y:auto;padding:0 16px 16px}
 
 /* ── Sidebar ── */
-.sb-logo{display:flex;align-items:center;gap:10px;padding:16px 16px 12px;cursor:pointer;text-decoration:none}
+.sb-logo{display:flex;align-items:center;gap:10px;padding:16px;cursor:pointer;text-decoration:none}
 .sb-logo-icon{width:30px;height:30px;flex-shrink:0}
 .sb-logo-text .lt-main{display:block;font-size:13px;font-weight:700;color:#111;line-height:1.2}
 .sb-logo-text .lt-sub{display:block;font-size:10px;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em}
-.sb-section{font-size:10.5px;color:#9ca3af;padding:10px 16px 3px;text-transform:uppercase;letter-spacing:.055em;font-weight:600}
-.sb-div{height:1px;background:#f3f4f6;margin:5px 0}
-.sb-dd{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;margin:1px 8px;border-radius:8px;cursor:pointer;transition:background .12s}
-.sb-dd:hover{background:#f9fafb}
-.sb-dd-inner{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:500;color:#374151}
-.sb-dd-icon{width:28px;height:28px;background:#f0f2fa;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.sb-nav{display:flex;align-items:center;gap:9px;padding:7px 12px;margin:1px 8px;border-radius:8px;cursor:pointer;font-size:13px;color:#4b5563;transition:background .12s;text-decoration:none}
-.sb-nav:hover{background:#f3f4f6;color:#374151}
-.sb-nav.active{background:#f0fdf4;color:#166534;font-weight:500}
-.sb-nav svg{color:#9ca3af;flex-shrink:0;width:16px;height:16px}
-.sb-nav.active svg{color:#16a34a}
-.sb-env{display:flex;align-items:center;gap:8px;padding:7px 12px;margin:1px 8px;border-radius:8px;cursor:pointer;transition:background .12s}
-.sb-env:hover{background:#f9fafb}
-.env-dot{width:24px;height:24px;border-radius:50%;background:#fee2e2;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sb-section{font-size:12px;color:#697baa;padding:8px 24px 4px;font-weight:400}
+.sb-div{height:1px;background:#e8eaf2;margin:4px 0}
+.sb-dd{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;margin:1px 8px;border-radius:16px;cursor:pointer;transition:background .12s}
+.sb-dd:hover{background:rgba(255,255,255,.5)}
+.sb-dd-inner{display:flex;align-items:center;gap:12px;font-size:14px;font-weight:600;color:#35415f}
+.sb-dd-icon{width:20px;height:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sb-nav{display:flex;align-items:center;gap:12px;padding:10px 16px;margin:1px 8px;border-radius:16px;cursor:pointer;font-size:14px;color:#35415f;font-weight:600;transition:background .12s;text-decoration:none}
+.sb-nav:hover{background:rgba(255,255,255,.6);color:#35415f}
+.sb-nav.active{background:#fff;color:#35415f;font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.sb-nav svg{color:#697baa;flex-shrink:0;width:20px;height:20px}
+.sb-nav.active svg{color:#35415f}
+.sb-env{display:flex;align-items:center;gap:12px;padding:10px 16px;margin:1px 8px;border-radius:16px;cursor:pointer;transition:background .12s}
+.sb-env:hover{background:rgba(255,255,255,.5)}
+.env-dot{width:20px;height:20px;border-radius:50%;background:#fee2e2;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .env-name-wrap{flex:1}
-.env-name{font-size:13px;font-weight:600;color:#dc2626}
+.env-name{font-size:14px;font-weight:700;color:#d54020}
 
 /* ── Page wrapper ── */
-.page-wrap{background:#fff;min-height:100%;padding:0}
+.page-wrap{background:#fff;min-height:100%;border-radius:16px;overflow:hidden}
 
 /* ── Home screen ── */
-.home-content{padding:28px 32px 32px;display:flex;flex-direction:column;min-height:100%}
-.home-greeting{font-size:28px;font-weight:700;color:#1d2738;margin-bottom:3px}
-.home-greeting-sub{font-size:14px;color:#697BAA;margin-bottom:28px}
-.home-build-title{font-size:18px;font-weight:700;color:#1d2738;margin-bottom:3px}
-.home-build-sub{font-size:13.5px;color:#697BAA;margin-bottom:20px}
-.home-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;flex:1;align-items:stretch}
-@media(max-width:860px){.home-cards{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){.home-cards{grid-template-columns:1fr}}
-.home-card{border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;cursor:pointer;transition:box-shadow .15s,border-color .15s;display:flex;flex-direction:column}
-.home-card:hover{box-shadow:0 6px 20px rgba(0,0,0,.08);border-color:#d1d5db}
-.home-card-img{flex-shrink:0;display:flex;align-items:center;justify-content:center;padding:28px 0 20px}
-.home-card-body{padding:18px 22px 26px;display:flex;flex-direction:column;flex:1}
-.home-card-header{display:flex;align-items:center;gap:8px;margin-bottom:12px}
-.home-card-pill{display:flex;align-items:center;gap:6px;background:#f0f9ef;color:#166534;font-size:12px;font-weight:600;padding:4px 10px;border-radius:9999px}
-.home-card-title{font-size:16px;font-weight:700;color:#1d2738;margin-bottom:12px}
-.home-card-points{display:flex;flex-direction:column;gap:8px;margin-bottom:24px;flex:1}
-.home-card-point{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;color:#374151;line-height:1.45}
-.home-card-point-check{width:17px;height:17px;flex-shrink:0;margin-top:1px;color:#22c55e}
-.home-card-link{display:flex;align-items:center;gap:6px;color:#16a34a;font-size:13.5px;font-weight:600;cursor:pointer;text-decoration:none;margin-top:auto}
-.home-card-link:hover{color:#166534}
+.home-content{padding:32px;display:flex;flex-direction:column;gap:32px}
+.home-greeting{font-size:28px;font-weight:700;color:#1d2738;line-height:32px;letter-spacing:-0.2px}
+.home-build-title{font-size:20px;font-weight:600;color:#1d2738;margin-bottom:4px}
+.home-build-sub{font-size:14px;color:#697BAA}
+.home-cards{display:flex;gap:32px;align-items:flex-start}
+.home-card{background:#fff;border-radius:16px;box-shadow:0 2px 4px rgba(132,148,165,.2);padding:24px;display:flex;flex-direction:column;gap:16px;flex:1;min-width:0;transition:box-shadow .15s}
+.home-card:hover{box-shadow:0 4px 16px rgba(132,148,165,.32)}
+.hc-title-row{display:flex;align-items:center;gap:8px;min-height:32px}
+.hc-icon-btn{width:32px;height:32px;background:#e1e3ef;border-radius:9999px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.hc-category{font-size:14px;color:#1d2738}
+.hc-illustration{display:flex;align-items:center;justify-content:center;height:154px;overflow:hidden;padding:8px 0}
+.hc-illustration img{max-height:154px;max-width:100%;object-fit:contain}
+.hc-content{display:flex;flex-direction:column;gap:24px;flex:1}
+.hc-title{font-size:16px;font-weight:700;color:#1d2738;line-height:24px}
+.hc-points{display:flex;flex-direction:column;gap:16px}
+.hc-point{display:flex;align-items:flex-start;gap:8px;font-size:14px;color:#1d2738;line-height:20px}
+.hc-point svg{flex-shrink:0;margin-top:0}
+.hc-ghost-btn{display:flex;align-items:center;justify-content:center;gap:8px;height:40px;border-radius:9999px;background:transparent;cursor:pointer;color:#39a854;font-size:16px;font-weight:600;text-decoration:none;transition:background .12s;border:none;font-family:inherit;width:100%}
+.hc-ghost-btn:hover{background:rgba(57,168,84,.06)}
 
 /* ── Breadcrumb ── */
 .breadcrumb{display:flex;align-items:center;gap:6px;font-size:12px;padding:12px 24px 0;margin-bottom:4px}
@@ -91,14 +89,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 
 /* ── Performance tab ── */
 .perf-section{padding:28px 0 0}
-.perf-title{font-size:22px;font-weight:700;color:#1d2738;margin-bottom:6px}
-.perf-sub{font-size:13.5px;color:#697BAA;margin-bottom:28px}
-.perf-group-label{font-size:12px;color:#697BAA;font-weight:500;margin-bottom:12px;text-transform:none}
-.perf-cards-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px}
-.perf-card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:24px 28px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-.perf-card-value{font-size:28px;font-weight:700;color:#1d2738;margin-bottom:4px}
+.perf-title{font-size:28px;font-weight:700;color:#1d2738;margin-bottom:8px}
+.perf-sub{font-size:14px;color:#697BAA;margin-bottom:28px}
+.perf-filters{display:flex;gap:16px;margin-bottom:32px}
+.perf-filter-group{display:flex;flex-direction:column;gap:6px;flex:1;max-width:340px}
+.perf-filter-label{font-size:12px;font-weight:500;color:#697BAA}
+.perf-filter-select{appearance:none;-webkit-appearance:none;border:1.5px solid #e5e7eb;border-radius:10px;padding:10px 36px 10px 14px;font-size:14px;font-family:inherit;color:#1d2738;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239ca3af' stroke-width='1.4' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 12px center;cursor:pointer;outline:none;width:100%}
+.perf-filter-select:focus{border-color:#697baa}
+.perf-overview-title{font-size:20px;font-weight:600;color:#1d2738;margin-bottom:16px}
+.perf-cards-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+.perf-cards-row2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:32px}
+.perf-card{background:#fff;border:1px solid #e8eaf2;border-radius:16px;padding:24px 28px}
+.perf-card-value{font-size:28px;font-weight:700;color:#1d2738;margin-bottom:4px;line-height:1.1}
 .perf-card-value.neg{color:#dc2626}
-.perf-card-label{font-size:13px;color:#697BAA}
+.perf-card-label-row{display:flex;align-items:center;gap:4px}
+.perf-card-label{font-size:14px;color:#697BAA}
+.perf-card-sub{font-size:14px;color:#697BAA;margin-top:2px}
+.perf-chart-section{margin-bottom:24px}
+.perf-chart-title{font-size:14px;font-weight:400;color:#697BAA;margin-bottom:16px}
+.perf-chart-outer{background:#fff;border:1px solid #e8eaf2;border-radius:16px;padding:24px 24px 16px;overflow:hidden}
 
 /* ── Pricing details tab ── */
 .pricing-details-wrap{padding:24px 0}
@@ -232,21 +241,35 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 .tier-hdr-inp{border:none;outline:none;font-size:12.5px;font-weight:600;color:#111827;font-family:inherit;flex:1;min-width:0;width:70px;background:transparent;-moz-appearance:textfield}
 .tier-hdr-inp::-webkit-outer-spin-button,.tier-hdr-inp::-webkit-inner-spin-button{-webkit-appearance:none}
 .tier-hdr-input-row.error{border-color:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.1)}
-.tier-err-msg{display:flex;align-items:center;gap:4px;margin-top:5px;font-size:11px;color:#ef4444;font-weight:500}
+.tier-err-msg{display:flex;align-items:center;gap:4px;margin-top:5px;font-size:11px;color:#ef4444;font-weight:500;line-height:1.35}
+.col-hdr-tier.has-error .tier-hdr-label,.col-hdr-tier.has-error .tier-hdr-edit-label{color:#ef4444}
+.col-hdr-tier.has-error .tier-hdr-val{color:#ef4444}
+.tier-delete-btn{width:26px;height:26px;border-radius:50%;background:#e1e3ef;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#35415f;transition:background .15s;flex-shrink:0}
+.tier-delete-btn:hover{background:#fce4e4;color:#dc2626}
+.tier-add-btn{width:26px;height:26px;border-radius:50%;background:#dcfce7;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#16a34a;transition:background .15s;flex-shrink:0}
+.tier-add-btn:hover{background:#bbf7d0}
+.del-tier-modal{background:#fff;border-radius:20px;width:420px;max-width:90vw;padding:28px 32px;box-shadow:0 20px 60px rgba(0,0,0,.15)}
+.del-tier-modal-title{font-size:18px;font-weight:700;color:#1d2738;margin-bottom:12px}
+.del-tier-modal-body{font-size:14px;color:#4b5563;line-height:1.6;margin-bottom:24px}
+.del-tier-modal-ftr{display:flex;justify-content:flex-end;gap:12px}
+.modal-btn-cancel{background:#fff;border:1.5px solid #e5e7eb;border-radius:9999px;padding:9px 24px;font-size:13.5px;font-weight:600;color:#374151;cursor:pointer;font-family:inherit;transition:background .12s}
+.modal-btn-cancel:hover{background:#f9fafb}
+.modal-btn-delete{background:#ef4444;border:none;border-radius:9999px;padding:9px 24px;font-size:13.5px;font-weight:600;color:#fff;cursor:pointer;font-family:inherit;transition:background .12s}
+.modal-btn-delete:hover{background:#dc2626}
 .asset-th{display:flex;align-items:center;gap:5px}
 .spread-table td{padding:0;vertical-align:middle;border-bottom:1px solid #f0f2fa}
 .spread-table tr:last-child td{border-bottom:none}
 .spread-table .asset-td{padding:0;position:sticky;left:0;z-index:1;background:#fff;border-right:1px solid #f0f2fa}
 .asset-td-inner{display:flex;align-items:center;gap:12px;padding:18px 20px}
-.spread-cell{padding:20px 28px;border-right:1px solid #f0f2fa}
-.spread-cell:last-child{border-right:none}
-.sc-uphold-lbl{font-size:10.5px;color:#9ca3af;margin-bottom:5px}
-.sc-spread-row{display:flex;align-items:center;gap:6px;margin-bottom:5px}
-.sc-base{font-size:13px;font-weight:600;color:#1d2738}
-.sc-pfee{display:inline-flex;align-items:center;background:#dbeafe;color:#1d4ed8;font-size:11px;font-weight:600;padding:2px 7px;border-radius:5px;white-space:nowrap}
-.sc-eq{font-size:11px;color:#d1d5db;margin-bottom:5px}
-.sc-total-lbl{font-size:10.5px;color:#9ca3af;margin-bottom:2px}
-.sc-total-val{font-size:13.5px;font-weight:700;color:#1d2738}
+.spread-table .spread-cell{padding:20px 24px;border-right:1px solid #f0f2fa}
+.spread-table .spread-cell:last-child{border-right:none}
+.sc-uphold-lbl{font-size:11px;color:#9ca3af;margin-bottom:6px;font-weight:400}
+.sc-spread-row{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.sc-base{font-size:16px;font-weight:700;color:#1d2738}
+.sc-pfee{display:inline-flex;align-items:center;background:#dbeafe;color:#1d4ed8;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:6px;white-space:nowrap}
+.sc-eq{font-size:12px;color:#d1d5db;margin-bottom:14px}
+.sc-total-lbl{font-size:11px;color:#9ca3af;margin-bottom:5px;font-weight:400}
+.sc-total-val{font-size:16px;font-weight:700;color:#1d2738}
 .fallback-td .asset-td-inner{padding:16px}
 .fallback-label{font-size:13px;font-weight:600;color:#f59e0b}
 .fallback-row td{background:#fffbf0}
@@ -342,16 +365,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 </head>
 <body>
 
-<!-- Production banner -->
-<div class="prod-banner">
-  <span class="prod-env-label">Production environment</span>
-  <span class="prod-banner-text">Explore Enterprise Portal live environment.</span>
-  <button class="prod-user-btn">
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4.5" r="2.5" stroke="#1d2738" stroke-width="1.3"/><path d="M1.5 12.5c0-3.04 2.46-5.5 5.5-5.5s5.5 2.46 5.5 5.5" stroke="#1d2738" stroke-width="1.3" stroke-linecap="round"/></svg>
-    John Doe
-  </button>
-</div>
-
 <!-- App body -->
 <div class="app-body">
 
@@ -429,6 +442,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 
   <!-- Main -->
   <div class="main-wrapper">
+    <div class="main-header">
+      <div class="prod-env-banner">
+        <span class="prod-env-label">Production environment</span>
+        <span class="prod-banner-text">Explore Enterprise Portal live environment.</span>
+      </div>
+      <button class="prod-user-btn">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4.5" r="2.5" stroke="#1d2738" stroke-width="1.3"/><path d="M1.5 12.5c0-3.04 2.46-5.5 5.5-5.5s5.5 2.46 5.5 5.5" stroke="#1d2738" stroke-width="1.3" stroke-linecap="round"/></svg>
+        John Doe
+      </button>
+    </div>
     <div class="main-content">
       <div class="page-wrap" id="page-wrap"></div>
     </div>
@@ -461,6 +484,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
     <div class="save-modal-ftr">
       <button class="save-modal-cancel" onclick="closeSaveModal()">Cancel</button>
       <button class="save-modal-confirm" onclick="confirmSave()">Save changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete tier modal -->
+<div id="delete-tier-modal" style="position:fixed;inset:0;z-index:9100;background:rgba(107,114,128,.5);display:none;align-items:center;justify-content:center" onclick="if(event.target===this)closeDeleteTierModal()">
+  <div class="del-tier-modal" onclick="event.stopPropagation()">
+    <div class="del-tier-modal-title">Delete ticket size tier</div>
+    <div class="del-tier-modal-body">Are you sure you want to delete the <strong id="del-tier-range-label"></strong> tier? Range values will be distributed among the other tiers.</div>
+    <div class="del-tier-modal-ftr">
+      <button class="modal-btn-cancel" onclick="closeDeleteTierModal()">Cancel</button>
+      <button class="modal-btn-delete" onclick="confirmDeleteTier()">Delete tier</button>
     </div>
   </div>
 </div>
@@ -499,6 +534,10 @@ let draftFee = 6;     // current editing value
 let absorbAll = false; // toggle state
 let tierThresholds = [10000, 50000, 100000, 500000];
 let savedTierThresholds = [10000, 50000, 100000, 500000];
+let pendingTierEdits = {};
+let pendingTierDeletions = new Set();
+let deletingTierIdx = null;
+const MAX_TIERS = 5;
 let editingTierIdx = null;
 
 /* ── Deposits / Withdrawals fees state ── */
@@ -733,78 +772,36 @@ function render() {
 
 /* ── Home screen ── */
 function renderHome() {
+  const chk = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" fill="#dcfce7"/><path d="M6.5 10.5l2.5 2.5 5-5" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const ext = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 15.5L15.5 4.5M15.5 4.5H8.5M15.5 4.5V11.5" stroke="#39a854" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  function card(iconSVG, category, imgSrc, title, points, linkLabel, href) {
+    return `<div class="home-card">
+      <div class="hc-title-row">
+        <div class="hc-icon-btn">${iconSVG}</div>
+        <span class="hc-category">${category}</span>
+      </div>
+      <div class="hc-illustration"><img src="${imgSrc}" alt="" onerror="this.parentElement.style.minHeight='100px'"></div>
+      <div class="hc-content">
+        <div class="hc-title">${title}</div>
+        <div class="hc-points">${points.map(p=>`<div class="hc-point">${chk}<span>${p}</span></div>`).join('')}</div>
+        <a class="hc-ghost-btn" href="${href}" target="_blank">${ext}${linkLabel}</a>
+      </div>
+    </div>`;
+  }
+  const buyIcon = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 12l4-8 4 8" stroke="#35415f" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 9.5h5" stroke="#35415f" stroke-width="1.3" stroke-linecap="round"/></svg>`;
+  const fiatIcon = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1.5" y="4" width="13" height="9" rx="1.5" stroke="#35415f" stroke-width="1.3"/><path d="M1.5 7h13M5 4V3a1 1 0 011-1h4a1 1 0 011 1v1" stroke="#35415f" stroke-width="1.3" stroke-linecap="round"/></svg>`;
+  const cryptoIcon = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3" stroke="#35415f" stroke-width="1.3"/><circle cx="2.5" cy="4" r="1.5" stroke="#35415f" stroke-width="1.2"/><circle cx="13.5" cy="4" r="1.5" stroke="#35415f" stroke-width="1.2"/><circle cx="2.5" cy="12" r="1.5" stroke="#35415f" stroke-width="1.2"/><circle cx="13.5" cy="12" r="1.5" stroke="#35415f" stroke-width="1.2"/><path d="M4 4.5L6 6.5M10 9.5l2 2M4 11.5L6 9.5M10 6.5l2-2" stroke="#35415f" stroke-width="1.1"/></svg>`;
   return `
   <div class="home-content">
     <div class="home-greeting">Hi, John Doe!</div>
-    <div class="home-greeting-sub">Welcome back to your enterprise portal.</div>
-    <div class="home-build-title">What you can build</div>
-    <div class="home-build-sub">Build enterprise-grade crypto products with Uphold's API suite.</div>
-    <div class="home-cards">
-      ${homeCard(
-        '#f0f9ef',
-        buyIllustrationSVG(),
-        'Buy, sell and hold crypto',
-        'buy-sell',
-        'Buy, sell and hold',
-        'Full trading experience, no exchange infrastructure needed. 300+ assets.',
-        ['Enable users to buy, sell and trade assets directly inside your product.',
-         'Embed a full multi-asset exchange without building market infrastructure.',
-         'Real-time price quotes and instant execution.',
-         'Support for crypto, fiat, equities and commodities.'],
-        'Buy, sell and hold'
-      )}
-      ${homeCard(
-        '#eff6ff',
-        sendFiatIllustrationSVG(),
-        'Send fiat &amp; Settle funds',
-        'send-fiat',
-        'Send fiat &amp; Settle funds',
-        'Cross-border money movement with stablecoin-speed settlement.',
-        ['Move flat money across borders with real-time transaction APIs.',
-         'Settle using stablecoins as a rail for fast, low-cost transfers.',
-         'Automate disbursements from a single operating account.',
-         'Full transaction history and audit trails for compliance.'],
-        'Send fiat &amp; Settle funds'
-      )}
-      ${homeCard(
-        '#fdf4ff',
-        sendCryptoIllustrationSVG(),
-        'Send crypto',
-        'send-crypto',
-        'Send crypto',
-        'On-chain disbursements at enterprise scale.',
-        ['Send crypto on-chain to any wallet address programmatically at scale.',
-         'Handle multi-asset on-chain disbursements at scale.',
-         'Automate token distributions, airdrops or staking rewards.',
-         'Stablecoin B2B settlement to replace slow wire transfers.'],
-        'Send crypto'
-      )}
+    <div>
+      <div class="home-build-title">What you can build</div>
+      <div class="home-build-sub">Build enterprise-grade crypto products with Uphold's API suite.</div>
     </div>
-  </div>`;
-}
-
-function homeCard(bgColor, illustration, pillarLabel, key, title, subtitle, points, linkLabel) {
-  return `
-  <div class="home-card">
-    <div class="home-card-img" style="background:${bgColor};border-radius:12px 12px 0 0">${illustration}</div>
-    <div class="home-card-body">
-      <div class="home-card-header">
-        <div class="home-card-pill">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6.5l3 3 5-5" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          ${pillarLabel}
-        </div>
-      </div>
-      <div class="home-card-title">${title}</div>
-      <div class="home-card-points">
-        ${points.map(p => `<div class="home-card-point">
-          <svg class="home-card-point-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#dcfce7"/><path d="M5 8.5l2 2 4-4" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          ${p}
-        </div>`).join('')}
-      </div>
-      <div class="home-card-link">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.3 11.7L11.7 2.3M11.7 2.3H5.3M11.7 2.3V8.7" stroke="#16a34a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        ${linkLabel}
-      </div>
+    <div class="home-cards">
+      ${card(buyIcon,'Buy, sell and hold crypto','https://www.figma.com/api/mcp/asset/8b03c085-82ba-48dc-a3e5-51ef54dedd5f','Full trading experience, no exchange infrastructure needed. 300+ assets.',['Enable users to buy, sell and trade assets directly inside your product.','Embed a full multi-asset exchange without building market infrastructure.','Real-time price quotes and instant execution.','Support for crypto, fiat, equities and commodities.'],'Buy, sell and hold','https://developer.uphold.com')}
+      ${card(fiatIcon,'Send fiat &amp; Settle funds','https://www.figma.com/api/mcp/asset/ac742e27-636c-477b-9f66-e35589cc38a2','Cross-border money movement with stablecoin-speed settlement.',['Move fiat money across borders with real-time transaction APIs.','Settle using stablecoins as a rail for fast, low-cost transfers.','Automate disbursements from a single operating account.','Full transaction history and audit trails for compliance.'],'Send fiat &amp; Settle funds','https://developer.uphold.com')}
+      ${card(cryptoIcon,'Send crypto','https://www.figma.com/api/mcp/asset/3d09a919-ddea-4615-8a48-53b0de4542f7','On-chain disbursements at enterprise scale.',['Send crypto on-chain to any wallet address programmatically at scale.','Handle multi-asset on-chain disbursements at scale.','Automate token distributions, airdrops or staking rewards.','Stablecoin B2B settlement to replace slow wire transfers.'],'Send crypto','https://developer.uphold.com')}
     </div>
   </div>`;
 }
@@ -912,32 +909,104 @@ function copyLogJSON() {
 }
 
 function renderPerfTab() {
+  // Generate deterministic daily data for Jan–Jul 2026
+  const MONTHS = [
+    {name:'Jan 2026',days:31},{name:'Feb 2026',days:28},{name:'Mar 2026',days:31},
+    {name:'Apr 2026',days:30},{name:'May 2026',days:31},{name:'Jun 2026',days:30},
+    {name:'Jul 2026',days:31}
+  ];
+  function genDaily(seed) {
+    const data = []; let idx = 0;
+    MONTHS.forEach((m, mi) => {
+      for (let d = 1; d <= m.days; d++) {
+        const v = Math.max(20, Math.round(
+          320 + Math.sin(idx * 0.11 + mi * 0.7) * 160 + Math.sin(idx * 0.43 + seed) * 90 + Math.sin(idx * 0.9) * 40
+        ));
+        data.push({idx, v, label: d===3 ? '03 '+m.name : null});
+        idx++;
+      }
+    });
+    return data;
+  }
+
+  function barChart(data, title) {
+    const COL = '#697baa';
+    const W = 900, H = 220, pL = 44, pB = 24, pT = 8, pR = 8;
+    const cW = W - pL - pR, cH = H - pB - pT;
+    const yMax = 800, gridVals = [0, 200, 400, 600, 800];
+    const bW = Math.max(2, Math.floor(cW / data.length) - 1);
+
+    const grid = gridVals.map(v => {
+      const y = pT + cH - Math.round((v / yMax) * cH);
+      return `<line x1="${pL}" y1="${y}" x2="${W-pR}" y2="${y}" stroke="#e8eaf2" stroke-width="1"/>
+<text x="${pL-6}" y="${y+4}" text-anchor="end" font-size="11" fill="#9ca3af" font-family="inherit">${v}</text>`;
+    }).join('');
+
+    const bars = data.map(d => {
+      const x = pL + (d.idx / data.length) * cW;
+      const bh = Math.max(2, Math.round((d.v / yMax) * cH));
+      const y = pT + cH - bh;
+      return `<rect x="${x.toFixed(1)}" y="${y}" width="${bW}" height="${bh}" rx="1" fill="${COL}"/>`;
+    }).join('');
+
+    const labels = data.filter(d => d.label).map(d => {
+      const x = pL + (d.idx / data.length) * cW;
+      return `<text x="${x.toFixed(1)}" y="${H-4}" font-size="10" fill="#9ca3af" font-family="inherit">${d.label}</text>`;
+    }).join('');
+
+    return `<div class="perf-chart-section">
+      <div class="perf-chart-title">${title}</div>
+      <div class="perf-chart-outer">
+        <svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block">
+          ${grid}${bars}${labels}
+        </svg>
+      </div>
+    </div>`;
+  }
+
+  const daily1 = genDaily(0);
+  const daily2 = genDaily(1.3);
+  const infoIcon = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="flex-shrink:0"><circle cx="7" cy="7" r="6" stroke="#9ca3af" stroke-width="1.2"/><path d="M7 6.5v4M7 4.5v.5" stroke="#9ca3af" stroke-width="1.2" stroke-linecap="round"/></svg>`;
+
+  function perfCard(value, label, sub, neg) {
+    return `<div class="perf-card">
+      <div class="perf-card-value${neg?' neg':''}">${value}</div>
+      <div class="perf-card-label-row"><span class="perf-card-label">${label}</span>${infoIcon}</div>
+      ${sub ? `<div class="perf-card-sub">${sub}</div>` : ''}
+    </div>`;
+  }
+
+  const chevron = `<svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>`;
+  function filterSel(label, opts) {
+    return `<div class="perf-filter-group" style="max-width:none;flex:1">
+      <label class="perf-filter-label">${label}</label>
+      <select class="perf-filter-select">${opts.map((o,i)=>`<option${i===0?' selected':''}>${o}</option>`).join('')}</select>
+    </div>`;
+  }
+
   return `
     <div class="perf-section">
       <div class="perf-title">Performance</div>
-      <div class="perf-sub">View revenue, absorbed costs, and outstanding balances from this organization pricing configuration.</div>
-      <div class="perf-group-label">Markup spreads</div>
-      <div class="perf-cards-row" style="max-width:840px">
-        <div class="perf-card">
-          <div class="perf-card-value">$4,821.50</div>
-          <div class="perf-card-label">Net revenue (MTD)</div>
-        </div>
-        <div class="perf-card">
-          <div class="perf-card-value">$4,821.50</div>
-          <div class="perf-card-label">Spread markup earned</div>
-        </div>
+      <div class="perf-sub">View spread and fees revenue, absorbed costs, and outstanding balances from this partner's pricing configuration.</div>
+      <div class="perf-filters" style="max-width:960px">
+        ${filterSel('Timeframe', ['Last 30 days','Last 7 days','Last 90 days','Year to date'])}
+        ${filterSel('Pricing plan', ['All','Standard','Premium','Enterprise'])}
+        ${filterSel('Jurisdiction', ['All jurisdictions','United States','European Union','United Kingdom'])}
       </div>
-      <div class="perf-group-label">Markdown spreads</div>
-      <div class="perf-cards-row" style="max-width:840px">
-        <div class="perf-card">
-          <div class="perf-card-value neg">– $312.00</div>
-          <div class="perf-card-label">Spread absorbed (MTD)</div>
-        </div>
-        <div class="perf-card">
-          <div class="perf-card-value">$4,509.50</div>
-          <div class="perf-card-label">Balance due / receivable</div>
-        </div>
+
+      <div class="perf-overview-title">Overview</div>
+      <div class="perf-cards-row3">
+        ${perfCard('$4,821.50','Total volume','All plans')}
+        ${perfCard('$4,821.50','Spread markup','All plans')}
+        ${perfCard('– $312.00','Spread absorbed','All plans',true)}
       </div>
+      <div class="perf-cards-row2">
+        ${perfCard('$4,821.50','Payment fees','All plans')}
+        ${perfCard('$603.00','Pending settlement','Next: Aug 2026')}
+      </div>
+
+      ${barChart(daily1, 'Net revenue through time')}
+      ${barChart(daily2, 'Spread markup through time')}
     </div>`;
 }
 
@@ -1045,11 +1114,13 @@ function setAssetSearch(val) {
 
 /* ── Plan details screen ── */
 function renderPlanDetails() {
-  // Build tier headers from state (0 = Less than first threshold, 1..3 = ranges, 4 = Greater than)
+  // Build tier headers dynamically from visible tiers
+  const visible = visibleTierIndices();
   const thead = `
     <tr>
       <th><span class="asset-th">Assets</span></th>
-      ${[0,1,2,3,4].map(i => renderTierHeader(i)).join('')}
+      ${visible.map((thIdx, vi) => renderTierHeader(thIdx, vi, visible)).join('')}
+      ${renderGtHeader(visible)}
     </tr>`;
 
   function cell(baseBps, partnerBps) {
@@ -1071,7 +1142,7 @@ function renderPlanDetails() {
           <span style="font-size:13.5px;font-weight:600;color:#1d2738">${a.t}</span>
         </div>
       </td>
-      ${cell(6,draftFee)}${cell(6,draftFee)}${cell(6,draftFee)}${cell(6,draftFee)}${cell(6,draftFee)}
+      ${Array(visible.length + 1).fill(null).map(() => cell(6,draftFee)).join('')}
     </tr>`).join('');
 
   const fallbackRow = `
@@ -1082,7 +1153,7 @@ function renderPlanDetails() {
           <span class="tooltip-wrap" onmouseenter="showTip(event,'The fallback rate applies to all assets not listed above.')" onmouseleave="hideTip()">${infoSVG}<span class="tooltip-text">The fallback rate applies to all assets not listed above.</span></span>
         </div>
       </td>
-      ${[0,1,2,3,4].map(() => { const fb=draftFee,ft=6+fb; return `<td class="spread-cell">
+      ${Array(visible.length + 1).fill(null).map(() => { const fb=draftFee,ft=6+fb; return `<td class="spread-cell">
         <div class="sc-uphold-lbl">Uphold spread</div>
         <div class="sc-spread-row"><span class="sc-base">6 bps</span><span class="sc-pfee" style="${chipStyle(fb)}">${chipLabel(fb)}</span></div>
         <div class="sc-eq">=</div>
@@ -1159,113 +1230,207 @@ function renderPlanDetails() {
 function fmtDollar(n) {
   return '$' + n.toLocaleString('en-US');
 }
+function effectiveThreshold(i) {
+  return pendingTierEdits[i] !== undefined ? pendingTierEdits[i] : tierThresholds[i];
+}
+function visibleTierIndices() {
+  const r = [];
+  for (let i = 0; i < tierThresholds.length; i++) {
+    if (!pendingTierDeletions.has(i)) r.push(i);
+  }
+  return r;
+}
+function isTierConflicting(thIdx) {
+  const v = effectiveThreshold(thIdx);
+  const visible = visibleTierIndices();
+  const vi = visible.indexOf(thIdx);
+  if (vi < 0) return false;
+  if (v <= 0) return true;
+  if (vi > 0 && v <= effectiveThreshold(visible[vi - 1])) return true;
+  return false;
+}
+function hasTierErrors() {
+  return visibleTierIndices().some(i => pendingTierEdits[i] !== undefined && isTierConflicting(i));
+}
 function tiersAreDirty() {
-  return tierThresholds.some((v, i) => v !== savedTierThresholds[i]);
+  if (pendingTierDeletions.size > 0) return true;
+  if (tierThresholds.length !== savedTierThresholds.length) return true;
+  if (tierThresholds.some((v, i) => v !== savedTierThresholds[i])) return true;
+  for (const k in pendingTierEdits) {
+    if (pendingTierEdits[k] !== savedTierThresholds[parseInt(k)]) return true;
+  }
+  return false;
 }
 function isOverallDirty() {
   return draftFee !== partnerFee || tiersAreDirty() || methodFeesDirty('deposits') || methodFeesDirty('withdrawals');
 }
-function isTierConflicting(i) {
-  const v = tierThresholds[i];
-  if (v <= 0) return true;
-  if (i > 0 && v <= tierThresholds[i - 1]) return true;
-  if (i < tierThresholds.length - 1 && v >= tierThresholds[i + 1]) return true;
-  return false;
-}
 
-function renderTierHeader(i) {
-  const isLast = i === tierThresholds.length;
-  const gtTooltip = "Automatically set to your highest tier\\'s upper limit. Any amount above that uses this value.";
-  if (isLast) {
-    const lastVal = tierThresholds[tierThresholds.length - 1];
-    return `<th class="col-hdr-tier" id="col-hdr-${i}">
-      <div class="tier-hdr-content">
-        <span class="tier-hdr-label">Greater than</span>
-        <span class="tier-hdr-val">${fmtDollar(lastVal)} <span class="tooltip-wrap" onmouseenter="showTip(event,'${gtTooltip}')" onmouseleave="hideTip()">${infoSVG}</span></span>
-      </div>
-    </th>`;
-  }
-  if (editingTierIdx === i) {
-    const val = tierThresholds[i];
-    return `<th class="col-hdr-tier editing" id="col-hdr-${i}">
+function renderTierHeader(thIdx, vi, visible) {
+  const canDelete = visible.length > 1;
+  const canAdd = visible.length < MAX_TIERS - 1;
+  const hasError = pendingTierEdits[thIdx] !== undefined && isTierConflicting(thIdx);
+  const errIcon = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="6" fill="#ef4444"/><path d="M6 3v4M6 8.5v.5" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></svg>`;
+  const addBtn = `<button class="tier-add-btn" onmousedown="addTierAt(${thIdx},event)" title="Add tier">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+  </button>`;
+  const delBtn = canDelete ? `<button class="tier-delete-btn" onclick="deleteTier(${thIdx},event)" title="Remove tier">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1.5 3h9M4 3V2h4v1M3.5 3l.5 7h4l.5-7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>` : '';
+
+  if (editingTierIdx === thIdx) {
+    const val = effectiveThreshold(thIdx);
+    const errMsg = val <= 0 ? 'Enter an amount higher than zero.' : 'Adjust conflicting amount.';
+    return `<th class="col-hdr-tier editing${hasError?' has-error':''}" id="col-hdr-${thIdx}">
       <div class="tier-hdr-edit">
-        <span class="tier-hdr-edit-label">Upper limit</span>
-        <div class="tier-hdr-input-row" id="tier-inp-row-${i}">
-          <span class="tier-hdr-inp-dollar">$</span>
-          <input class="tier-hdr-inp" id="tier-inp-${i}" type="number" value="${val}"
-            oninput="onTierInput(${i}, this.value)"
-            onblur="onTierBlur(${i})"
-            onkeydown="if(event.key==='Enter')this.blur();if(event.key==='Escape'){cancelTierEdit(${i});this.blur()}">
+        <span class="tier-hdr-edit-label">${vi === 0 ? 'Less than' : 'Tier'} upper limit</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="tier-hdr-input-row${hasError?' error':''}" id="tier-inp-row-${thIdx}">
+            <span class="tier-hdr-inp-dollar">$</span>
+            <input class="tier-hdr-inp" id="tier-inp-${thIdx}" type="number" value="${val > 0 ? val : ''}"
+              oninput="onTierInput(${thIdx},this.value)"
+              onblur="onTierBlur(${thIdx})"
+              onkeydown="if(event.key==='Enter')this.blur();if(event.key==='Escape'){cancelTierEdit(${thIdx});this.blur()}">
+          </div>
+          ${canAdd ? addBtn : ''}
         </div>
-        <div class="tier-err-msg" id="tier-err-${i}" style="display:none">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="6" fill="#ef4444"/><path d="M6 3v4M6 8.5v.5" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></svg>
-          <span>Adjust conflicting amount.</span>
-        </div>
+        ${hasError ? `<div class="tier-err-msg" id="tier-err-${thIdx}">${errIcon}<span>${errMsg}</span></div>` : `<div class="tier-err-msg" id="tier-err-${thIdx}" style="display:none"></div>`}
       </div>
     </th>`;
   }
+
   let label, valText;
-  if (i === 0) {
-    label = 'Less than'; valText = fmtDollar(tierThresholds[0]);
+  if (vi === 0) {
+    label = 'Less than'; valText = fmtDollar(effectiveThreshold(thIdx));
   } else {
-    label = 'Tier'; valText = `${fmtDollar(tierThresholds[i-1])} – ${fmtDollar(tierThresholds[i])}`;
+    label = 'Tier'; valText = `${fmtDollar(effectiveThreshold(visible[vi-1]))} – ${fmtDollar(effectiveThreshold(thIdx))}`;
   }
-  return `<th class="col-hdr-tier" id="col-hdr-${i}">
+  return `<th class="col-hdr-tier${hasError?' has-error':''}" id="col-hdr-${thIdx}">
     <div class="tier-hdr-content">
       <span class="tier-hdr-label">${label}</span>
       <span class="tier-hdr-val">${valText}</span>
     </div>
     <div class="tier-hdr-actions">
-      <button class="tier-edit-pill" onclick="editTier(${i},event)">Edit</button>
+      <button class="tier-edit-pill" onclick="editTier(${thIdx},event)">Edit</button>
+      ${delBtn}
+      ${canAdd ? addBtn : ''}
     </div>
   </th>`;
 }
 
-function editTier(i, e) {
+function renderGtHeader(visible) {
+  const gtTooltip = "Automatically set to your highest tier upper limit. Any amount above that uses this value.";
+  const gtVal = visible.length > 0 ? Math.max(...visible.map(i => effectiveThreshold(i))) : 0;
+  return `<th class="col-hdr-tier" id="col-hdr-gt">
+    <div class="tier-hdr-content">
+      <span class="tier-hdr-label">Greater than</span>
+      <span class="tier-hdr-val" id="gt-val">${fmtDollar(gtVal)} <span class="tooltip-wrap" onmouseenter="showTip(event,'${gtTooltip}')" onmouseleave="hideTip()">${infoSVG}</span></span>
+    </div>
+  </th>`;
+}
+
+function editTier(thIdx, e) {
   e.stopPropagation();
-  editingTierIdx = i;
+  editingTierIdx = thIdx;
   render();
-  setTimeout(() => { const inp = document.getElementById('tier-inp-' + i); if (inp) { inp.focus(); inp.select(); } }, 0);
+  setTimeout(() => { const inp = document.getElementById('tier-inp-' + thIdx); if (inp) { inp.focus(); inp.select(); } }, 0);
 }
 
-function onTierInput(i, rawVal) {
+function onTierInput(thIdx, rawVal) {
   const n = parseInt(rawVal, 10);
-  const inputRow = document.getElementById('tier-inp-row-' + i);
-  const errEl = document.getElementById('tier-err-' + i);
-  if (isNaN(n) || n <= 0) {
-    if (inputRow) inputRow.classList.add('error');
-    if (errEl) errEl.style.display = 'flex';
-    return;
+  pendingTierEdits[thIdx] = (!isNaN(n) && n > 0) ? n : 0;
+  const hdr = document.getElementById('col-hdr-' + thIdx);
+  const inputRow = document.getElementById('tier-inp-row-' + thIdx);
+  const hasError = isTierConflicting(thIdx);
+  if (hdr) hdr.classList.toggle('has-error', hasError);
+  if (inputRow) inputRow.classList.toggle('error', hasError);
+  const errEl = document.getElementById('tier-err-' + thIdx);
+  if (errEl) {
+    if (hasError) {
+      const errIcon = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="6" fill="#ef4444"/><path d="M6 3v4M6 8.5v.5" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></svg>`;
+      const errMsg = (pendingTierEdits[thIdx] || 0) <= 0 ? 'Enter an amount higher than zero.' : 'Adjust conflicting amount.';
+      errEl.innerHTML = `${errIcon}<span>${errMsg}</span>`;
+      errEl.style.display = 'flex';
+    } else {
+      errEl.style.display = 'none';
+    }
   }
-  // Temporarily set to check conflicts
-  const prev = tierThresholds[i];
-  tierThresholds[i] = n;
-  const conflicting = isTierConflicting(i);
-  tierThresholds[i] = prev; // revert; commit on blur
-  if (inputRow) inputRow.classList.toggle('error', conflicting);
-  if (errEl) errEl.style.display = conflicting ? 'flex' : 'none';
-  // Live-update "Greater than" header
-  if (i === tierThresholds.length - 1) {
-    const gtHdr = document.querySelector('#col-hdr-' + tierThresholds.length + ' .tier-hdr-val');
-    if (gtHdr) gtHdr.childNodes[0].textContent = fmtDollar(n) + ' ';
-  }
+  updateGtHeader();
+  updateActionBar();
 }
 
-function onTierBlur(i) {
-  const inp = document.getElementById('tier-inp-' + i);
-  const n = inp ? parseInt(inp.value, 10) : NaN;
-  if (!isNaN(n) && n > 0) {
-    const prev = tierThresholds[i];
-    tierThresholds[i] = n;
-    if (isTierConflicting(i)) tierThresholds[i] = prev; // revert if conflict
+function onTierBlur(thIdx) {
+  const n = pendingTierEdits[thIdx];
+  if (n !== undefined && n > 0 && !isTierConflicting(thIdx)) {
+    tierThresholds[thIdx] = n;
   }
+  delete pendingTierEdits[thIdx];
   editingTierIdx = null;
   render();
   updateActionBar();
 }
 
-function cancelTierEdit(i) {
+function cancelTierEdit(thIdx) {
+  delete pendingTierEdits[thIdx];
   editingTierIdx = null;
+}
+
+function updateGtHeader() {
+  const visible = visibleTierIndices();
+  const gtVal = visible.length > 0 ? Math.max(...visible.map(i => effectiveThreshold(i))) : 0;
+  const el = document.getElementById('gt-val');
+  if (el && el.childNodes[0]) el.childNodes[0].textContent = fmtDollar(gtVal) + ' ';
+}
+
+/* ── Tier delete ── */
+function deleteTier(thIdx, e) {
+  e.stopPropagation();
+  const visible = visibleTierIndices();
+  if (visible.length <= 1) return;
+  const vi = visible.indexOf(thIdx);
+  const rangeLabel = vi === 0
+    ? 'Less than ' + fmtDollar(effectiveThreshold(thIdx))
+    : fmtDollar(effectiveThreshold(visible[vi - 1])) + ' – ' + fmtDollar(effectiveThreshold(thIdx));
+  deletingTierIdx = thIdx;
+  document.getElementById('del-tier-range-label').textContent = rangeLabel;
+  document.getElementById('delete-tier-modal').style.display = 'flex';
+}
+function confirmDeleteTier() {
+  if (deletingTierIdx === null) return;
+  const idx = deletingTierIdx;
+  pendingTierDeletions.add(idx);
+  delete pendingTierEdits[idx];
+  deletingTierIdx = null;
+  document.getElementById('delete-tier-modal').style.display = 'none';
+  editingTierIdx = null;
+  render();
+  updateActionBar();
+}
+function closeDeleteTierModal() {
+  deletingTierIdx = null;
+  document.getElementById('delete-tier-modal').style.display = 'none';
+}
+
+/* ── Tier add ── */
+function addTierAt(beforeIdx, e) {
+  e.stopPropagation();
+  e.preventDefault();
+  if (visibleTierIndices().length >= MAX_TIERS - 1) return;
+  tierThresholds.splice(beforeIdx, 0, 0);
+  const shiftedEdits = {};
+  for (const k in pendingTierEdits) {
+    const idx = parseInt(k);
+    shiftedEdits[idx < beforeIdx ? idx : idx + 1] = pendingTierEdits[k];
+  }
+  pendingTierEdits = shiftedEdits;
+  const shiftedDels = new Set();
+  for (const idx of pendingTierDeletions) {
+    shiftedDels.add(idx < beforeIdx ? idx : idx + 1);
+  }
+  pendingTierDeletions = shiftedDels;
+  pendingTierEdits[beforeIdx] = 0;
+  editingTierIdx = beforeIdx;
+  render();
+  setTimeout(() => { const inp = document.getElementById('tier-inp-' + beforeIdx); if (inp) { inp.focus(); inp.select(); } }, 0);
 }
 
 /* ── Partner fee editing ── */
@@ -1309,12 +1474,9 @@ function onFeeInput(val) {
 
 function toggleAbsorbAll() {
   absorbAll = !absorbAll;
-  if (absorbAll) {
-    draftFee = -6; // negate Uphold base spread → total = 0
-    // Update input value without re-render
-    const inp = document.querySelector('.pf-fee-input');
-    if (inp) inp.value = draftFee;
-  }
+  draftFee = absorbAll ? -6 : Math.abs(partnerFee);
+  const inp = document.querySelector('.pf-fee-input');
+  if (inp) inp.value = draftFee;
   syncToggleUI();
   updateActionBar();
   patchTableCells();
@@ -1336,11 +1498,24 @@ function updateActionBar() {
   if (countEl) {
     let n = 0;
     if (draftFee !== partnerFee) n++;
-    tierThresholds.forEach((v, i) => { if (v !== savedTierThresholds[i]) n++; });
+    n += pendingTierDeletions.size;
+    if (tierThresholds.length !== savedTierThresholds.length) n += Math.abs(tierThresholds.length - savedTierThresholds.length);
+    else {
+      tierThresholds.forEach((v, i) => { if (v !== savedTierThresholds[i]) n++; });
+      for (const k in pendingTierEdits) { if (pendingTierEdits[k] !== savedTierThresholds[parseInt(k)]) n++; }
+    }
     for (const kind of ['deposits', 'withdrawals']) {
       FEES_ROWS[kind].forEach(r => { if (draftMethodFees[kind][r.key] !== savedMethodFees[kind][r.key]) n++; });
     }
     countEl.textContent = n === 1 ? '1 unsaved change' : `${n} unsaved changes`;
+  }
+  // Block save if there are tier validation errors
+  const saveBtn = document.querySelector('.ab-save');
+  if (saveBtn) {
+    const errors = hasTierErrors();
+    saveBtn.disabled = errors;
+    saveBtn.style.opacity = errors ? '0.45' : '';
+    saveBtn.style.cursor = errors ? 'not-allowed' : '';
   }
 }
 
@@ -1348,6 +1523,8 @@ function discardChanges() {
   draftFee = partnerFee;
   absorbAll = false;
   tierThresholds = [...savedTierThresholds];
+  pendingTierEdits = {};
+  pendingTierDeletions = new Set();
   editingTierIdx = null;
   for (const kind of ['deposits', 'withdrawals']) {
     FEES_ROWS[kind].forEach(r => { draftMethodFees[kind][r.key] = savedMethodFees[kind][r.key]; });
@@ -1371,6 +1548,16 @@ function handleModalOverlayClick(e) {
 
 function confirmSave() {
   partnerFee = draftFee;
+  // Commit any remaining pending edits
+  for (const k in pendingTierEdits) {
+    const n = pendingTierEdits[k];
+    if (n > 0) tierThresholds[parseInt(k)] = n;
+  }
+  pendingTierEdits = {};
+  // Commit pending deletions (remove in descending order to preserve indices)
+  const toDelete = Array.from(pendingTierDeletions).sort((a, b) => b - a);
+  for (const idx of toDelete) tierThresholds.splice(idx, 1);
+  pendingTierDeletions = new Set();
   savedTierThresholds = [...tierThresholds];
   editingTierIdx = null;
   for (const kind of ['deposits', 'withdrawals']) {

@@ -1779,9 +1779,9 @@ function renderPartners() {
   ];
 
   const kybBadge = k => ({
-    pending:   `<span class="badge badge-kyb-pending">KYB pending</span>`,
-    completed: `<span class="badge badge-kyb-completed">KYB completed</span>`,
-    declined:  `<span class="badge badge-kyb-declined">KYB declined</span>`,
+    pending:   `<span class="badge badge-kyb-pending">Awaiting IDV</span>`,
+    completed: `<span class="badge badge-kyb-completed">Approved</span>`,
+    declined:  `<span class="badge badge-kyb-declined">Declined</span>`,
   }[k]);
 
   const contractBadge = c => c === 'signed'
@@ -1866,7 +1866,7 @@ function renderPartnerHeader() {
       <div>
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
           <div class="partner-title" style="margin-bottom:0;max-width:none;">Partner name organization example in a long line</div>
-          <span class="badge badge-kyb-pending" style="flex-shrink:0;">KYB Pending</span>
+          <span class="badge badge-kyb-pending" style="flex-shrink:0;">Awaiting IDV</span>
         </div>
       </div>
       <div class="product-area">

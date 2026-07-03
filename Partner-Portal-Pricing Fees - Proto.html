@@ -236,7 +236,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 .col-hdr-tier.editing{background:#fff;z-index:3}
 .tier-hdr-edit{display:flex;flex-direction:column;gap:5px}
 .tier-hdr-edit-label{font-size:10.5px;font-weight:600;color:#697BAA}
-.tier-hdr-input-row{display:flex;align-items:center;border:1.5px solid #22c55e;border-radius:7px;padding:3px 9px;background:#fff;box-shadow:0 0 0 3px rgba(34,197,94,.1);gap:3px;height:32px}
+.tier-hdr-input-row{display:flex;align-items:center;border:1.5px solid #22c55e;border-radius:7px;padding:3px 9px;background:#fff;box-shadow:0 0 0 3px rgba(34,197,94,.1);gap:3px;height:32px;flex:1;min-width:0}
+.tier-range-sep{font-size:13px;color:#9ca3af;flex-shrink:0;font-weight:500}
 .tier-hdr-inp-dollar{font-size:12.5px;color:#374151;font-weight:500;flex-shrink:0}
 .tier-hdr-inp{border:none;outline:none;font-size:12.5px;font-weight:600;color:#111827;font-family:inherit;flex:1;min-width:0;width:70px;background:transparent;-moz-appearance:textfield}
 .tier-hdr-inp::-webkit-outer-spin-button,.tier-hdr-inp::-webkit-inner-spin-button{-webkit-appearance:none}
@@ -1279,17 +1280,29 @@ function renderTierHeader(thIdx, vi, visible) {
 
   if (editingTierIdx === thIdx) {
     const val = effectiveThreshold(thIdx);
+    const prevThIdx = vi > 0 ? visible[vi - 1] : null;
+    const prevVal = prevThIdx !== null ? effectiveThreshold(prevThIdx) : null;
     const errMsg = val <= 0 ? 'Enter an amount higher than zero.' : 'Adjust conflicting amount.';
     return `<th class="col-hdr-tier editing${hasError?' has-error':''}" id="col-hdr-${thIdx}">
       <div class="tier-hdr-edit">
-        <span class="tier-hdr-edit-label">${vi === 0 ? 'Less than' : 'Tier'} upper limit</span>
-        <div style="display:flex;align-items:center;gap:8px">
-          <div class="tier-hdr-input-row${hasError?' error':''}" id="tier-inp-row-${thIdx}">
+        <span class="tier-hdr-edit-label">${vi === 0 ? 'Less than' : 'Tier'}</span>
+        <div style="display:flex;align-items:center;gap:6px">
+          ${vi > 0 ? `
+          <div class="tier-hdr-input-row" data-role="tier-min-row">
+            <span class="tier-hdr-inp-dollar">$</span>
+            <input class="tier-hdr-inp" id="tier-inp-min-${thIdx}" type="number" value="${prevVal > 0 ? prevVal : ''}"
+              oninput="onTierMinInput(${thIdx},${prevThIdx},this.value)"
+              onblur="onTierBlur(${thIdx},event)"
+              onkeydown="if(event.key==='Enter')this.blur();if(event.key==='Escape'){cancelTierEdit(${thIdx},${prevThIdx});this.blur()}">
+          </div>
+          <span class="tier-range-sep">-</span>
+          ` : ''}
+          <div class="tier-hdr-input-row${hasError?' error':''}" data-role="tier-max-row" id="tier-inp-row-${thIdx}">
             <span class="tier-hdr-inp-dollar">$</span>
             <input class="tier-hdr-inp" id="tier-inp-${thIdx}" type="number" value="${val > 0 ? val : ''}"
               oninput="onTierInput(${thIdx},this.value)"
-              onblur="onTierBlur(${thIdx})"
-              onkeydown="if(event.key==='Enter')this.blur();if(event.key==='Escape'){cancelTierEdit(${thIdx});this.blur()}">
+              onblur="onTierBlur(${thIdx},event)"
+              onkeydown="if(event.key==='Enter')this.blur();if(event.key==='Escape'){cancelTierEdit(${thIdx},${prevThIdx});this.blur()}">
           </div>
           ${canAdd ? addBtn : ''}
         </div>
@@ -1339,10 +1352,13 @@ function onTierInput(thIdx, rawVal) {
   const n = parseInt(rawVal, 10);
   pendingTierEdits[thIdx] = (!isNaN(n) && n > 0) ? n : 0;
   const hdr = document.getElementById('col-hdr-' + thIdx);
-  const inputRow = document.getElementById('tier-inp-row-' + thIdx);
   const hasError = isTierConflicting(thIdx);
   if (hdr) hdr.classList.toggle('has-error', hasError);
-  if (inputRow) inputRow.classList.toggle('error', hasError);
+  // Error only on the max (right) input row
+  const maxRow = hdr ? hdr.querySelector('[data-role="tier-max-row"]') : null;
+  if (maxRow) maxRow.classList.toggle('error', hasError);
+  const minRow = hdr ? hdr.querySelector('[data-role="tier-min-row"]') : null;
+  if (minRow) minRow.classList.remove('error');
   const errEl = document.getElementById('tier-err-' + thIdx);
   if (errEl) {
     if (hasError) {
@@ -1358,19 +1374,59 @@ function onTierInput(thIdx, rawVal) {
   updateActionBar();
 }
 
-function onTierBlur(thIdx) {
-  const n = pendingTierEdits[thIdx];
-  if (n !== undefined && n > 0 && !isTierConflicting(thIdx)) {
-    tierThresholds[thIdx] = n;
+function onTierMinInput(thIdx, prevThIdx, rawVal) {
+  const n = parseInt(rawVal, 10);
+  pendingTierEdits[prevThIdx] = (!isNaN(n) && n > 0) ? n : 0;
+  const hdr = document.getElementById('col-hdr-' + thIdx);
+  const hasError = isTierConflicting(thIdx);
+  if (hdr) hdr.classList.toggle('has-error', hasError);
+  const maxRow = hdr ? hdr.querySelector('[data-role="tier-max-row"]') : null;
+  if (maxRow) maxRow.classList.toggle('error', hasError);
+  const minRow = hdr ? hdr.querySelector('[data-role="tier-min-row"]') : null;
+  if (minRow) minRow.classList.remove('error');
+  const errEl = document.getElementById('tier-err-' + thIdx);
+  if (errEl) {
+    if (hasError) {
+      const errIcon = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="6" fill="#ef4444"/><path d="M6 3v4M6 8.5v.5" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></svg>`;
+      errEl.innerHTML = `${errIcon}<span>Adjust conflicting amount.</span>`;
+      errEl.style.display = 'flex';
+    } else {
+      errEl.style.display = 'none';
+    }
+  }
+  updateGtHeader();
+  updateActionBar();
+}
+
+function onTierBlur(thIdx, e) {
+  const rel = e && e.relatedTarget;
+  const col = document.getElementById('col-hdr-' + thIdx);
+  if (rel && col && col.contains(rel)) return; // focus stayed within this tier column
+  // Commit valid max pending edit
+  const maxN = pendingTierEdits[thIdx];
+  if (maxN !== undefined && maxN > 0 && !isTierConflicting(thIdx)) {
+    tierThresholds[thIdx] = maxN;
   }
   delete pendingTierEdits[thIdx];
+  // Commit valid min pending edit (prev tier)
+  const visible = visibleTierIndices();
+  const vi = visible.indexOf(thIdx);
+  if (vi > 0) {
+    const prevThIdx = visible[vi - 1];
+    const minN = pendingTierEdits[prevThIdx];
+    if (minN !== undefined && minN > 0 && !isTierConflicting(prevThIdx)) {
+      tierThresholds[prevThIdx] = minN;
+    }
+    delete pendingTierEdits[prevThIdx];
+  }
   editingTierIdx = null;
   render();
   updateActionBar();
 }
 
-function cancelTierEdit(thIdx) {
+function cancelTierEdit(thIdx, prevThIdx) {
   delete pendingTierEdits[thIdx];
+  if (prevThIdx !== undefined) delete pendingTierEdits[prevThIdx];
   editingTierIdx = null;
 }
 

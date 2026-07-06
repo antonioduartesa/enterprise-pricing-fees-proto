@@ -788,8 +788,7 @@ function goPlanDetails() {
 function setPlanTab(tab) {
   planTab = tab;
   render();
-  if (fbPlanVisited && !fbInteracted) fbMarkInteraction();
-  else renderFeedback();
+  renderFeedback();
 }
 function fbMarkInteraction() {
   if (fbInteracted) return;
@@ -1444,6 +1443,7 @@ function renderGtHeader(visible) {
 
 function editTier(thIdx, e) {
   e.stopPropagation();
+  if (fbPlanVisited) fbMarkInteraction();
   editingTierIdx = thIdx;
   render();
   setTimeout(() => { const inp = document.getElementById('tier-inp-' + thIdx); if (inp) { inp.focus(); inp.select(); } }, 0);
@@ -1542,6 +1542,7 @@ function updateGtHeader() {
 /* ── Tier delete ── */
 function deleteTier(thIdx, e) {
   e.stopPropagation();
+  if (fbPlanVisited) fbMarkInteraction();
   const visible = visibleTierIndices();
   if (visible.length <= 1) return;
   const vi = visible.indexOf(thIdx);
@@ -1572,6 +1573,7 @@ function closeDeleteTierModal() {
 function addTierAt(beforeIdx, e) {
   e.stopPropagation();
   e.preventDefault();
+  if (fbPlanVisited) fbMarkInteraction();
   if (visibleTierIndices().length >= MAX_TIERS - 1) return;
   tierThresholds.splice(beforeIdx, 0, 0);
   const shiftedEdits = {};
@@ -1622,6 +1624,7 @@ function patchTableCells() {
 }
 
 function onFeeInput(val) {
+  if (fbPlanVisited) fbMarkInteraction();
   const n = parseInt(val, 10);
   draftFee = isNaN(n) ? 0 : Math.min(Math.max(n, -999), 999);
   // If user manually edits while absorb is on, turn it off
@@ -1631,6 +1634,7 @@ function onFeeInput(val) {
 }
 
 function toggleAbsorbAll() {
+  if (fbPlanVisited) fbMarkInteraction();
   absorbAll = !absorbAll;
   draftFee = absorbAll ? -6 : Math.abs(partnerFee);
   const inp = document.querySelector('.pf-fee-input');
@@ -1957,7 +1961,7 @@ function renderFeedback() {
   }
 
   container.innerHTML = `
-    <button class="fb-tab-btn${fbInteracted?' fb-visible':''}" onclick="fbToggle()">Feedback</button>
+    <button class="fb-tab-btn fb-visible" onclick="fbToggle()">Feedback</button>
     <div class="fb-popup${fbOpen?' fb-open':''}">
       <button class="fb-close-btn" onclick="fbClose()" title="Close">${closeSVG}</button>
       ${stepContent()}

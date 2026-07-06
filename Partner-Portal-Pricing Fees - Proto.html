@@ -362,6 +362,44 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 
 /* ── Info icon SVG ── */
 .info-svg{display:block}
+
+/* ── Feedback widget ── */
+.fb-tab-btn{position:fixed;right:0;top:50%;transform:translateY(-50%) rotate(180deg);writing-mode:vertical-rl;background:#1d2738;color:#fff;font-size:12px;font-weight:600;letter-spacing:.06em;border:none;border-radius:0 6px 6px 0;padding:14px 9px;cursor:pointer;z-index:8000;font-family:inherit;line-height:1;opacity:0;pointer-events:none;transition:opacity .2s}
+.fb-tab-btn.fb-visible{opacity:1;pointer-events:auto}
+.fb-popup{position:fixed;right:0;top:50%;transform:translateY(-50%) translateX(calc(100% + 1px));background:#fff;border:1.5px solid #e1e3ef;border-radius:14px 0 0 14px;box-shadow:0 8px 40px rgba(0,0,0,.14);z-index:8001;width:316px;padding:24px 20px 20px;opacity:0;transition:transform .28s cubic-bezier(.22,.61,.36,1),opacity .2s ease;pointer-events:none}
+.fb-popup.fb-open{transform:translateY(-50%) translateX(0);opacity:1;pointer-events:auto}
+.fb-close-btn{position:absolute;top:12px;right:14px;background:none;border:none;cursor:pointer;color:#9ca3af;line-height:0;padding:4px;border-radius:6px;transition:color .12s,background .12s}
+.fb-close-btn:hover{color:#374151;background:#f3f4f6}
+.fb-progress{display:flex;gap:4px;margin-bottom:18px}
+.fb-dot{height:3px;border-radius:2px;flex:1;background:#e5e7eb;transition:background .25s}
+.fb-dot.fb-done{background:#16a34a}
+.fb-dot.fb-active{background:#86efac}
+.fb-step-lbl{font-size:11px;font-weight:600;color:#697BAA;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+.fb-question{font-size:14.5px;font-weight:600;color:#1d2738;line-height:1.55;margin-bottom:20px}
+.fb-yn-row{display:flex;gap:10px;margin-bottom:4px}
+.fb-yn-btn{flex:1;padding:11px 0;border:1.5px solid #e1e3ef;border-radius:10px;font-size:14px;font-weight:500;color:#374151;background:#fff;cursor:pointer;transition:border-color .15s,background .15s,color .15s;font-family:inherit}
+.fb-yn-btn.fb-sel{border-color:#16a34a;background:#f0fdf4;color:#16a34a;font-weight:600}
+.fb-yn-btn:hover:not(.fb-sel){border-color:#9ca3af;background:#f9fafb}
+.fb-textarea{width:100%;min-height:88px;border:1.5px solid #e1e3ef;border-radius:10px;padding:10px 12px;font-size:13.5px;font-family:inherit;color:#1d2738;resize:vertical;outline:none;transition:border-color .15s;line-height:1.55;margin-bottom:4px}
+.fb-textarea:focus{border-color:#697baa}
+.fb-textarea::placeholder{color:#b0bac8}
+.fb-emojis{display:flex;justify-content:space-between;gap:2px;margin-bottom:4px}
+.fb-emo-btn{display:flex;flex-direction:column;align-items:center;gap:5px;background:none;border:2px solid transparent;cursor:pointer;padding:8px 4px 6px;border-radius:10px;transition:border-color .15s,background .15s;font-family:inherit;min-width:50px}
+.fb-emo-btn .fb-emo-face{font-size:26px;line-height:1;filter:grayscale(1) opacity(.55);transition:filter .15s,transform .15s}
+.fb-emo-btn:hover .fb-emo-face,.fb-emo-btn.fb-sel .fb-emo-face{filter:none;transform:scale(1.15)}
+.fb-emo-btn.fb-sel{border-color:#16a34a;background:#f0fdf4}
+.fb-emo-lbl{font-size:10px;color:#697BAA;white-space:nowrap;line-height:1}
+.fb-scale-edge{display:flex;justify-content:space-between;font-size:10px;color:#9ca3af;margin-top:2px;margin-bottom:16px;padding:0 2px}
+.fb-actions{display:flex;align-items:center;justify-content:space-between;margin-top:18px;gap:8px}
+.fb-next-btn{background:#16a34a;color:#fff;border:none;border-radius:9999px;padding:9px 24px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .15s;flex-shrink:0}
+.fb-next-btn:hover:not(:disabled){background:#15803d}
+.fb-next-btn:disabled{opacity:.4;cursor:not-allowed}
+.fb-skip-btn{font-size:12.5px;color:#697BAA;cursor:pointer;border:none;background:none;font-family:inherit;padding:0}
+.fb-skip-btn:hover{color:#374151}
+.fb-thankyou{text-align:center;padding:12px 0 8px}
+.fb-ty-icon{font-size:44px;margin-bottom:14px;line-height:1}
+.fb-ty-title{font-size:16px;font-weight:700;color:#1d2738;margin-bottom:6px}
+.fb-ty-sub{font-size:13px;color:#697BAA;line-height:1.6}
 </style>
 </head>
 <body>
@@ -461,6 +499,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 
 <!-- Global tooltip -->
 <div id="g-tooltip"></div>
+<div id="fb-container"></div>
 
 <!-- Action bar -->
 <div id="action-bar">
@@ -540,6 +579,17 @@ let pendingTierDeletions = new Set();
 let deletingTierIdx = null;
 const MAX_TIERS = 5;
 let editingTierIdx = null;
+
+/* ── Feedback widget state ── */
+// Endpoint: deploy a Google Apps Script as web app that POSTs rows to the sheet
+// Replace with your published Apps Script URL:
+const FB_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwi0OvJJYQ8YM6kFgFqOqhGPR1Bg6qk2OQFJOHl1gN7y8Z9dGQlHlr4PbGD27Z1SB4v/exec';
+let fbPlanVisited  = false;
+let fbInteracted   = false;
+let fbOpen         = false;
+let fbStep         = 0;   // 0=q1, 1=q2, 2=q3, 3=done
+let fbAnswers      = { q1: null, q2: '', q3: null };
+let fbTriggerTimer = null;
 
 /* ── Deposits / Withdrawals fees state ── */
 // Each entry: { upholdFee: number (%), partnerFee: number (%) }
@@ -731,11 +781,62 @@ function goPricingDetails() {
 function goPlanDetails() {
   screen = 'plan-details';
   planTab = 'trade';
+  fbPlanVisited = true;
   render();
+  renderFeedback();
 }
 function setPlanTab(tab) {
   planTab = tab;
   render();
+  if (fbPlanVisited && !fbInteracted) fbMarkInteraction();
+  else renderFeedback();
+}
+function fbMarkInteraction() {
+  if (fbInteracted) return;
+  fbInteracted = true;
+  renderFeedback();
+  if (fbTriggerTimer) clearTimeout(fbTriggerTimer);
+  fbTriggerTimer = setTimeout(() => { fbOpen = true; renderFeedback(); }, 1800);
+}
+function fbClose() {
+  fbOpen = false;
+  renderFeedback();
+}
+function fbToggle() {
+  fbOpen = !fbOpen;
+  renderFeedback();
+}
+function fbSelectQ1(val) { fbAnswers.q1 = val; renderFeedback(); }
+function fbSelectQ3(val) { fbAnswers.q3 = val; renderFeedback(); }
+function fbTextQ2(val)   { fbAnswers.q2 = val; }
+function fbNext() {
+  if (fbStep === 2) { fbSubmit(); return; }
+  fbStep++;
+  renderFeedback();
+}
+function fbSkip() {
+  if (fbStep === 2) { fbSubmit(); return; }
+  fbStep++;
+  renderFeedback();
+}
+function fbSubmit() {
+  fbStep = 3;
+  renderFeedback();
+  const payload = {
+    timestamp:    new Date().toISOString(),
+    question1:    fbAnswers.q1 === true ? 'Yes' : fbAnswers.q1 === false ? 'No' : '(skipped)',
+    question2:    fbAnswers.q2 || '(skipped)',
+    question3:    fbAnswers.q3 != null ? fbAnswers.q3 : '(skipped)',
+  };
+  if (FB_SHEET_URL) {
+    fetch(FB_SHEET_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    }).catch(() => {});
+  }
+  try { localStorage.setItem('fb_last_response', JSON.stringify(payload)); } catch(e) {}
 }
 function setActiveNav(id) {
   document.querySelectorAll('.sb-nav').forEach(el => el.classList.remove('active'));
@@ -1349,6 +1450,7 @@ function editTier(thIdx, e) {
 }
 
 function onTierInput(thIdx, rawVal) {
+  if (fbPlanVisited) fbMarkInteraction();
   const n = parseInt(rawVal, 10);
   pendingTierEdits[thIdx] = (!isNaN(n) && n > 0) ? n : 0;
   const hdr = document.getElementById('col-hdr-' + thIdx);
@@ -1639,6 +1741,7 @@ function methodFeesDirty(kind) {
 }
 
 function openMethodFeeEdit(kind, key) {
+  if (fbPlanVisited) fbMarkInteraction();
   editingMethodRow[kind] = key;
   render();
   setTimeout(() => {
@@ -1782,6 +1885,88 @@ function sendCryptoIllustrationSVG() {
     <path d="M48 88l3 3 5-5" stroke="#16a34a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M90 50l16-10M70 78l-16 10" stroke="#c4b5fd" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="3 2"/>
   </svg>`;
+}
+
+/* ── Feedback widget renderer ── */
+function renderFeedback() {
+  const container = document.getElementById('fb-container');
+  if (!container) return;
+
+  if (!fbPlanVisited) { container.innerHTML = ''; return; }
+
+  const closeSVG = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`;
+
+  const QUESTIONS = [
+    'Is the information organised in a way that makes sense to you?',
+    'Is there anything missing that you would expect to see here?',
+    'On a scale of 1 to 5 (very difficult to very easy), how easy or difficult was this task?',
+  ];
+
+  function progressBar() {
+    return `<div class="fb-progress">${[0,1,2].map(i => {
+      const cls = i < fbStep ? 'fb-dot fb-done' : i === fbStep ? 'fb-dot fb-active' : 'fb-dot';
+      return `<div class="${cls}"></div>`;
+    }).join('')}</div>`;
+  }
+
+  function stepContent() {
+    if (fbStep === 3) {
+      return `<div class="fb-thankyou">
+        <div class="fb-ty-icon">🙏</div>
+        <div class="fb-ty-title">Thank you for your feedback!</div>
+        <div class="fb-ty-sub">Your responses help us improve the experience for everyone.</div>
+      </div>`;
+    }
+    const q = QUESTIONS[fbStep];
+    let input = '';
+    let canNext = false;
+    if (fbStep === 0) {
+      canNext = fbAnswers.q1 !== null;
+      input = `<div class="fb-yn-row">
+        <button class="fb-yn-btn${fbAnswers.q1===true?' fb-sel':''}" onclick="fbSelectQ1(true)">👍 Yes</button>
+        <button class="fb-yn-btn${fbAnswers.q1===false?' fb-sel':''}" onclick="fbSelectQ1(false)">👎 No</button>
+      </div>`;
+    } else if (fbStep === 1) {
+      canNext = true;
+      input = `<textarea class="fb-textarea" placeholder="Share any thoughts…" oninput="fbTextQ2(this.value)">${fbAnswers.q2}</textarea>`;
+    } else if (fbStep === 2) {
+      canNext = fbAnswers.q3 !== null;
+      const emojis = [
+        { v:1, face:'😫', lbl:'Very difficult' },
+        { v:2, face:'😕', lbl:'Difficult'      },
+        { v:3, face:'😐', lbl:'Neutral'        },
+        { v:4, face:'🙂', lbl:'Easy'           },
+        { v:5, face:'😊', lbl:'Very easy'      },
+      ];
+      input = `<div class="fb-emojis">${emojis.map(e =>
+        `<button class="fb-emo-btn${fbAnswers.q3===e.v?' fb-sel':''}" onclick="fbSelectQ3(${e.v})">
+          <span class="fb-emo-face">${e.face}</span>
+          <span class="fb-emo-lbl">${e.lbl}</span>
+        </button>`).join('')}</div>`;
+    }
+    const isLast = fbStep === 2;
+    return `
+      ${progressBar()}
+      <div class="fb-step-lbl">Question ${fbStep+1} of 3</div>
+      <div class="fb-question">${q}</div>
+      ${input}
+      <div class="fb-actions">
+        <button class="fb-skip-btn" onclick="fbSkip()">${isLast ? '' : 'Skip'}</button>
+        <button class="fb-next-btn" onclick="fbNext()" ${canNext?'':'disabled'}>${isLast ? 'Submit' : 'Next'}</button>
+      </div>`;
+  }
+
+  container.innerHTML = `
+    <button class="fb-tab-btn${fbInteracted?' fb-visible':''}" onclick="fbToggle()">Feedback</button>
+    <div class="fb-popup${fbOpen?' fb-open':''}">
+      <button class="fb-close-btn" onclick="fbClose()" title="Close">${closeSVG}</button>
+      ${stepContent()}
+    </div>`;
+
+  if (fbStep === 1 && fbOpen) {
+    const ta = container.querySelector('.fb-textarea');
+    if (ta && !ta.value) ta.focus();
+  }
 }
 
 /* ── Init ── */

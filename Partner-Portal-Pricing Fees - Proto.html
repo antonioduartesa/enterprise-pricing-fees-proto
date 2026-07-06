@@ -581,9 +581,11 @@ const MAX_TIERS = 5;
 let editingTierIdx = null;
 
 /* ── Feedback widget state ── */
-// Endpoint: deploy a Google Apps Script as web app that POSTs rows to the sheet
-// Replace with your published Apps Script URL:
-const FB_SHEET_URL = 'https://script.google.com/a/macros/uphold.com/s/AKfycbwlDA0QS7zX1u4Nb4mSvsyo7483rG3HESwXLC0xL6vqUmCrRS1nK4IykgXuKWjWm_yQ/exec';
+// Google Form submit endpoint (no auth required — works from any origin)
+const FB_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeX2aX69NmL3YZWLzyubMJULl6VkEm3GYosAsE4LMX-zgMPow/formResponse';
+const FB_ENTRY_Q1 = 'entry.1191861605'; // Yes / No
+const FB_ENTRY_Q2 = 'entry.1437592450'; // free text
+const FB_ENTRY_Q3 = 'entry.1620581033'; // 1–5 scale
 let fbPlanVisited  = false;
 let fbInteracted   = false;
 let fbOpen         = false;
@@ -821,21 +823,16 @@ function fbSkip() {
 function fbSubmit() {
   fbStep = 3;
   renderFeedback();
-  const payload = {
-    timestamp:    new Date().toISOString(),
-    question1:    fbAnswers.q1 === true ? 'Yes' : fbAnswers.q1 === false ? 'No' : '(skipped)',
-    question2:    fbAnswers.q2 || '(skipped)',
-    question3:    fbAnswers.q3 != null ? fbAnswers.q3 : '(skipped)',
-  };
-  if (FB_SHEET_URL) {
-    fetch(FB_SHEET_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify(payload),
-    }).catch(() => {});
-  }
-  try { localStorage.setItem('fb_last_response', JSON.stringify(payload)); } catch(e) {}
+  const formData = new URLSearchParams();
+  formData.append(FB_ENTRY_Q1, fbAnswers.q1 === true ? 'Yes' : fbAnswers.q1 === false ? 'No' : '');
+  formData.append(FB_ENTRY_Q2, fbAnswers.q2 || '');
+  formData.append(FB_ENTRY_Q3, fbAnswers.q3 != null ? String(fbAnswers.q3) : '');
+  fetch(FB_FORM_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: formData.toString(),
+  }).catch(() => {});
 }
 function setActiveNav(id) {
   document.querySelectorAll('.sb-nav').forEach(el => el.classList.remove('active'));

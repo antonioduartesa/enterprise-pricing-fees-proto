@@ -503,7 +503,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 
 <!-- Action bar -->
 <div id="action-bar">
-  <span class="ab-info"><strong id="ab-change-count">1 unsaved change</strong></span>
+  <span class="ab-info"><strong id="ab-change-count">Unsaved changes</strong></span>
   <div class="ab-btns">
     <button class="ab-discard" onclick="discardChanges()">Discard</button>
     <button class="ab-save" onclick="openSaveModal()">Save</button>
@@ -518,7 +518,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
       <button class="save-modal-close" onclick="closeSaveModal()">&#215;</button>
     </div>
     <div class="save-modal-body">
-      <p>These changes will take effect immediately for this partner's configuration.</p>
+      <p>These changes will take effect immediately on your organization.</p>
       <p>This action can't be undone.</p>
     </div>
     <div class="save-modal-ftr">
@@ -786,18 +786,20 @@ function goPlanDetails() {
   fbPlanVisited = true;
   render();
   renderFeedback();
+  fbMarkInteraction();
 }
 function setPlanTab(tab) {
   planTab = tab;
   render();
   renderFeedback();
+  if (tab === 'trade') fbMarkInteraction();
 }
 function fbMarkInteraction() {
   if (fbInteracted) return;
   fbInteracted = true;
   renderFeedback();
   if (fbTriggerTimer) clearTimeout(fbTriggerTimer);
-  fbTriggerTimer = setTimeout(() => { fbOpen = true; renderFeedback(); }, 1800);
+  fbTriggerTimer = setTimeout(() => { fbOpen = true; renderFeedback(); }, 3000);
 }
 function fbClose() {
   fbOpen = false;
@@ -823,16 +825,39 @@ function fbSkip() {
 function fbSubmit() {
   fbStep = 3;
   renderFeedback();
-  const formData = new URLSearchParams();
-  formData.append(FB_ENTRY_Q1, fbAnswers.q1 === true ? 'Yes' : fbAnswers.q1 === false ? 'No' : '');
-  formData.append(FB_ENTRY_Q2, fbAnswers.q2 || '');
-  formData.append(FB_ENTRY_Q3, fbAnswers.q3 != null ? String(fbAnswers.q3) : '');
-  fetch(FB_FORM_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: formData.toString(),
-  }).catch(() => {});
+  // Hidden iframe form submit — the only technique Google Forms reliably accepts cross-origin
+  let iframe = document.getElementById('fb-submit-frame');
+  if (!iframe) {
+    iframe = document.createElement('iframe');
+    iframe.id   = 'fb-submit-frame';
+    iframe.name = 'fb-submit-frame';
+    iframe.style.cssText = 'display:none;position:fixed;top:-9999px';
+    document.body.appendChild(iframe);
+  }
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = FB_FORM_URL;
+  form.target = 'fb-submit-frame';
+  form.style.display = 'none';
+  const fbzx = '3305980874010685314';
+  const fields = {
+    [FB_ENTRY_Q1]: fbAnswers.q1 === true ? 'Yes' : fbAnswers.q1 === false ? 'No' : '',
+    [FB_ENTRY_Q2]: fbAnswers.q2 || '',
+    [FB_ENTRY_Q3]: fbAnswers.q3 != null ? String(fbAnswers.q3) : '',
+    'fvv': '1',
+    'partialResponse': '[null,null,"' + fbzx + '"]',
+    'pageHistory': '0',
+    'fbzx': fbzx,
+    'submissionTimestamp': '-1',
+  };
+  Object.entries(fields).forEach(([name, value]) => {
+    const inp = document.createElement('input');
+    inp.type = 'hidden'; inp.name = name; inp.value = value;
+    form.appendChild(inp);
+  });
+  document.body.appendChild(form);
+  form.submit();
+  setTimeout(() => document.body.removeChild(form), 2000);
 }
 function setActiveNav(id) {
   document.querySelectorAll('.sb-nav').forEach(el => el.classList.remove('active'));
@@ -855,6 +880,7 @@ function catCount(cat) {
 }
 
 /* ── SVGs ── */
+const pfeeTooltip = 'The starting point for a transaction below your lowest tier.';
 const infoSVG = `<svg class="info-svg" width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="6.5" stroke="#9ca3af" stroke-width="1.2"/><path d="M7.5 7v4M7.5 5v.5" stroke="#9ca3af" stroke-width="1.3" stroke-linecap="round"/></svg>`;
 const chevronSVG = `<svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>`;
 const searchSVG = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="#9ca3af" stroke-width="1.4"/><path d="M10 10l3 3" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>`;
@@ -1260,7 +1286,7 @@ function renderPlanDetails() {
       </td>`; }).join('')}
     </tr>`;
 
-  const pfeeTooltip = 'The starting point for a transaction below your lowest tier.';
+
 
   return `
     <div class="plan-details-wrap">
@@ -1297,7 +1323,6 @@ function renderPlanDetails() {
           <div class="pf-group">
             <div class="pf-label-row">
               <span class="pf-label">Partner fee</span>
-              <span class="tooltip-wrap" onmouseenter="showTip(event,'${pfeeTooltip}')" onmouseleave="hideTip()">${infoSVG}<span class="tooltip-text">${pfeeTooltip}</span></span>
             </div>
             <div class="pf-input-box">
               <input class="pf-fee-input" type="number" value="${draftFee}" min="0" max="999" oninput="onFeeInput(this.value)" onfocus="this.select()">
@@ -1416,7 +1441,7 @@ function renderTierHeader(thIdx, vi, visible) {
   }
   return `<th class="col-hdr-tier${hasError?' has-error':''}" id="col-hdr-${thIdx}">
     <div class="tier-hdr-content">
-      <span class="tier-hdr-label">${label}</span>
+      <span class="tier-hdr-label">${label}${vi === 0 ? `<span class="tooltip-wrap" onmouseenter="showTip(event,'${pfeeTooltip}')" onmouseleave="hideTip()" style="margin-left:4px">${infoSVG}</span>` : ''}</span>
       <span class="tier-hdr-val">${valText}</span>
     </div>
     <div class="tier-hdr-actions">
@@ -1440,14 +1465,12 @@ function renderGtHeader(visible) {
 
 function editTier(thIdx, e) {
   e.stopPropagation();
-  if (fbPlanVisited) fbMarkInteraction();
   editingTierIdx = thIdx;
   render();
   setTimeout(() => { const inp = document.getElementById('tier-inp-' + thIdx); if (inp) { inp.focus(); inp.select(); } }, 0);
 }
 
 function onTierInput(thIdx, rawVal) {
-  if (fbPlanVisited) fbMarkInteraction();
   const n = parseInt(rawVal, 10);
   pendingTierEdits[thIdx] = (!isNaN(n) && n > 0) ? n : 0;
   const hdr = document.getElementById('col-hdr-' + thIdx);
@@ -1539,7 +1562,6 @@ function updateGtHeader() {
 /* ── Tier delete ── */
 function deleteTier(thIdx, e) {
   e.stopPropagation();
-  if (fbPlanVisited) fbMarkInteraction();
   const visible = visibleTierIndices();
   if (visible.length <= 1) return;
   const vi = visible.indexOf(thIdx);
@@ -1570,7 +1592,6 @@ function closeDeleteTierModal() {
 function addTierAt(beforeIdx, e) {
   e.stopPropagation();
   e.preventDefault();
-  if (fbPlanVisited) fbMarkInteraction();
   if (visibleTierIndices().length >= MAX_TIERS - 1) return;
   tierThresholds.splice(beforeIdx, 0, 0);
   const shiftedEdits = {};
@@ -1621,7 +1642,6 @@ function patchTableCells() {
 }
 
 function onFeeInput(val) {
-  if (fbPlanVisited) fbMarkInteraction();
   const n = parseInt(val, 10);
   draftFee = isNaN(n) ? 0 : Math.min(Math.max(n, -999), 999);
   // If user manually edits while absorb is on, turn it off
@@ -1631,7 +1651,6 @@ function onFeeInput(val) {
 }
 
 function toggleAbsorbAll() {
-  if (fbPlanVisited) fbMarkInteraction();
   absorbAll = !absorbAll;
   draftFee = absorbAll ? -6 : Math.abs(partnerFee);
   const inp = document.querySelector('.pf-fee-input');
@@ -1666,7 +1685,7 @@ function updateActionBar() {
     for (const kind of ['deposits', 'withdrawals']) {
       FEES_ROWS[kind].forEach(r => { if (draftMethodFees[kind][r.key] !== savedMethodFees[kind][r.key]) n++; });
     }
-    countEl.textContent = n === 1 ? '1 unsaved change' : `${n} unsaved changes`;
+    countEl.textContent = 'Unsaved changes';
   }
   // Block save if there are tier validation errors
   const saveBtn = document.querySelector('.ab-save');
@@ -1742,7 +1761,6 @@ function methodFeesDirty(kind) {
 }
 
 function openMethodFeeEdit(kind, key) {
-  if (fbPlanVisited) fbMarkInteraction();
   editingMethodRow[kind] = key;
   render();
   setTimeout(() => {

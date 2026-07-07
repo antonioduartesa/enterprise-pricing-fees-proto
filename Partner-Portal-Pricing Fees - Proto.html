@@ -1157,21 +1157,6 @@ function renderPricingDetailsTab() {
 
   return `
     <div class="pricing-details-wrap">
-      <div class="section-heading">Pricing details</div>
-      <div class="section-sub">Manage your organization's pricing configuration.</div>
-
-      <div style="margin-bottom:24px">
-        <div class="assets-section-title">Assets</div>
-        <div class="assets-section-sub">Assets available for your organization.</div>
-        <div class="assets-search">
-          ${searchSVG}
-          <input type="text" placeholder="Search for assets" value="${assetSearch}" oninput="setAssetSearch(this.value)">
-        </div>
-        <div class="cat-pills">${pills}</div>
-        <div class="assets-count">${assets.length} assets</div>
-        <div class="assets-grid-limited">${gridLimited}</div>
-      </div>
-
       <div>
         <div class="plan-section-title">Pricing plan</div>
         <div class="plan-section-sub">View spread and fees details.</div>

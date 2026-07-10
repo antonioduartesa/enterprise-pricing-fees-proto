@@ -2125,16 +2125,16 @@ function renderPricingContent() {
     function depChip() {
       const entry = Object.values(savedPlanFees?.deposits || {})[0];
       const fee = entry ? (parseInt(entry.pFee) || 0) : 0;
-      if (fee > 0) return `<span class="pp-chip pos">+ ${fee} bps</span>`;
-      if (fee < 0) return `<span class="pp-chip neg">− ${Math.abs(fee)} bps</span>`;
-      return `<span class="pp-chip zero">0 bps</span>`;
+      if (fee > 0) return `<span class="pp-chip pos">+ ${fee} %</span>`;
+      if (fee < 0) return `<span class="pp-chip neg">− ${Math.abs(fee)} %</span>`;
+      return `<span class="pp-chip zero">0 %</span>`;
     }
     function wdrChip() {
       const entry = Object.values(savedPlanFees?.withdrawals || {})[0];
       const fee = entry ? (parseInt(entry.pFee) || 0) : 0;
-      if (fee > 0) return `<span class="pp-chip pos">+ ${fee} bps</span>`;
-      if (fee < 0) return `<span class="pp-chip neg">− ${Math.abs(fee)} bps</span>`;
-      return `<span class="pp-chip absorb">Absorb all fees</span>`;
+      if (fee > 0) return `<span class="pp-chip pos">+ ${fee} %</span>`;
+      if (fee < 0) return `<span class="pp-chip neg">− ${Math.abs(fee)} %</span>`;
+      return `<span class="pp-chip zero">0 %</span>`;
     }
 
     const tiers = savedTierThresholds;
@@ -2163,12 +2163,12 @@ function renderPricingContent() {
             ${tierLabels.length ? `<div class="pp-col-subhdr">Threshold tiers:</div>${tierLabels.map(l => `<div class="pp-tier-line">${l}</div>`).join('')}` : ''}
           </div>
           <div class="pp-col">
-            <div class="pp-col-head"><span class="pp-col-title">Deposits fee</span>${depChip()}</div>
-            ${depMethods.length ? `<div class="pp-col-subhdr">Methods:</div>${depMethods.map(m => `<div class="pp-tier-line">${m}</div>`).join('')}` : ''}
+            <div class="pp-col-head"><span class="pp-col-title">Deposits fee</span></div>
+            ${depMethods.length ? `<div class="pp-col-subhdr">Methods:</div>${depMethods.map(m => `<div class="pp-tier-line" style="display:flex;align-items:center;justify-content:space-between;gap:8px;">${m}${depChip()}</div>`).join('')}` : ''}
           </div>
           <div class="pp-col">
-            <div class="pp-col-head"><span class="pp-col-title">Withdrawal fee</span>${wdrChip()}</div>
-            ${wdrMethods.length ? `<div class="pp-col-subhdr">Methods:</div>${wdrMethods.map(m => `<div class="pp-tier-line">${m}</div>`).join('')}` : ''}
+            <div class="pp-col-head"><span class="pp-col-title">Withdrawal fee</span></div>
+            ${wdrMethods.length ? `<div class="pp-col-subhdr">Methods:</div>${wdrMethods.map(m => `<div class="pp-tier-line" style="display:flex;align-items:center;justify-content:space-between;gap:8px;">${m}${wdrChip()}</div>`).join('')}` : ''}
           </div>
         </div>
       </div>`;

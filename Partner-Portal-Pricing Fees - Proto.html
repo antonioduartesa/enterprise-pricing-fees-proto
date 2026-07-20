@@ -1171,14 +1171,11 @@ function renderPricingDetailsTab() {
             <div class="plan-col">
               <div class="plan-col-hdr">
                 <span class="plan-col-title">Trade spread</span>
-                <span class="plan-chip pos">+ 6 bps</span>
+                <span class="plan-chip green">+ ${partnerFee} bps</span>
               </div>
               <div class="plan-col-subhdr">Threshold tiers:</div>
-              <div class="plan-tier-line">Less than $10,000</div>
-              <div class="plan-tier-line">$10,000 - $50,000</div>
-              <div class="plan-tier-line">$50,000 - $100,000</div>
-              <div class="plan-tier-line">$100,000 - $500,000</div>
-              <div class="plan-tier-line">Greater than $500,000</div>
+              ${tierThresholds.map((size, i) => `<div class="plan-tier-line">${i === 0 ? 'First' : 'Next'} ${fmtDollar(size)}</div>`).join('')}
+              <div class="plan-tier-line">Above ${fmtDollar(tierThresholds.reduce((a, b) => a + b, 0))}</div>
             </div>
             <div class="plan-col">
               <div class="plan-col-hdr">

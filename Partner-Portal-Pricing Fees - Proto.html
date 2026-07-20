@@ -1340,7 +1340,7 @@ function renderTierHeader(thIdx, vi) {
 }
 
 function renderGtHeader() {
-  const gtTooltip = "Automatically set to your highest tier upper limit. Any amount above that uses this value.";
+  const gtTooltip = "The cumulative total of all tier sizes above. Trades reaching this threshold have consumed every prior tier and continue into this final one.";
   const gtVal = tierThresholds.length > 0 ? tierThresholds.reduce((a, b) => a + b, 0) : 0;
   return `<th class="col-hdr-tier" id="col-hdr-gt">
     <div class="tier-hdr-content">

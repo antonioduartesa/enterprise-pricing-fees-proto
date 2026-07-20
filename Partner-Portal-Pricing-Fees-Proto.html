@@ -284,20 +284,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 .fees-table-outer{border:1px solid #e8eaf2;border-radius:16px;overflow:hidden}
 /* ── Fees cards (deposits / withdrawals) ── */
 .fees-section-title{font-size:15px;font-weight:700;color:#1d2738;margin-bottom:14px}
-.fees-col-hdrs{display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr 0.8fr;gap:8px;padding:10px 16px;background:#f8f9fb;border:1px solid #e8eaf2;border-radius:10px 10px 0 0;font-size:11px;font-weight:600;color:#697BAA}
-.fees-card{border:1px solid #e8eaf2;border-top:none;background:#fff;transition:background .12s}
-.fees-card:last-child{border-radius:0 0 10px 10px}
-.fees-card.fees-group-sub{border-top:1px solid #f0f2fa}
-.fees-card-saved{cursor:pointer}
-.fees-card-saved:hover{background:#f8f9fb}
-.fees-card-row{display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr 0.8fr;gap:8px;align-items:center;padding:16px;min-height:64px}
+.fees-col-hdrs{display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr 0.8fr;gap:8px;padding:6px 16px;font-size:11px;font-weight:600;color:#697BAA}
+.fees-method-card{border:1px solid #e8eaf2;border-radius:12px;background:#fff;margin-bottom:8px;transition:background .12s;overflow:hidden}
+.fees-method-card.fees-card-saved{cursor:pointer}
+.fees-method-card.fees-card-saved:hover{background:#f8f9fb}
+.fees-jur-row{display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr 0.8fr;gap:8px;align-items:center;padding:8px 16px}
+.fees-jur-row:first-child{padding-top:14px}
+.fees-jur-row:last-child{padding-bottom:14px}
 .fees-method-cell{display:flex;align-items:center;gap:14px}
 .fees-method-icon{width:38px;height:38px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid #f0f2fa}
 .fees-method-name{font-size:14px;font-weight:600;color:#1d2738;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .fees-jurisdiction{font-size:13px;color:#697BAA;white-space:nowrap}
 .fees-uphold-val{font-size:13.5px;color:#1d2738;white-space:nowrap}
 .fees-partner-chip{display:inline-flex;align-items:center;font-size:12px;font-weight:600;padding:4px 10px;border-radius:6px;white-space:nowrap;width:fit-content;align-self:center}
-.fees-partner-chip.pos{background:#dbeafe;color:#1d4ed8}
+.fees-partner-chip.pos{background:#d1fae5;color:#065f46}
 .fees-partner-chip.neg{background:#fef3c7;color:#92400e}
 .fees-total-val{font-size:14px;font-weight:700;color:#1d2738;white-space:nowrap}
 .fees-total-val.zero{color:#9ca3af}
@@ -1784,46 +1784,50 @@ function renderFeesTab(kind) {
     const totalCls = total === 0 ? ' zero' : '';
     const jurs = r.jurisdictions || [r.jurisdiction || 'All'];
 
-    return jurs.map((jur, i) => {
-      const subCls = i > 0 ? ' fees-group-sub' : '';
-      const methodCell = i === 0
-        ? `<div class="fees-method-cell">${icon}<span class="fees-method-name">${r.name}</span></div>`
-        : `<div class="fees-method-cell"></div>`;
-
-      if (isEditing) {
-        return `<div class="fees-card${subCls}">
-          <div class="fees-card-edit">
-            <div class="fees-edit-row">
-              ${methodCell}
-              <span class="fees-jurisdiction">${jur}</span>
-              <span class="fees-uphold-val">${r.upholdFee} %</span>
-              ${i === 0
-                ? `<div class="fees-pfee-box">
-                    <input class="fees-pfee-inp" id="mfee-inp-${kind}-${r.key}" type="number"
-                      value="${pFee}"
-                      oninput="onMethodFeeInput('${kind}','${r.key}',this.value)"
-                      onblur="closeMethodFeeEdit('${kind}','${r.key}')"
-                      onkeydown="if(event.key==='Enter'||event.key==='Escape')this.blur()">
-                    <span class="fees-pfee-unit">%</span>
-                  </div>
-                  <span class="fees-edit-total${totalCls}" id="mfee-total-${kind}-${r.key}">${total} %</span>`
-                : `<span class="fees-partner-chip ${chipCls}">${chipLbl}</span>
-                   <span class="fees-total-val${totalCls}">${total} %</span>`}
-            </div>
-          </div>
-        </div>`;
-      }
-
-      return `<div class="fees-card fees-card-saved${subCls}" onclick="openMethodFeeEdit('${kind}','${r.key}')">
-        <div class="fees-card-row">
+    if (isEditing) {
+      const editRows = jurs.map((jur, i) => {
+        const methodCell = i === 0
+          ? `<div class="fees-method-cell">${icon}<span class="fees-method-name">${r.name}</span></div>`
+          : `<div class="fees-method-cell"></div>`;
+        return `<div class="fees-edit-row">
           ${methodCell}
           <span class="fees-jurisdiction">${jur}</span>
           <span class="fees-uphold-val">${r.upholdFee} %</span>
-          <span class="fees-partner-chip ${chipCls}">${chipLbl}</span>
-          <span class="fees-total-val${totalCls}">${total} %</span>
-        </div>
+          ${i === 0
+            ? `<div class="fees-pfee-box">
+                <input class="fees-pfee-inp" id="mfee-inp-${kind}-${r.key}" type="number"
+                  value="${pFee}"
+                  oninput="onMethodFeeInput('${kind}','${r.key}',this.value)"
+                  onblur="closeMethodFeeEdit('${kind}','${r.key}')"
+                  onkeydown="if(event.key==='Enter'||event.key==='Escape')this.blur()">
+                <span class="fees-pfee-unit">%</span>
+              </div>
+              <span class="fees-edit-total${totalCls}" id="mfee-total-${kind}-${r.key}">${total} %</span>`
+            : `<span class="fees-partner-chip ${chipCls}">${chipLbl}</span>
+               <span class="fees-total-val${totalCls}">${total} %</span>`}
+        </div>`;
+      }).join('');
+      return `<div class="fees-method-card">
+        <div class="fees-card-edit">${editRows}</div>
+      </div>`;
+    }
+
+    const jurRows = jurs.map((jur, i) => {
+      const methodCell = i === 0
+        ? `<div class="fees-method-cell">${icon}<span class="fees-method-name">${r.name}</span></div>`
+        : `<div class="fees-method-cell"></div>`;
+      return `<div class="fees-jur-row">
+        ${methodCell}
+        <span class="fees-jurisdiction">${jur}</span>
+        <span class="fees-uphold-val">${r.upholdFee} %</span>
+        <span class="fees-partner-chip ${chipCls}">${chipLbl}</span>
+        <span class="fees-total-val${totalCls}">${total} %</span>
       </div>`;
     }).join('');
+
+    return `<div class="fees-method-card fees-card-saved" onclick="openMethodFeeEdit('${kind}','${r.key}')">
+      ${jurRows}
+    </div>`;
   }).join('');
 
   const colHdrs = `<div class="fees-col-hdrs">

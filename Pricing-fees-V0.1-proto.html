@@ -761,18 +761,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 .pft-chip.neg{background:#fff8eb;color:#d97706;}
 .pft-empty{padding:30px;text-align:center;font-size:13px;color:#9ca3af;background:#fff;border:1px solid #eef0f6;border-radius:14px;}
 /* ── Per-jurisdiction fees table (new Deposits/Withdrawals design) ── */
-.pft2-col-hdrs{display:grid;grid-template-columns:1.6fr 0.7fr 1fr 1fr 80px;gap:16px;padding:0 20px 10px;font-size:11.5px;font-weight:500;color:#9ca3af;letter-spacing:.02em;}
-.pft2-table{border:1.5px solid #e8eaf2;border-radius:14px;background:#fff;overflow:hidden;box-shadow:0 1px 3px rgba(16,24,40,.04);}
-.pft2-group+.pft2-group{border-top:1.5px solid #e8eaf2;}
-.pft2-row{display:grid;grid-template-columns:1.6fr 0.7fr 1fr 1fr 80px;gap:16px;align-items:center;padding:14px 20px;border-top:1px solid #f3f4f6;}
-.pft2-row-first{border-top:none;}
-.pft2-method-cell{display:flex;align-items:center;gap:10px;min-height:28px;}
-.pft2-method-name{font-size:13.5px;font-weight:600;color:#111827;}
-.pft2-jur-lbl{font-size:13px;color:#697baa;font-weight:500;}
-.pft2-fee-cell{display:flex;flex-direction:column;gap:5px;}
-.pft2-fee-box{width:auto !important;min-width:0 !important;}
+.pft2-col-hdrs{display:grid;grid-template-columns:220px 100px 1fr 1fr 90px;column-gap:16px;padding:0 24px 10px 20px;font-size:11.5px;font-weight:500;color:#9ca3af;letter-spacing:.02em;}
+.pft2-table{display:flex;flex-direction:column;gap:10px;}
+.pft2-card{border:1.5px solid #e8eaf2;border-radius:14px;background:#fff;display:grid;grid-template-columns:220px 100px 1fr 1fr 90px;column-gap:16px;padding-right:24px;overflow:hidden;box-shadow:0 1px 3px rgba(16,24,40,.04);}
+.pft2-method-span{grid-column:1;display:flex;align-items:center;gap:10px;padding:20px;}
+.pft2-method-name{font-size:13.5px;font-weight:600;color:#111827;white-space:nowrap;}
+.pft2-jur-contents{display:contents;}
+.pft2-jur-lbl{font-size:13px;color:#697baa;font-weight:500;display:flex;align-items:center;padding:14px 0;}
+.pft2-fee-cell{display:flex;flex-direction:column;gap:5px;padding:12px 0;justify-content:center;}
+.pft2-fee-box{width:100% !important;max-width:none !important;min-width:0 !important;}
 .pft2-pct-unit{font-size:13px;color:#9ca3af;flex-shrink:0;}
-.pft2-total-val{font-size:13.5px;font-weight:700;color:#111827;}
+.pft2-total-val{font-size:13.5px;font-weight:700;color:#111827;display:flex;align-items:center;padding:14px 0;}
 /* ── How Spreads Work side panel ── */
 .hsw-overlay{position:fixed;inset:0;background:rgba(17,24,39,.4);z-index:2000;display:flex;justify-content:flex-end;opacity:0;pointer-events:none;transition:opacity .2s;}
 .hsw-overlay.open{opacity:1;pointer-events:all;}
@@ -2642,18 +2641,15 @@ function renderPlanFeesTab(kind) {
     const icon       = `<div class="pft-method-icon">${limMethodIcon(method)}</div>`;
     const methodFees = planFeesJurFees[kind][method] || {};
 
-    let rowsHtml = '';
+    let jurRowsHtml = '';
     juris.forEach((jur, jIdx) => {
       const fees  = methodFees[jur] || {uFee:'', pFee:''};
       const base  = JUR_BASE_FEE[jur] || 0;
       const tot   = base + (parseInt(fees.uFee)||0) + (parseInt(fees.pFee)||0);
       const totId = 'pft2-tot-' + kind + '-' + method.replace(/[^a-zA-Z0-9]/g,'_') + '-' + jur;
       const mKey  = method.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-      rowsHtml += `
-        <div class="pft2-row${jIdx > 0 ? '' : ' pft2-row-first'}">
-          <div class="pft2-method-cell">
-            ${jIdx === 0 ? `${icon}<span class="pft2-method-name">${method}</span>` : ''}
-          </div>
+      jurRowsHtml += `
+        <div class="pft2-jur-contents">
           <div class="pft2-jur-lbl">${jur}</div>
           <div class="pft2-fee-cell">
             <div class="pft-fee-box pft2-fee-box">
@@ -2673,7 +2669,11 @@ function renderPlanFeesTab(kind) {
           <div class="pft2-total-val" id="${totId}">${tot} %</div>
         </div>`;
     });
-    groupsHtml += `<div class="pft2-group">${rowsHtml}</div>`;
+    groupsHtml += `
+      <div class="pft2-card">
+        <div class="pft2-method-span" style="grid-row:1/span ${juris.length}">${icon}<span class="pft2-method-name">${method}</span></div>
+        ${jurRowsHtml}
+      </div>`;
   });
 
   el.innerHTML = `

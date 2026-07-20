@@ -1307,7 +1307,7 @@ function renderPlanDetails() {
       <div class="spreads-toolbar">
         <div class="spreads-tb-left">
           <div class="spreads-tb-label">Spreads per ticket size</div>
-          <div class="spreads-tb-sub">Set the Uphold base spread per asset per tier.</div>
+          <div class="spreads-tb-sub">Tiers stack progressively. Larger trades blend rates across every tier they pass through. <a href="#" style="color:#22c55e;text-decoration:none;font-weight:500" onclick="return false">Learn more.</a></div>
         </div>
         <div class="spreads-tb-right">
           <div class="pf-group">
@@ -1388,7 +1388,7 @@ function renderTierHeader(thIdx, vi, visible) {
     const errMsg = val <= 0 ? 'Enter an amount higher than zero.' : 'Adjust conflicting amount.';
     return `<th class="col-hdr-tier editing${hasError?' has-error':''}" id="col-hdr-${thIdx}">
       <div class="tier-hdr-edit">
-        <span class="tier-hdr-edit-label">${vi === 0 ? 'Less than' : 'Tier'}</span>
+        <span class="tier-hdr-edit-label">${vi === 0 ? 'First' : 'Next'}</span>
         <div style="display:flex;align-items:center;gap:6px">
           ${vi > 0 ? `
           <div class="tier-hdr-input-row" data-role="tier-min-row">
@@ -1416,9 +1416,9 @@ function renderTierHeader(thIdx, vi, visible) {
 
   let label, valText;
   if (vi === 0) {
-    label = 'Less than'; valText = fmtDollar(effectiveThreshold(thIdx));
+    label = 'First'; valText = fmtDollar(effectiveThreshold(thIdx));
   } else {
-    label = 'Tier'; valText = `${fmtDollar(effectiveThreshold(visible[vi-1]))} – ${fmtDollar(effectiveThreshold(thIdx))}`;
+    label = 'Next'; valText = fmtDollar(effectiveThreshold(thIdx));
   }
   return `<th class="col-hdr-tier${hasError?' has-error':''}" id="col-hdr-${thIdx}">
     <div class="tier-hdr-content">
@@ -1438,8 +1438,8 @@ function renderGtHeader(visible) {
   const gtVal = visible.length > 0 ? Math.max(...visible.map(i => effectiveThreshold(i))) : 0;
   return `<th class="col-hdr-tier" id="col-hdr-gt">
     <div class="tier-hdr-content">
-      <span class="tier-hdr-label">Greater than</span>
-      <span class="tier-hdr-val" id="gt-val">${fmtDollar(gtVal)} <span class="tooltip-wrap" onmouseenter="showTip(event,'${gtTooltip}')" onmouseleave="hideTip()">${infoSVG}</span></span>
+      <span class="tier-hdr-label">Above <span class="tooltip-wrap" onmouseenter="showTip(event,'${gtTooltip}')" onmouseleave="hideTip()" style="margin-left:2px">${infoSVG}</span></span>
+      <span class="tier-hdr-val" id="gt-val">${fmtDollar(gtVal)}</span>
     </div>
   </th>`;
 }

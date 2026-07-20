@@ -761,24 +761,33 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 .pft-chip.neg{background:#fff8eb;color:#d97706;}
 .pft-empty{padding:30px;text-align:center;font-size:13px;color:#9ca3af;background:#fff;border:1px solid #eef0f6;border-radius:14px;}
 /* ── Per-jurisdiction fees table (new Deposits/Withdrawals design) ── */
-.pft2-col-hdrs{display:grid;grid-template-columns:220px 100px 1fr 1fr 90px;column-gap:16px;padding:0 24px 10px 20px;font-size:11.5px;font-weight:500;color:#9ca3af;letter-spacing:.02em;}
+.pft2-col-hdrs{display:grid;grid-template-columns:180px 90px 200px 230px 80px;column-gap:16px;padding:0 20px 10px 20px;font-size:11.5px;font-weight:500;color:#9ca3af;letter-spacing:.02em;}
 .pft2-table{display:flex;flex-direction:column;gap:10px;}
-.pft2-card{border:1.5px solid #e8eaf2;border-radius:14px;background:#fff;display:grid;grid-template-columns:220px 100px 1fr 1fr 90px;column-gap:16px;padding-right:24px;overflow:hidden;box-shadow:0 1px 3px rgba(16,24,40,.04);}
+.pft2-card{border:1.5px solid #e8eaf2;border-radius:14px;background:#fff;display:grid;grid-template-columns:180px 90px 200px 230px 80px;column-gap:16px;padding-right:20px;overflow:hidden;box-shadow:0 1px 3px rgba(16,24,40,.04);}
 .pft2-method-span{grid-column:1;display:flex;align-items:center;gap:10px;padding:20px;}
 .pft2-method-name{font-size:13.5px;font-weight:600;color:#111827;white-space:nowrap;}
 .pft2-jur-contents{display:contents;}
-.pft2-jur-lbl{font-size:13px;color:#697baa;font-weight:500;display:flex;align-items:center;padding:14px 0;}
-.pft2-fee-cell{display:flex;flex-direction:column;gap:5px;padding:12px 0;justify-content:center;}
-.pft2-fee-box{width:100% !important;max-width:none !important;min-width:0 !important;}
+.pft2-jur-lbl{font-size:13px;color:#697baa;font-weight:500;display:flex;align-items:center;padding:12px 0;}
+.pft2-fee-cell{display:flex;flex-direction:column;gap:4px;padding:10px 0;justify-content:center;}
+.pft2-fee-box{width:160px !important;max-width:160px !important;min-width:0 !important;}
 .pft2-pct-unit{font-size:13px;color:#9ca3af;flex-shrink:0;}
-.pft2-total-val{font-size:13.5px;font-weight:700;color:#111827;display:flex;align-items:center;padding:14px 0;}
-.pft2-card-ro{cursor:pointer;transition:border-color .15s;}
-.pft2-card-ro:hover{border-color:#c8cad6;}
-.pft2-ro-ufee{font-size:13.5px;color:#374151;font-weight:400;display:flex;align-items:center;padding:14px 0;}
-.pft2-ro-partner{display:flex;align-items:center;padding:14px 0;}
+.pft2-total-val{font-size:13.5px;font-weight:700;color:#111827;display:flex;align-items:center;padding:12px 0;}
+/* read-only card — no card-level click, hover states are per cell */
+.pft2-card-ro{transition:border-color .15s;}
+/* Uphold fee cell hover → green Edit button */
+.pft2-ro-ufee{font-size:13.5px;color:#374151;font-weight:400;display:flex;align-items:center;gap:10px;padding:12px 0;}
+.pft2-ro-editbtn{display:none;background:#16a34a;color:#fff;border:none;border-radius:999px;padding:3px 11px;font-size:11.5px;font-weight:600;cursor:pointer;line-height:1.6;}
+.pft2-ro-ufee:hover .pft2-ro-editbtn{display:inline-flex;align-items:center;}
+/* Partner fee cell hover → inline edit box with scissors */
+.pft2-ro-partner{display:flex;align-items:center;padding:12px 0;}
+.pft2-ro-chip-zero{font-size:13.5px;color:#9ca3af;}
+.pft2-ro-inline-edit{display:none;align-items:center;gap:7px;border:1.5px solid #d1d5db;border-radius:8px;padding:4px 10px;cursor:pointer;background:#fff;}
+.pft2-ro-inline-edit:hover{border-color:#9ca3af;}
+.pft2-ro-inline-num{font-size:13px;color:#374151;}
+.pft2-ro-partner:hover .pft2-chip-pos,.pft2-ro-partner:hover .pft2-chip-neg,.pft2-ro-partner:hover .pft2-ro-chip-zero{display:none !important;}
+.pft2-ro-partner:hover .pft2-ro-inline-edit{display:inline-flex;}
 .pft2-chip-pos{background:#dcfce7;color:#16a34a;border-radius:999px;padding:4px 12px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;}
 .pft2-chip-neg{background:#fff8eb;color:#d97706;border-radius:999px;padding:4px 12px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;}
-.pft2-chip-zero{font-size:13.5px;color:#9ca3af;display:flex;align-items:center;padding:14px 0;}
 /* ── How Spreads Work side panel ── */
 .hsw-overlay{position:fixed;inset:0;background:rgba(17,24,39,.4);z-index:2000;display:flex;justify-content:flex-end;opacity:0;pointer-events:none;transition:opacity .2s;}
 .hsw-overlay.open{opacity:1;pointer-events:all;}
@@ -2697,24 +2706,33 @@ function renderPlanFeesTab(kind) {
           </div>`;
       } else {
         const dispU = (base + uFeeN) + ' %';
-        let partnerCell;
-        if (pFeeN > 0) partnerCell = `<span class="pft2-chip-pos">+ ${pFeeN} %</span>`;
-        else if (pFeeN < 0) partnerCell = `<span class="pft2-chip-neg">− ${Math.abs(pFeeN)} %</span>`;
-        else partnerCell = `<span style="font-size:13.5px;color:#9ca3af;">0 %</span>`;
+        const scissorsSVG = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="6" cy="6" r="3" stroke="#9ca3af" stroke-width="1.8"/><circle cx="6" cy="18" r="3" stroke="#9ca3af" stroke-width="1.8"/><path d="M9.06 8.94L19.5 19.5M19.5 4.5L9.06 15.06" stroke="#9ca3af" stroke-width="1.8" stroke-linecap="round"/></svg>`;
+        let chipHtml, inlineNum;
+        if (pFeeN > 0) { chipHtml = `<span class="pft2-chip-pos">+ ${pFeeN} %</span>`; inlineNum = `+ ${pFeeN}`; }
+        else if (pFeeN < 0) { chipHtml = `<span class="pft2-chip-neg">− ${Math.abs(pFeeN)} %</span>`; inlineNum = `− ${Math.abs(pFeeN)}`; }
+        else { chipHtml = `<span class="pft2-ro-chip-zero">0 %</span>`; inlineNum = '0'; }
         jurRowsHtml += `
           <div class="pft2-jur-contents">
             <div class="pft2-jur-lbl">${jur}</div>
-            <div class="pft2-ro-ufee">${dispU}</div>
-            <div class="pft2-ro-partner">${partnerCell}</div>
+            <div class="pft2-ro-ufee">
+              ${dispU}
+              <button class="pft2-ro-editbtn" onclick="planFeesEnterEdit('${kind}')">Edit</button>
+            </div>
+            <div class="pft2-ro-partner">
+              ${chipHtml}
+              <div class="pft2-ro-inline-edit" onclick="planFeesEnterEdit('${kind}')">
+                <span class="pft2-ro-inline-num">${inlineNum}</span>
+                ${scissorsSVG}
+              </div>
+            </div>
             <div class="pft2-total-val">${tot} %</div>
           </div>`;
       }
     });
 
     const cardClass = isEditing ? 'pft2-card' : 'pft2-card pft2-card-ro';
-    const clickAttr = isEditing ? '' : `onclick="planFeesEnterEdit('${kind}')"`;
     groupsHtml += `
-      <div class="${cardClass}" ${clickAttr}>
+      <div class="${cardClass}">
         <div class="pft2-method-span" style="grid-row:1/span ${juris.length}">${icon}<span class="pft2-method-name">${method}</span></div>
         ${jurRowsHtml}
       </div>`;

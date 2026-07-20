@@ -760,6 +760,45 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 .pft-chip.pos{background:#e8effc;color:#3b6fe0;}
 .pft-chip.neg{background:#fff8eb;color:#d97706;}
 .pft-empty{padding:30px;text-align:center;font-size:13px;color:#9ca3af;background:#fff;border:1px solid #eef0f6;border-radius:14px;}
+/* ── How Spreads Work side panel ── */
+.hsw-overlay{position:fixed;inset:0;background:rgba(17,24,39,.4);z-index:2000;display:flex;justify-content:flex-end;opacity:0;pointer-events:none;transition:opacity .2s;}
+.hsw-overlay.open{opacity:1;pointer-events:all;}
+.hsw-panel{width:58%;min-width:580px;height:100%;background:#fff;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .28s ease;box-shadow:-12px 0 40px rgba(0,0,0,.14);}
+.hsw-overlay.open .hsw-panel{transform:translateX(0);}
+.hsw-hdr{display:flex;align-items:center;justify-content:space-between;padding:22px 32px;border-bottom:1px solid #e8eaf2;flex-shrink:0;}
+.hsw-title{font-size:18px;font-weight:700;color:#111827;}
+.hsw-close-btn{width:32px;height:32px;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:8px;color:#6b7280;transition:background .12s;}
+.hsw-close-btn:hover{background:#f3f4f6;}
+.hsw-body{flex:1;overflow-y:auto;padding:28px 32px 20px;}
+.hsw-intro{font-size:15px;color:#374151;display:flex;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:32px;line-height:1.5;}
+.hsw-intro-text{align-self:center;}
+.hsw-inp-wrap{display:flex;flex-direction:column;}
+.hsw-amount-inp{border:1.5px solid #d1d5db;border-radius:10px;padding:7px 14px;font-size:15px;font-weight:500;color:#111827;font-family:inherit;width:130px;outline:none;text-align:center;transition:border-color .15s,box-shadow .15s;}
+.hsw-amount-inp:focus{border-color:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.1);}
+.hsw-amount-inp.error{border-color:#ef4444 !important;box-shadow:0 0 0 3px rgba(239,68,68,.1) !important;}
+.hsw-err-msg{display:none;align-items:center;gap:5px;font-size:12px;color:#ef4444;font-weight:500;margin-top:5px;}
+.hsw-err-msg.visible{display:flex;}
+.hsw-grid{display:grid;gap:0 8px;align-items:stretch;}
+.hsw-tier-card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px 14px;background:#fff;margin-bottom:8px;min-width:0;}
+.hsw-tier-card.inactive{background:#f9fafb;border-color:#f0f1f5;}
+.hsw-tier-lbl{font-size:11.5px;font-weight:600;color:#374151;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hsw-tier-card.inactive .hsw-tier-lbl{color:#c0c4d0;}
+.hsw-tier-bps{font-size:13px;color:#697baa;font-weight:500;}
+.hsw-tier-card.inactive .hsw-tier-bps{color:#d4d6de;}
+.hsw-bar-cell{padding:0 2px;align-self:center;}
+.hsw-bar-track{height:5px;background:#e5e7eb;border-radius:3px;overflow:hidden;}
+.hsw-bar-fill{height:100%;background:#22c55e;border-radius:3px;transition:width .25s ease;}
+.hsw-sep{height:1px;background:#e8eaf2;margin:14px 0;}
+.hsw-row-lbl{font-size:13px;color:#697baa;display:flex;align-items:center;padding:10px 0;font-weight:500;}
+.hsw-data-cell{font-size:13.5px;font-weight:600;color:#111827;display:flex;align-items:center;padding:10px 0;}
+.hsw-data-cell.muted{font-weight:400;color:#c0c4d0;}
+.hsw-summary{margin-top:20px;border-top:1px solid #e8eaf2;padding-top:20px;display:flex;flex-direction:column;gap:10px;}
+.hsw-summary-row{display:flex;align-items:center;justify-content:space-between;}
+.hsw-summary-label{font-size:14px;font-weight:700;color:#111827;}
+.hsw-summary-val{font-size:14px;font-weight:500;color:#374151;}
+.hsw-footer{border-top:1px solid #e8eaf2;padding:16px 32px;display:flex;justify-content:flex-end;flex-shrink:0;}
+.hsw-got-it{background:#22c55e;color:#fff;border:none;border-radius:10px;padding:11px 28px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .12s;}
+.hsw-got-it:hover{background:#16a34a;}
 </style>
 </head>
 <body>
@@ -2374,7 +2413,7 @@ function spreadPlanHTML() {
       <div class="spreads-toolbar">
         <div class="spreads-tb-left">
           <div class="assets-title">Spreads per ticket size</div>
-          <div class="assets-sub">Tiers stack progressively. Larger trades blend rates across every tier they pass through. <a href="#" style="color:#22c55e;text-decoration:none;font-weight:500" onclick="return false">Learn more.</a></div>
+          <div class="assets-sub">Tiers stack progressively. Larger trades blend rates across every tier they pass through. <a href="#" style="color:#22c55e;text-decoration:none;font-weight:500" onclick="openHowSpreadsWork();return false">Learn more.</a></div>
         </div>
         <div class="form-field">
           <span class="field-label tb-field-label">Select assets</span>
@@ -3401,9 +3440,207 @@ document.addEventListener('click', function(e) {
 })();
 
 /* ══════════════════════════════════════════════════════════════
+   HOW SPREADS WORK — SIDE PANEL SIMULATOR
+══════════════════════════════════════════════════════════════ */
+let hswAmount = 150000;
+
+function openHowSpreadsWork() {
+  hswAmount = 150000;
+  const inp = document.getElementById('hsw-inp');
+  if (inp) inp.value = '$150,000';
+  document.getElementById('hsw-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  renderHSW();
+}
+
+function closeHowSpreadsWork() {
+  document.getElementById('hsw-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function handleHSWOverlayClick(e) {
+  if (e.target === document.getElementById('hsw-overlay')) closeHowSpreadsWork();
+}
+
+function onHSWFocus() {
+  const inp = document.getElementById('hsw-inp');
+  if (!inp) return;
+  inp.value = hswAmount > 0 ? String(hswAmount) : '';
+  requestAnimationFrame(() => inp.select());
+}
+
+function onHSWInput(raw) {
+  const stripped = raw.replace(/[^0-9]/g, '');
+  hswAmount = parseInt(stripped) || 0;
+  renderHSW();
+}
+
+function onHSWBlur() {
+  const inp = document.getElementById('hsw-inp');
+  if (!inp) return;
+  inp.value = hswAmount > 0 ? '$' + hswAmount.toLocaleString('en-US') : '$0';
+}
+
+function fmtHSWFee(n) {
+  return '$' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+function renderHSW() {
+  const valid = hswAmount > 10;
+
+  const errEl = document.getElementById('hsw-err');
+  const inpEl = document.getElementById('hsw-inp');
+  if (errEl) errEl.classList.toggle('visible', !valid);
+  if (inpEl) inpEl.classList.toggle('error', !valid);
+
+  const visible = visibleTierIndices();
+  const n = visible.length + 1; // editable tiers + GT
+
+  const pFee    = parseInt(partnerFee) || 0;
+  const adjBps  = Math.abs(pFee);
+  const isUp    = pFee > 0;
+  const isDn    = pFee < 0;
+  const hasAdj  = pFee !== 0;
+
+  const thresholds = visible.map(i => effectiveThreshold(i));
+  const gtThreshold = thresholds.length > 0 ? Math.max(...thresholds) : 0;
+
+  function getBps(vi) {
+    const k = `EMPTY-${vi}`;
+    const base = pendingCellEdits[k] ?? savedCellEdits[k] ?? 6;
+    return totalFor(base, adjBps, isUp, isDn, hasAdj);
+  }
+
+  function getTierUsed(vi) {
+    if (!valid) return 0;
+    if (vi < visible.length) {
+      const prev = vi > 0 ? thresholds[vi - 1] : 0;
+      return Math.min(Math.max(hswAmount - prev, 0), thresholds[vi] - prev);
+    }
+    return Math.max(hswAmount - gtThreshold, 0);
+  }
+
+  function getTierSize(vi) {
+    if (vi < visible.length) {
+      const prev = vi > 0 ? thresholds[vi - 1] : 0;
+      return thresholds[vi] - prev;
+    }
+    return null;
+  }
+
+  function getLabel(vi) {
+    if (vi < visible.length) return (vi === 0 ? 'First' : 'Next') + ' ' + formatMoney(thresholds[vi]);
+    return 'Above ' + formatMoney(gtThreshold);
+  }
+
+  let totalFee2 = 0;
+  const tiers2 = [];
+  for (let vi = 0; vi < n; vi++) {
+    const bps2    = getBps(vi);
+    const used    = getTierUsed(vi);
+    const size    = getTierSize(vi);
+    const fee2    = used * bps2 / 10000;
+    const prog    = size ? Math.min(used / size, 1) : (used > 0 ? 1 : 0);
+    totalFee2 += fee2;
+    tiers2.push({ label: getLabel(vi), bps: bps2, used, fee: fee2, prog, active: used > 0 });
+  }
+
+  const effRate = (valid && hswAmount > 0) ? (totalFee2 / hswAmount * 10000) : 0;
+
+  // Build grid
+  const grid = document.getElementById('hsw-grid');
+  if (!grid) return;
+  grid.style.gridTemplateColumns = `90px repeat(${n}, 1fr)`;
+
+  let html = '';
+
+  // Row 1: tier cards
+  html += `<div></div>`;
+  tiers2.forEach(t => {
+    html += `<div class="hsw-tier-card${t.active ? '' : ' inactive'}">
+      <div class="hsw-tier-lbl">${t.label}</div>
+      <div class="hsw-tier-bps">${t.bps} bps</div>
+    </div>`;
+  });
+
+  // Row 2: progress bars
+  html += `<div></div>`;
+  tiers2.forEach(t => {
+    html += `<div class="hsw-bar-cell">
+      <div class="hsw-bar-track"><div class="hsw-bar-fill" style="width:${(t.prog*100).toFixed(1)}%"></div></div>
+    </div>`;
+  });
+
+  // Full-width separator
+  html += `<div class="hsw-sep" style="grid-column:1/${n+2}"></div>`;
+
+  // Row 3: $ used
+  html += `<div class="hsw-row-lbl">$ used</div>`;
+  tiers2.forEach(t => {
+    const val = t.used > 0 ? ('$' + t.used.toLocaleString('en-US')) : '$0.00';
+    html += `<div class="hsw-data-cell${t.active ? '' : ' muted'}">${val}</div>`;
+  });
+
+  // Row 4: Fee
+  html += `<div class="hsw-row-lbl">Fee</div>`;
+  tiers2.forEach(t => {
+    html += `<div class="hsw-data-cell${t.active ? '' : ' muted'}">${fmtHSWFee(t.fee)}</div>`;
+  });
+
+  grid.innerHTML = html;
+
+  const effEl = document.getElementById('hsw-eff-rate');
+  const totEl = document.getElementById('hsw-total-fee');
+  if (effEl) effEl.textContent = valid ? effRate.toFixed(2) + ' bps' : '0 bps';
+  if (totEl) totEl.textContent = valid ? fmtHSWFee(totalFee2) : '$0.00';
+}
+
+/* ══════════════════════════════════════════════════════════════
    INIT — single render() call
 ══════════════════════════════════════════════════════════════ */
 render();
 </script>
+
+<!-- HOW SPREADS WORK — side panel -->
+<div class="hsw-overlay" id="hsw-overlay" onclick="handleHSWOverlayClick(event)">
+  <div class="hsw-panel">
+    <div class="hsw-hdr">
+      <span class="hsw-title">How spreads work</span>
+      <button class="hsw-close-btn" onclick="closeHowSpreadsWork()">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 3l12 12M15 3L3 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="hsw-body">
+      <div class="hsw-intro">
+        <span class="hsw-intro-text">Example of how a</span>
+        <div class="hsw-inp-wrap">
+          <input class="hsw-amount-inp" id="hsw-inp" type="text" value="$150,000"
+            oninput="onHSWInput(this.value)"
+            onfocus="onHSWFocus()"
+            onblur="onHSWBlur()">
+          <div class="hsw-err-msg" id="hsw-err">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="6.5" fill="#ef4444"/><path d="M6.5 3.5v4M6.5 9v.5" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Enter an amount higher than $10.
+          </div>
+        </div>
+        <span class="hsw-intro-text">trade prices under the spreads rule:</span>
+      </div>
+      <div class="hsw-grid" id="hsw-grid"></div>
+      <div class="hsw-summary">
+        <div class="hsw-summary-row">
+          <span class="hsw-summary-label">Effective rate</span>
+          <span class="hsw-summary-val" id="hsw-eff-rate">—</span>
+        </div>
+        <div class="hsw-summary-row">
+          <span class="hsw-summary-label">Total fee</span>
+          <span class="hsw-summary-val" id="hsw-total-fee">—</span>
+        </div>
+      </div>
+    </div>
+    <div class="hsw-footer">
+      <button class="hsw-got-it" onclick="closeHowSpreadsWork()">Got it</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>

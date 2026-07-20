@@ -760,6 +760,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 .pft-chip.pos{background:#e8effc;color:#3b6fe0;}
 .pft-chip.neg{background:#fff8eb;color:#d97706;}
 .pft-empty{padding:30px;text-align:center;font-size:13px;color:#9ca3af;background:#fff;border:1px solid #eef0f6;border-radius:14px;}
+/* ── Per-jurisdiction fees table (new Deposits/Withdrawals design) ── */
+.pft2-col-hdrs{display:grid;grid-template-columns:1.6fr 0.7fr 1fr 1fr 80px;gap:16px;padding:0 20px 10px;font-size:11.5px;font-weight:500;color:#9ca3af;letter-spacing:.02em;}
+.pft2-table{border:1.5px solid #e8eaf2;border-radius:14px;background:#fff;overflow:hidden;box-shadow:0 1px 3px rgba(16,24,40,.04);}
+.pft2-group+.pft2-group{border-top:1.5px solid #e8eaf2;}
+.pft2-row{display:grid;grid-template-columns:1.6fr 0.7fr 1fr 1fr 80px;gap:16px;align-items:center;padding:14px 20px;border-top:1px solid #f3f4f6;}
+.pft2-row-first{border-top:none;}
+.pft2-method-cell{display:flex;align-items:center;gap:10px;min-height:28px;}
+.pft2-method-name{font-size:13.5px;font-weight:600;color:#111827;}
+.pft2-jur-lbl{font-size:13px;color:#697baa;font-weight:500;}
+.pft2-fee-cell{display:flex;flex-direction:column;gap:5px;}
+.pft2-fee-box{width:auto !important;min-width:0 !important;}
+.pft2-pct-unit{font-size:13px;color:#9ca3af;flex-shrink:0;}
+.pft2-total-val{font-size:13.5px;font-weight:700;color:#111827;}
 /* ── How Spreads Work side panel ── */
 .hsw-overlay{position:fixed;inset:0;background:rgba(17,24,39,.4);z-index:2000;display:flex;justify-content:flex-end;opacity:0;pointer-events:none;transition:opacity .2s;}
 .hsw-overlay.open{opacity:1;pointer-events:all;}
@@ -1012,14 +1025,37 @@ let assetDropdownOpen = false;
 let assetSearchQuery  = '';
 
 // ── Plan fees tabs state (Deposits & Withdrawals) ──────────
-// Rows mirror the methods added on the Pricing tab's Limits section.
 const PLAN_FEES_JURIS = ['All', 'EEA', 'UK', 'US', 'RoW'];
-let planFees      = { deposits: {}, withdrawals: {} }; // working: {method: {jur,uFee,pFee}}
-let savedPlanFees = { deposits: {}, withdrawals: {} }; // committed (presence = row saved/read-only)
+// Per-method fixed jurisdictions
+const METHOD_JURIS = {
+  'Visa':                  ['EEA', 'US', 'UK', 'RoW'],
+  'Mastercard':            ['EEA', 'US', 'UK', 'RoW'],
+  'Apple Pay':             ['EEA', 'US', 'UK', 'RoW'],
+  'Google Pay':            ['EEA', 'US', 'UK', 'RoW'],
+  'PayPal':                ['US'],
+  'Bank transfer (ACH)':   ['US'],
+  'Bank transfer (FPS)':   ['UK'],
+  'Bank transfer (SEPA)':  ['EEA', 'UK'],
+  'Pix':                   ['RoW'],
+  'Venmo':                 ['US'],
+};
+// Base fee per jurisdiction (shown as total when user fees are 0)
+const JUR_BASE_FEE = {EEA: 0, US: 6, UK: 6, RoW: 6};
+// Default method lists for each fees tab
+const DEPOSITS_FEE_METHODS   = ['Mastercard', 'PayPal', 'Apple Pay', 'Google Pay', 'Bank transfer (SEPA)'];
+const WITHDRAWALS_FEE_METHODS = ['Mastercard', 'PayPal', 'Apple Pay', 'Google Pay', 'Bank transfer (SEPA)'];
+
+// Per-jurisdiction fee state: planFeesJurFees[kind][method][jur] = {uFee, pFee}
+let planFeesJurFees      = { deposits: {}, withdrawals: {} };
+let savedPlanFeesJurFees = { deposits: {}, withdrawals: {} };
+
+// Legacy state kept for dirty-check/save compatibility (unused by new render)
+let planFees      = { deposits: {}, withdrawals: {} };
+let savedPlanFees = { deposits: {}, withdrawals: {} };
 let planFeesDeleted      = { deposits: new Set(), withdrawals: new Set() };
 let savedPlanFeesDeleted = { deposits: new Set(), withdrawals: new Set() };
-let planFeesOpenDD  = { deposits: null, withdrawals: null };  // method whose jurisdiction dd is open
-let planFeesEditing = { deposits: new Set(), withdrawals: new Set() }; // saved rows reopened for edit
+let planFeesOpenDD  = { deposits: null, withdrawals: null };
+let planFeesEditing = { deposits: new Set(), withdrawals: new Set() };
 
 // ── Limits state (Pricing tab) ─────────────────────────────
 let limitsTradeMin = '';
@@ -1599,17 +1635,17 @@ function saveSpreadChanges() {
   }
   assetDropdownOpen = false;
   assetSearchQuery  = '';
-  // Commit plan fees (Deposits & Withdrawals tabs). A tab only flips
-  // to the read-only saved view if the user actually edited it.
+  // Commit plan fees (Deposits & Withdrawals tabs)
   for (const kind of ['deposits', 'withdrawals']) {
     if (planFeesKindDirty(kind)) {
-      for (const method of planFeesMethods(kind)) {
-        const e = planFees[kind][method] || { jur: null, uFee: '', pFee: '' };
-        savedPlanFees[kind][method] = { ...e };
+      savedPlanFeesJurFees[kind] = {};
+      for (const method in planFeesJurFees[kind]) {
+        savedPlanFeesJurFees[kind][method] = {};
+        for (const jur in planFeesJurFees[kind][method]) {
+          savedPlanFeesJurFees[kind][method][jur] = { ...planFeesJurFees[kind][method][jur] };
+        }
       }
-      savedPlanFeesDeleted[kind] = new Set(planFeesDeleted[kind]);
     }
-    planFeesEditing[kind].clear();
     planFeesOpenDD[kind] = null;
   }
   document.getElementById('save-bar-spread').classList.remove('visible');
@@ -1633,10 +1669,13 @@ function discardSpreadChanges() {
   assetSearchQuery    = '';
   // Reset plan fees tabs back to last saved state
   for (const kind of ['deposits', 'withdrawals']) {
-    planFees[kind] = {};
-    for (const m in savedPlanFees[kind]) planFees[kind][m] = { ...savedPlanFees[kind][m] };
-    planFeesDeleted[kind] = new Set(savedPlanFeesDeleted[kind]);
-    planFeesEditing[kind].clear();
+    planFeesJurFees[kind] = {};
+    for (const method in savedPlanFeesJurFees[kind]) {
+      planFeesJurFees[kind][method] = {};
+      for (const jur in savedPlanFeesJurFees[kind][method]) {
+        planFeesJurFees[kind][method][jur] = { ...savedPlanFeesJurFees[kind][method][jur] };
+      }
+    }
     planFeesOpenDD[kind] = null;
   }
   renderDepositsTab();
@@ -2494,34 +2533,46 @@ function planFeesEntry(kind, method) {
 function planFeesDirtyCount() {
   let n = 0;
   for (const kind of ['deposits', 'withdrawals']) {
-    for (const method in planFees[kind]) {
-      if (planFeesDeleted[kind].has(method)) continue;
-      const e = planFees[kind][method];
-      const s = savedPlanFees[kind][method] || { jur: [], uFee: '', pFee: '' };
-      if ((e.jur||[]).slice().sort().join(',') !== (Array.isArray(s.jur)?s.jur:[]).slice().sort().join(',')) n++;
-      if ((parseInt(e.uFee) || 0) !== (parseInt(s.uFee) || 0)) n++;
-      if ((parseInt(e.pFee) || 0) !== (parseInt(s.pFee) || 0)) n++;
-    }
-    for (const m of planFeesDeleted[kind]) {
-      if (!savedPlanFeesDeleted[kind].has(m)) n++;
+    const methods = kind === 'deposits' ? DEPOSITS_FEE_METHODS : WITHDRAWALS_FEE_METHODS;
+    for (const method of methods) {
+      const juris = METHOD_JURIS[method] || [];
+      for (const jur of juris) {
+        const cur = ((planFeesJurFees[kind][method] || {})[jur]) || {uFee:'', pFee:''};
+        const sav = ((savedPlanFeesJurFees[kind][method] || {})[jur]) || {uFee:'', pFee:''};
+        if ((parseInt(cur.uFee)||0) !== (parseInt(sav.uFee)||0)) n++;
+        if ((parseInt(cur.pFee)||0) !== (parseInt(sav.pFee)||0)) n++;
+      }
     }
   }
   return n;
 }
 
 function planFeesKindDirty(kind) {
-  for (const method in planFees[kind]) {
-    if (planFeesDeleted[kind].has(method)) continue;
-    const e = planFees[kind][method];
-    const s = savedPlanFees[kind][method] || { jur: [], uFee: '', pFee: '' };
-    if ((e.jur||[]).slice().sort().join(',') !== (Array.isArray(s.jur)?s.jur:[]).slice().sort().join(',')) return true;
-    if ((parseInt(e.uFee) || 0) !== (parseInt(s.uFee) || 0)) return true;
-    if ((parseInt(e.pFee) || 0) !== (parseInt(s.pFee) || 0)) return true;
-  }
-  for (const m of planFeesDeleted[kind]) {
-    if (!savedPlanFeesDeleted[kind].has(m)) return true;
+  const methods = kind === 'deposits' ? DEPOSITS_FEE_METHODS : WITHDRAWALS_FEE_METHODS;
+  for (const method of methods) {
+    const juris = METHOD_JURIS[method] || [];
+    for (const jur of juris) {
+      const cur = ((planFeesJurFees[kind][method] || {})[jur]) || {uFee:'', pFee:''};
+      const sav = ((savedPlanFeesJurFees[kind][method] || {})[jur]) || {uFee:'', pFee:''};
+      if ((parseInt(cur.uFee)||0) !== (parseInt(sav.uFee)||0)) return true;
+      if ((parseInt(cur.pFee)||0) !== (parseInt(sav.pFee)||0)) return true;
+    }
   }
   return false;
+}
+
+function planFeesSetJurFee(kind, method, jur, field, val) {
+  if (!planFeesJurFees[kind][method]) planFeesJurFees[kind][method] = {};
+  if (!planFeesJurFees[kind][method][jur]) planFeesJurFees[kind][method][jur] = {uFee:'', pFee:''};
+  const entry = planFeesJurFees[kind][method][jur];
+  entry[field] = field === 'pFee'
+    ? val.replace(/[^0-9-]/g,'').replace(/(?!^)-/g,'')
+    : val.replace(/[^0-9]/g,'');
+  const base  = JUR_BASE_FEE[jur] || 0;
+  const tot   = base + (parseInt(entry.uFee)||0) + (parseInt(entry.pFee)||0);
+  const totEl = document.getElementById('pft2-tot-' + kind + '-' + method.replace(/[^a-zA-Z0-9]/g,'_') + '-' + jur);
+  if (totEl) totEl.textContent = tot + ' %';
+  updateChangesUI();
 }
 
 function planFeesToggleDD(kind, method, e) {
@@ -2582,82 +2633,47 @@ function renderPlanFeesTab(kind) {
 
   const railsOn = kind === 'deposits' ? depositsLimitRailsOn : withdrawalsLimitRailsOn;
   const noun    = kind === 'deposits' ? 'Deposits' : 'Withdrawals';
-  const methods = planFeesMethods(kind);
+  const methods = kind === 'deposits' ? DEPOSITS_FEE_METHODS : WITHDRAWALS_FEE_METHODS;
+  const infoSVG = `<svg class="info-icon" width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.8" stroke="#9ca3af" stroke-width="1.2"/><path d="M7 6.5v3M7 5v.5" stroke="#9ca3af" stroke-width="1.3" stroke-linecap="round"/></svg>`;
 
-  const pctSVG   = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M11.5 2.5l-9 9" stroke="#35415f" stroke-width="1.4" stroke-linecap="round"/><circle cx="3.8" cy="3.8" r="1.7" stroke="#35415f" stroke-width="1.3"/><circle cx="10.2" cy="10.2" r="1.7" stroke="#35415f" stroke-width="1.3"/></svg>`;
-  const trashSVG = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 4h9M5.5 4V2.5h3V4M5 4l.5 8h3l.5-8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-  const chevSVG  = `<svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#9ca3af" stroke-width="1.4" stroke-linecap="round"/></svg>`;
-  const infoSVG  = `<svg class="info-icon" width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.8" stroke="#9ca3af" stroke-width="1.2"/><path d="M7 6.5v3M7 5v.5" stroke="#9ca3af" stroke-width="1.3" stroke-linecap="round"/></svg>`;
+  let groupsHtml = '';
+  methods.forEach((method, mIdx) => {
+    const juris      = METHOD_JURIS[method] || [];
+    const icon       = `<div class="pft-method-icon">${limMethodIcon(method)}</div>`;
+    const methodFees = planFeesJurFees[kind][method] || {};
 
-  let rows = '';
-  if (!methods.length) {
-    rows = `<div class="pft-empty">No methods added yet. Add payment methods on the Pricing tab's Limits section to configure fees here.</div>`;
-  }
-  methods.forEach(method => {
-    const id     = method.replace(/[^a-zA-Z0-9]/g, '_');
-    const saved  = savedPlanFees[kind][method];
-    const isEdit = !saved || planFeesEditing[kind].has(method);
-    const icon   = `<div class="pft-method-icon">${limMethodIcon(method)}</div>`;
-
-    if (isEdit) {
-      const entry  = planFeesEntry(kind, method);
-      const tot    = (parseInt(entry.uFee) || 0) + (parseInt(entry.pFee) || 0);
-      const ddOpen = planFeesOpenDD[kind] === method;
-      const jurArr = entry.jur || [];
-      const jurLabel = jurArr.length === 0 ? null : jurArr.length === PLAN_FEES_JURIS.length ? 'All' : jurArr.join(', ');
-      const chkOnSVG2  = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect width="18" height="18" rx="4" fill="#49CC68"/><path d="M4.5 9l3.5 3.5 5.5-6" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-      const chkOffSVG2 = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x=".75" y=".75" width="16.5" height="16.5" rx="3.25" stroke="#d1d5db" stroke-width="1.5"/></svg>`;
-      rows += `
-      <div class="pft-card"><div class="pft-row">
-        <div class="pft-method">${icon}<span>${method}</span></div>
-        <div class="pft-cell">
-          <div class="pft-dd-wrap">
-            <button class="pft-dd-trigger${ddOpen ? ' open' : ''}" onclick="planFeesToggleDD('${kind}','${method}',event)">
-              <span class="${jurLabel ? '' : 'pft-ph'}" style="overflow:hidden;text-overflow:ellipsis;">${jurLabel || 'Select'}</span>
-              ${chevSVG}
-            </button>
-            <div class="pft-dd-list${ddOpen ? ' open' : ''}">
-              ${PLAN_FEES_JURIS.map(j => {
-                const sel = jurArr.includes(j);
-                return `<div class="pft-dd-opt" onclick="planFeesToggleJur('${kind}','${method.replace(/'/g,"\\'")}','${j}',event)">
-                  <span>${j}</span>
-                  <span class="pft-dd-opt-chk">${sel ? chkOnSVG2 : chkOffSVG2}</span>
-                </div>`;
-              }).join('')}
+    let rowsHtml = '';
+    juris.forEach((jur, jIdx) => {
+      const fees  = methodFees[jur] || {uFee:'', pFee:''};
+      const base  = JUR_BASE_FEE[jur] || 0;
+      const tot   = base + (parseInt(fees.uFee)||0) + (parseInt(fees.pFee)||0);
+      const totId = 'pft2-tot-' + kind + '-' + method.replace(/[^a-zA-Z0-9]/g,'_') + '-' + jur;
+      const mKey  = method.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+      rowsHtml += `
+        <div class="pft2-row${jIdx > 0 ? '' : ' pft2-row-first'}">
+          <div class="pft2-method-cell">
+            ${jIdx === 0 ? `${icon}<span class="pft2-method-name">${method}</span>` : ''}
+          </div>
+          <div class="pft2-jur-lbl">${jur}</div>
+          <div class="pft2-fee-cell">
+            <div class="pft-fee-box pft2-fee-box">
+              <input class="pft-fee-inp" type="text" value="${fees.uFee}" placeholder="0"
+                oninput="planFeesSetJurFee('${kind}','${mKey}','${jur}','uFee',this.value)">
+              <span class="pft2-pct-unit">%</span>
             </div>
           </div>
-        </div>
-        <div class="pft-cell">
-          <div class="pft-fee-box">
-            <input class="pft-fee-inp" type="text" value="${entry.uFee}" placeholder="0" oninput="planFeesSetFee('${kind}','${method}','uFee',this.value)">
-            ${pctSVG}
+          <div class="pft2-fee-cell">
+            <div class="pft-fee-box pft2-fee-box">
+              <input class="pft-fee-inp" type="text" value="${fees.pFee}" placeholder="0"
+                oninput="planFeesSetJurFee('${kind}','${mKey}','${jur}','pFee',this.value)">
+              <span class="pft2-pct-unit">%</span>
+            </div>
+            <span class="pft-minmax">Min 1% - Max 100%</span>
           </div>
-          <span class="pft-minmax">Min 1% - Max 100%</span>
-        </div>
-        <div class="pft-cell">
-          <div class="pft-fee-box">
-            <input class="pft-fee-inp" type="text" value="${entry.pFee}" placeholder="0" oninput="planFeesSetFee('${kind}','${method}','pFee',this.value)">
-            ${pctSVG}
-          </div>
-        </div>
-        <div class="pft-total" id="pft-total-${kind}-${id}">${tot} %</div>
-        <button class="pft-del-btn" onclick="planFeesDeleteRow('${kind}','${method}',event)">${trashSVG}</button>
-      </div></div>`;
-    } else {
-      const uFee    = parseInt(saved.uFee) || 0;
-      const pFee    = parseInt(saved.pFee) || 0;
-      const chipCls = pFee > 0 ? ' pos' : pFee < 0 ? ' neg' : '';
-      const chipLbl = pFee < 0 ? `− ${Math.abs(pFee)} %` : `+ ${pFee} %`;
-      rows += `
-      <div class="pft-card pft-card-saved" onclick="planFeesEditRow('${kind}','${method}')"><div class="pft-row">
-        <div class="pft-method">${icon}<span>${method}</span></div>
-        <div class="pft-cell"><span class="pft-display${saved.jur && (Array.isArray(saved.jur) ? saved.jur.length > 0 : true) ? '' : ' ph'}">${Array.isArray(saved.jur) ? (saved.jur.length === PLAN_FEES_JURIS.length ? 'All' : saved.jur.join(', ') || 'Select') : (saved.jur || 'Select')}</span></div>
-        <div class="pft-cell"><span class="pft-display">${uFee} %</span></div>
-        <div class="pft-cell"><span class="pft-chip${chipCls}">${chipLbl}</span></div>
-        <div class="pft-total">${uFee + pFee} %</div>
-        <div></div>
-      </div></div>`;
-    }
+          <div class="pft2-total-val" id="${totId}">${tot} %</div>
+        </div>`;
+    });
+    groupsHtml += `<div class="pft2-group">${rowsHtml}</div>`;
   });
 
   el.innerHTML = `
@@ -2672,10 +2688,10 @@ function renderPlanFeesTab(kind) {
         </label>
       </div>
     </div>
-    <div class="pft-col-hdrs">
-      <div>Method</div><div>Jurisdiction</div><div>Uphold fee</div><div>Partner fee</div><div>Total</div><div></div>
+    <div class="pft2-col-hdrs">
+      <div>Method</div><div>Jurisdiction</div><div>Uphold fee</div><div>Partner fee</div><div>Total</div>
     </div>
-    ${rows}`;
+    <div class="pft2-table">${groupsHtml}</div>`;
 }
 
 function renderDepositsTab()    { renderPlanFeesTab('deposits'); }

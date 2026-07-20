@@ -226,38 +226,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 .tier-hdr-label{font-size:10.5px;font-weight:500;color:#9ca3af;display:block;margin-bottom:3px}
 .tier-hdr-val{font-size:13px;font-weight:700;color:#1d2738}
 
-/* Tier header interactive */
-.col-hdr-tier{position:relative;padding:14px 20px;font-size:11.5px;text-align:left;border-bottom:1px solid #e8eaf2;background:#f8f9fb;white-space:nowrap;min-width:190px}
+/* Tier header */
+.col-hdr-tier{padding:14px 20px;font-size:11.5px;text-align:left;border-bottom:1px solid #e8eaf2;background:#f8f9fb;white-space:nowrap;min-width:190px}
 .col-hdr-tier .tier-hdr-content{display:flex;flex-direction:column;gap:2px}
-.col-hdr-tier .tier-hdr-actions{position:absolute;inset:0;display:none;align-items:center;justify-content:center;gap:6px;background:rgba(248,249,251,.95);border-radius:0;pointer-events:all}
-.col-hdr-tier:hover:not(.editing) .tier-hdr-actions{display:flex}
-.tier-hdr-actions button{pointer-events:auto}
-.tier-edit-pill{background:#22c55e;color:#fff;border:none;border-radius:20px;padding:5px 16px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .12s}
-.tier-edit-pill:hover{background:#16a34a}
-.col-hdr-tier.editing{background:#fff;z-index:3}
-.tier-hdr-edit{display:flex;flex-direction:column;gap:5px}
-.tier-hdr-edit-label{font-size:10.5px;font-weight:600;color:#697BAA}
-.tier-hdr-input-row{display:flex;align-items:center;border:1.5px solid #22c55e;border-radius:7px;padding:3px 9px;background:#fff;box-shadow:0 0 0 3px rgba(34,197,94,.1);gap:3px;height:32px;flex:1;min-width:0}
-.tier-range-sep{font-size:13px;color:#9ca3af;flex-shrink:0;font-weight:500}
-.tier-hdr-inp-dollar{font-size:12.5px;color:#374151;font-weight:500;flex-shrink:0}
-.tier-hdr-inp{border:none;outline:none;font-size:12.5px;font-weight:600;color:#111827;font-family:inherit;flex:1;min-width:0;width:70px;background:transparent;-moz-appearance:textfield}
-.tier-hdr-inp::-webkit-outer-spin-button,.tier-hdr-inp::-webkit-inner-spin-button{-webkit-appearance:none}
-.tier-hdr-input-row.error{border-color:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.1)}
-.tier-err-msg{display:flex;align-items:center;gap:4px;margin-top:5px;font-size:11px;color:#ef4444;font-weight:500;line-height:1.35}
-.col-hdr-tier.has-error .tier-hdr-label,.col-hdr-tier.has-error .tier-hdr-edit-label{color:#ef4444}
-.col-hdr-tier.has-error .tier-hdr-val{color:#ef4444}
-.tier-delete-btn{width:26px;height:26px;border-radius:50%;background:#e1e3ef;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#35415f;transition:background .15s;flex-shrink:0}
-.tier-delete-btn:hover{background:#fce4e4;color:#dc2626}
-.tier-add-btn{width:26px;height:26px;border-radius:50%;background:#dcfce7;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#16a34a;transition:background .15s;flex-shrink:0}
-.tier-add-btn:hover{background:#bbf7d0}
-.del-tier-modal{background:#fff;border-radius:20px;width:420px;max-width:90vw;padding:28px 32px;box-shadow:0 20px 60px rgba(0,0,0,.15)}
-.del-tier-modal-title{font-size:18px;font-weight:700;color:#1d2738;margin-bottom:12px}
-.del-tier-modal-body{font-size:14px;color:#4b5563;line-height:1.6;margin-bottom:24px}
-.del-tier-modal-ftr{display:flex;justify-content:flex-end;gap:12px}
-.modal-btn-cancel{background:#fff;border:1.5px solid #e5e7eb;border-radius:9999px;padding:9px 24px;font-size:13.5px;font-weight:600;color:#374151;cursor:pointer;font-family:inherit;transition:background .12s}
-.modal-btn-cancel:hover{background:#f9fafb}
-.modal-btn-delete{background:#ef4444;border:none;border-radius:9999px;padding:9px 24px;font-size:13.5px;font-weight:600;color:#fff;cursor:pointer;font-family:inherit;transition:background .12s}
-.modal-btn-delete:hover{background:#dc2626}
 .asset-th{display:flex;align-items:center;gap:5px}
 .spread-table td{padding:0;vertical-align:middle;border-bottom:1px solid #f0f2fa}
 .spread-table tr:last-child td{border-bottom:none}
@@ -569,18 +540,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
   </div>
 </div>
 
-<!-- Delete tier modal -->
-<div id="delete-tier-modal" style="position:fixed;inset:0;z-index:9100;background:rgba(107,114,128,.5);display:none;align-items:center;justify-content:center" onclick="if(event.target===this)closeDeleteTierModal()">
-  <div class="del-tier-modal" onclick="event.stopPropagation()">
-    <div class="del-tier-modal-title">Delete ticket size tier</div>
-    <div class="del-tier-modal-body">Are you sure you want to delete the <strong id="del-tier-range-label"></strong> tier? Range values will be distributed among the other tiers.</div>
-    <div class="del-tier-modal-ftr">
-      <button class="modal-btn-cancel" onclick="closeDeleteTierModal()">Cancel</button>
-      <button class="modal-btn-delete" onclick="confirmDeleteTier()">Delete tier</button>
-    </div>
-  </div>
-</div>
-
 <!-- Log detail modal -->
 <div id="log-modal-overlay" onclick="handleLogOverlayClick(event)">
   <div class="log-modal-card">
@@ -615,11 +574,6 @@ let draftFee = 6;     // current editing value
 let absorbAll = false; // toggle state
 let tierThresholds = [10000, 50000, 100000, 500000];
 let savedTierThresholds = [10000, 50000, 100000, 500000];
-let pendingTierEdits = {};
-let pendingTierDeletions = new Set();
-let deletingTierIdx = null;
-const MAX_TIERS = 5;
-let editingTierIdx = null;
 
 /* ── Feedback widget state ── */
 // Google Form submit endpoint (no auth required — works from any origin)
@@ -1267,13 +1221,13 @@ function setAssetSearch(val) {
 
 /* ── Plan details screen ── */
 function renderPlanDetails() {
-  // Build tier headers dynamically from visible tiers
-  const visible = visibleTierIndices();
+  // Build tier headers dynamically from tier thresholds
+  const visible = tierThresholds.map((_, i) => i);
   const thead = `
     <tr>
       <th><span class="asset-th">Assets</span></th>
       ${visible.map((thIdx, vi) => renderTierHeader(thIdx, vi, visible)).join('')}
-      ${renderGtHeader(visible)}
+      ${renderGtHeader()}
     </tr>`;
 
   function cell(baseBps, partnerBps) {
@@ -1373,262 +1327,30 @@ function renderPlanDetails() {
 function fmtDollar(n) {
   return '$' + n.toLocaleString('en-US');
 }
-function effectiveThreshold(i) {
-  return pendingTierEdits[i] !== undefined ? pendingTierEdits[i] : tierThresholds[i];
-}
-function visibleTierIndices() {
-  const r = [];
-  for (let i = 0; i < tierThresholds.length; i++) {
-    if (!pendingTierDeletions.has(i)) r.push(i);
-  }
-  return r;
-}
-function isTierConflicting(thIdx) {
-  const v = effectiveThreshold(thIdx);
-  const visible = visibleTierIndices();
-  const vi = visible.indexOf(thIdx);
-  if (vi < 0) return false;
-  if (v <= 0) return true;
-  if (vi > 0 && v <= effectiveThreshold(visible[vi - 1])) return true;
-  return false;
-}
-function hasTierErrors() {
-  return visibleTierIndices().some(i => pendingTierEdits[i] !== undefined && isTierConflicting(i));
-}
-function tiersAreDirty() {
-  if (pendingTierDeletions.size > 0) return true;
-  if (tierThresholds.length !== savedTierThresholds.length) return true;
-  if (tierThresholds.some((v, i) => v !== savedTierThresholds[i])) return true;
-  for (const k in pendingTierEdits) {
-    if (pendingTierEdits[k] !== savedTierThresholds[parseInt(k)]) return true;
-  }
-  return false;
-}
 function isOverallDirty() {
-  return draftFee !== partnerFee || tiersAreDirty() || methodFeesDirty('deposits') || methodFeesDirty('withdrawals');
+  return draftFee !== partnerFee || methodFeesDirty('deposits') || methodFeesDirty('withdrawals');
 }
 
-function renderTierHeader(thIdx, vi, visible) {
-  const canDelete = visible.length > 1;
-  const canAdd = visible.length < MAX_TIERS - 1;
-  const hasError = pendingTierEdits[thIdx] !== undefined && isTierConflicting(thIdx);
-  const errIcon = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="6" fill="#ef4444"/><path d="M6 3v4M6 8.5v.5" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></svg>`;
-  const addBtn = `<button class="tier-add-btn" onmousedown="addTierAt(${thIdx},event)" title="Add tier">
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-  </button>`;
-  const delBtn = canDelete ? `<button class="tier-delete-btn" onclick="deleteTier(${thIdx},event)" title="Remove tier">
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1.5 3h9M4 3V2h4v1M3.5 3l.5 7h4l.5-7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </button>` : '';
-
-  if (editingTierIdx === thIdx) {
-    const val = effectiveThreshold(thIdx);
-    const prevThIdx = vi > 0 ? visible[vi - 1] : null;
-    const prevVal = prevThIdx !== null ? effectiveThreshold(prevThIdx) : null;
-    const errMsg = val <= 0 ? 'Enter an amount higher than zero.' : 'Adjust conflicting amount.';
-    return `<th class="col-hdr-tier editing${hasError?' has-error':''}" id="col-hdr-${thIdx}">
-      <div class="tier-hdr-edit">
-        <span class="tier-hdr-edit-label">${vi === 0 ? 'First' : 'Next'}</span>
-        <div style="display:flex;align-items:center;gap:6px">
-          ${vi > 0 ? `
-          <div class="tier-hdr-input-row" data-role="tier-min-row">
-            <span class="tier-hdr-inp-dollar">$</span>
-            <input class="tier-hdr-inp" id="tier-inp-min-${thIdx}" type="number" value="${prevVal > 0 ? prevVal : ''}"
-              oninput="onTierMinInput(${thIdx},${prevThIdx},this.value)"
-              onblur="onTierBlur(${thIdx},event)"
-              onkeydown="if(event.key==='Enter')this.blur();if(event.key==='Escape'){cancelTierEdit(${thIdx},${prevThIdx});this.blur()}">
-          </div>
-          <span class="tier-range-sep">-</span>
-          ` : ''}
-          <div class="tier-hdr-input-row${hasError?' error':''}" data-role="tier-max-row" id="tier-inp-row-${thIdx}">
-            <span class="tier-hdr-inp-dollar">$</span>
-            <input class="tier-hdr-inp" id="tier-inp-${thIdx}" type="number" value="${val > 0 ? val : ''}"
-              oninput="onTierInput(${thIdx},this.value)"
-              onblur="onTierBlur(${thIdx},event)"
-              onkeydown="if(event.key==='Enter')this.blur();if(event.key==='Escape'){cancelTierEdit(${thIdx},${prevThIdx});this.blur()}">
-          </div>
-          ${canAdd ? addBtn : ''}
-        </div>
-        ${hasError ? `<div class="tier-err-msg" id="tier-err-${thIdx}">${errIcon}<span>${errMsg}</span></div>` : `<div class="tier-err-msg" id="tier-err-${thIdx}" style="display:none"></div>`}
-      </div>
-    </th>`;
-  }
-
-  let label, valText;
-  if (vi === 0) {
-    label = 'First'; valText = fmtDollar(effectiveThreshold(thIdx));
-  } else {
-    label = 'Next'; valText = fmtDollar(effectiveThreshold(thIdx));
-  }
-  return `<th class="col-hdr-tier${hasError?' has-error':''}" id="col-hdr-${thIdx}">
+function renderTierHeader(thIdx, vi) {
+  const label = vi === 0 ? 'First' : 'Next';
+  const valText = fmtDollar(tierThresholds[thIdx]);
+  return `<th class="col-hdr-tier" id="col-hdr-${thIdx}">
     <div class="tier-hdr-content">
       <span class="tier-hdr-label">${label}${vi === 0 ? `<span class="tooltip-wrap" onmouseenter="showTip(event,'${pfeeTooltip}')" onmouseleave="hideTip()" style="margin-left:4px">${infoSVG}</span>` : ''}</span>
       <span class="tier-hdr-val">${valText}</span>
     </div>
-    <div class="tier-hdr-actions">
-      <button class="tier-edit-pill" onclick="editTier(${thIdx},event)">Edit</button>
-      ${delBtn}
-      ${canAdd ? addBtn : ''}
-    </div>
   </th>`;
 }
 
-function renderGtHeader(visible) {
+function renderGtHeader() {
   const gtTooltip = "Automatically set to your highest tier upper limit. Any amount above that uses this value.";
-  const gtVal = visible.length > 0 ? Math.max(...visible.map(i => effectiveThreshold(i))) : 0;
+  const gtVal = tierThresholds.length > 0 ? Math.max(...tierThresholds) : 0;
   return `<th class="col-hdr-tier" id="col-hdr-gt">
     <div class="tier-hdr-content">
       <span class="tier-hdr-label">Above <span class="tooltip-wrap" onmouseenter="showTip(event,'${gtTooltip}')" onmouseleave="hideTip()" style="margin-left:2px">${infoSVG}</span></span>
       <span class="tier-hdr-val" id="gt-val">${fmtDollar(gtVal)}</span>
     </div>
   </th>`;
-}
-
-function editTier(thIdx, e) {
-  e.stopPropagation();
-  editingTierIdx = thIdx;
-  render();
-  setTimeout(() => { const inp = document.getElementById('tier-inp-' + thIdx); if (inp) { inp.focus(); inp.select(); } }, 0);
-}
-
-function onTierInput(thIdx, rawVal) {
-  const n = parseInt(rawVal, 10);
-  pendingTierEdits[thIdx] = (!isNaN(n) && n > 0) ? n : 0;
-  const hdr = document.getElementById('col-hdr-' + thIdx);
-  const hasError = isTierConflicting(thIdx);
-  if (hdr) hdr.classList.toggle('has-error', hasError);
-  // Error only on the max (right) input row
-  const maxRow = hdr ? hdr.querySelector('[data-role="tier-max-row"]') : null;
-  if (maxRow) maxRow.classList.toggle('error', hasError);
-  const minRow = hdr ? hdr.querySelector('[data-role="tier-min-row"]') : null;
-  if (minRow) minRow.classList.remove('error');
-  const errEl = document.getElementById('tier-err-' + thIdx);
-  if (errEl) {
-    if (hasError) {
-      const errIcon = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="6" fill="#ef4444"/><path d="M6 3v4M6 8.5v.5" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></svg>`;
-      const errMsg = (pendingTierEdits[thIdx] || 0) <= 0 ? 'Enter an amount higher than zero.' : 'Adjust conflicting amount.';
-      errEl.innerHTML = `${errIcon}<span>${errMsg}</span>`;
-      errEl.style.display = 'flex';
-    } else {
-      errEl.style.display = 'none';
-    }
-  }
-  updateGtHeader();
-  updateActionBar();
-}
-
-function onTierMinInput(thIdx, prevThIdx, rawVal) {
-  const n = parseInt(rawVal, 10);
-  pendingTierEdits[prevThIdx] = (!isNaN(n) && n > 0) ? n : 0;
-  const hdr = document.getElementById('col-hdr-' + thIdx);
-  const hasError = isTierConflicting(thIdx);
-  if (hdr) hdr.classList.toggle('has-error', hasError);
-  const maxRow = hdr ? hdr.querySelector('[data-role="tier-max-row"]') : null;
-  if (maxRow) maxRow.classList.toggle('error', hasError);
-  const minRow = hdr ? hdr.querySelector('[data-role="tier-min-row"]') : null;
-  if (minRow) minRow.classList.remove('error');
-  const errEl = document.getElementById('tier-err-' + thIdx);
-  if (errEl) {
-    if (hasError) {
-      const errIcon = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="6" fill="#ef4444"/><path d="M6 3v4M6 8.5v.5" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></svg>`;
-      errEl.innerHTML = `${errIcon}<span>Adjust conflicting amount.</span>`;
-      errEl.style.display = 'flex';
-    } else {
-      errEl.style.display = 'none';
-    }
-  }
-  updateGtHeader();
-  updateActionBar();
-}
-
-function onTierBlur(thIdx, e) {
-  const rel = e && e.relatedTarget;
-  const col = document.getElementById('col-hdr-' + thIdx);
-  if (rel && col && col.contains(rel)) return; // focus stayed within this tier column
-  // Commit valid max pending edit
-  const maxN = pendingTierEdits[thIdx];
-  if (maxN !== undefined && maxN > 0 && !isTierConflicting(thIdx)) {
-    tierThresholds[thIdx] = maxN;
-  }
-  delete pendingTierEdits[thIdx];
-  // Commit valid min pending edit (prev tier)
-  const visible = visibleTierIndices();
-  const vi = visible.indexOf(thIdx);
-  if (vi > 0) {
-    const prevThIdx = visible[vi - 1];
-    const minN = pendingTierEdits[prevThIdx];
-    if (minN !== undefined && minN > 0 && !isTierConflicting(prevThIdx)) {
-      tierThresholds[prevThIdx] = minN;
-    }
-    delete pendingTierEdits[prevThIdx];
-  }
-  editingTierIdx = null;
-  render();
-  updateActionBar();
-}
-
-function cancelTierEdit(thIdx, prevThIdx) {
-  delete pendingTierEdits[thIdx];
-  if (prevThIdx !== undefined) delete pendingTierEdits[prevThIdx];
-  editingTierIdx = null;
-}
-
-function updateGtHeader() {
-  const visible = visibleTierIndices();
-  const gtVal = visible.length > 0 ? Math.max(...visible.map(i => effectiveThreshold(i))) : 0;
-  const el = document.getElementById('gt-val');
-  if (el && el.childNodes[0]) el.childNodes[0].textContent = fmtDollar(gtVal) + ' ';
-}
-
-/* ── Tier delete ── */
-function deleteTier(thIdx, e) {
-  e.stopPropagation();
-  const visible = visibleTierIndices();
-  if (visible.length <= 1) return;
-  const vi = visible.indexOf(thIdx);
-  const rangeLabel = vi === 0
-    ? 'Less than ' + fmtDollar(effectiveThreshold(thIdx))
-    : fmtDollar(effectiveThreshold(visible[vi - 1])) + ' – ' + fmtDollar(effectiveThreshold(thIdx));
-  deletingTierIdx = thIdx;
-  document.getElementById('del-tier-range-label').textContent = rangeLabel;
-  document.getElementById('delete-tier-modal').style.display = 'flex';
-}
-function confirmDeleteTier() {
-  if (deletingTierIdx === null) return;
-  const idx = deletingTierIdx;
-  pendingTierDeletions.add(idx);
-  delete pendingTierEdits[idx];
-  deletingTierIdx = null;
-  document.getElementById('delete-tier-modal').style.display = 'none';
-  editingTierIdx = null;
-  render();
-  updateActionBar();
-}
-function closeDeleteTierModal() {
-  deletingTierIdx = null;
-  document.getElementById('delete-tier-modal').style.display = 'none';
-}
-
-/* ── Tier add ── */
-function addTierAt(beforeIdx, e) {
-  e.stopPropagation();
-  e.preventDefault();
-  if (visibleTierIndices().length >= MAX_TIERS - 1) return;
-  tierThresholds.splice(beforeIdx, 0, 0);
-  const shiftedEdits = {};
-  for (const k in pendingTierEdits) {
-    const idx = parseInt(k);
-    shiftedEdits[idx < beforeIdx ? idx : idx + 1] = pendingTierEdits[k];
-  }
-  pendingTierEdits = shiftedEdits;
-  const shiftedDels = new Set();
-  for (const idx of pendingTierDeletions) {
-    shiftedDels.add(idx < beforeIdx ? idx : idx + 1);
-  }
-  pendingTierDeletions = shiftedDels;
-  pendingTierEdits[beforeIdx] = 0;
-  editingTierIdx = beforeIdx;
-  render();
-  setTimeout(() => { const inp = document.getElementById('tier-inp-' + beforeIdx); if (inp) { inp.focus(); inp.select(); } }, 0);
 }
 
 /* ── Partner fee editing ── */
@@ -1693,37 +1415,12 @@ function updateActionBar() {
   const dirty = isOverallDirty();
   bar.style.display = dirty ? 'flex' : 'none';
   const countEl = document.getElementById('ab-change-count');
-  if (countEl) {
-    let n = 0;
-    if (draftFee !== partnerFee) n++;
-    n += pendingTierDeletions.size;
-    if (tierThresholds.length !== savedTierThresholds.length) n += Math.abs(tierThresholds.length - savedTierThresholds.length);
-    else {
-      tierThresholds.forEach((v, i) => { if (v !== savedTierThresholds[i]) n++; });
-      for (const k in pendingTierEdits) { if (pendingTierEdits[k] !== savedTierThresholds[parseInt(k)]) n++; }
-    }
-    for (const kind of ['deposits', 'withdrawals']) {
-      FEES_ROWS[kind].forEach(r => { if (draftMethodFees[kind][r.key] !== savedMethodFees[kind][r.key]) n++; });
-    }
-    countEl.textContent = 'Unsaved changes';
-  }
-  // Block save if there are tier validation errors
-  const saveBtn = document.querySelector('.ab-save');
-  if (saveBtn) {
-    const errors = hasTierErrors();
-    saveBtn.disabled = errors;
-    saveBtn.style.opacity = errors ? '0.45' : '';
-    saveBtn.style.cursor = errors ? 'not-allowed' : '';
-  }
+  if (countEl) countEl.textContent = 'Unsaved changes';
 }
 
 function discardChanges() {
   draftFee = partnerFee;
   absorbAll = false;
-  tierThresholds = [...savedTierThresholds];
-  pendingTierEdits = {};
-  pendingTierDeletions = new Set();
-  editingTierIdx = null;
   for (const kind of ['deposits', 'withdrawals']) {
     FEES_ROWS[kind].forEach(r => { draftMethodFees[kind][r.key] = savedMethodFees[kind][r.key]; });
     editingMethodRow[kind] = null;
@@ -1746,18 +1443,6 @@ function handleModalOverlayClick(e) {
 
 function confirmSave() {
   partnerFee = draftFee;
-  // Commit any remaining pending edits
-  for (const k in pendingTierEdits) {
-    const n = pendingTierEdits[k];
-    if (n > 0) tierThresholds[parseInt(k)] = n;
-  }
-  pendingTierEdits = {};
-  // Commit pending deletions (remove in descending order to preserve indices)
-  const toDelete = Array.from(pendingTierDeletions).sort((a, b) => b - a);
-  for (const idx of toDelete) tierThresholds.splice(idx, 1);
-  pendingTierDeletions = new Set();
-  savedTierThresholds = [...tierThresholds];
-  editingTierIdx = null;
   for (const kind of ['deposits', 'withdrawals']) {
     FEES_ROWS[kind].forEach(r => { savedMethodFees[kind][r.key] = draftMethodFees[kind][r.key]; });
     editingMethodRow[kind] = null;

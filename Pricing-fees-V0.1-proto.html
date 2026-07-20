@@ -2828,7 +2828,7 @@ function renderHeaders() {
   // Show add button when total visible columns (tiers + GT) is 4 or fewer
   const canAdd = visible.length < MAX_TIERS - 1;
   const gtVal  = visible.length > 0
-    ? Math.max(...visible.map(i => effectiveThreshold(i)))
+    ? visible.reduce((sum, i) => sum + effectiveThreshold(i), 0)
     : 0;
 
   let html = `<div class="col-hdr-assets-plain">
@@ -3126,7 +3126,7 @@ function addTierAt(beforeIdx, e) {
 
 function updateGtHeader() {
   const visible = visibleTierIndices();
-  const gtVal = visible.length > 0 ? Math.max(...visible.map(i => effectiveThreshold(i))) : 0;
+  const gtVal = visible.length > 0 ? visible.reduce((sum, i) => sum + effectiveThreshold(i), 0) : 0;
   const el = document.getElementById('gt-val');
   if (el) el.textContent = formatMoney(gtVal);
 }

@@ -1341,7 +1341,7 @@ function renderTierHeader(thIdx, vi) {
 
 function renderGtHeader() {
   const gtTooltip = "Automatically set to your highest tier upper limit. Any amount above that uses this value.";
-  const gtVal = tierThresholds.length > 0 ? Math.max(...tierThresholds) : 0;
+  const gtVal = tierThresholds.length > 0 ? tierThresholds.reduce((a, b) => a + b, 0) : 0;
   return `<th class="col-hdr-tier" id="col-hdr-gt">
     <div class="tier-hdr-content">
       <span class="tier-hdr-label">Above <span class="tooltip-wrap" onmouseenter="showTip(event,'${gtTooltip}')" onmouseleave="hideTip()" style="margin-left:2px">${infoSVG}</span></span>

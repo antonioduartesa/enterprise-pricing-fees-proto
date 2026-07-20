@@ -2093,11 +2093,11 @@ function renderPricingContent() {
       <div class="lim2-trade-body" style="margin-top:0;">
         <div class="lim2-field">
           <div class="lim2-field-lbl">Min</div>
-          <div class="lim2-ro-val">${limitsTradeMin || '0'} bps</div>
+          <div class="lim2-num-wrap" style="width:136px;"><input class="lim2-num-inp" type="number" min="0" placeholder="0" value="${limitsTradeMin || ''}" oninput="setLimitsTradeMin(this.value)"><span class="lim2-unit-lbl">bps</span></div>
         </div>
         <div class="lim2-field">
           <div class="lim2-field-lbl">Max</div>
-          <div class="lim2-ro-val">${limitsTradeMax || '100'} bps</div>
+          <div class="lim2-num-wrap" style="width:136px;"><input class="lim2-num-inp" type="number" min="0" placeholder="100" value="${limitsTradeMax || ''}" oninput="setLimitsTradeMax(this.value)"><span class="lim2-unit-lbl">bps</span></div>
         </div>
       </div>
     </div>`;
@@ -2201,8 +2201,8 @@ function renderPricingContent() {
           <span class="lim2-meth-icon">${limMethodIcon(row.method)}</span>
           <span>${row.method}</span>
         </div>
-        <div class="lim2-dep-val">${row.min || '0'} %</div>
-        <div class="lim2-dep-val">${row.max || '100'} %</div>
+        <div class="lim2-num-wrap"><input class="lim2-num-inp" type="number" min="0" max="100" placeholder="0" value="${row.min || ''}" oninput="${ddPrefix}LimitSetMin(${idx},this.value)"><span class="lim2-unit-lbl">%</span></div>
+        <div class="lim2-num-wrap"><input class="lim2-num-inp" type="number" min="0" max="100" placeholder="100" value="${row.max || ''}" oninput="${ddPrefix}LimitSetMax(${idx},this.value)"><span class="lim2-unit-lbl">%</span></div>
       </div>`).join('');
     const tableHeader = rows.length > 0 ? `
       <div class="lim2-dep-hdr">

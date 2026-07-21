@@ -1116,16 +1116,11 @@ function renderPerfTab() {
       <div class="perf-overview-title">Overview</div>
       <div class="perf-cards-row3">
         ${perfCard('$4,821.50','Total volume','All plans')}
-        ${perfCard('$4,821.50','Spread markup','All plans')}
-        ${perfCard('– $312.00','Spread absorbed','All plans',true)}
-      </div>
-      <div class="perf-cards-row2">
         ${perfCard('$4,821.50','Payment fees','All plans')}
         ${perfCard('$603.00','Pending settlement','Next: Aug 2026')}
       </div>
 
       ${barChart(daily1, 'Net revenue through time')}
-      ${barChart(daily2, 'Spread markup through time')}
     </div>`;
 }
 

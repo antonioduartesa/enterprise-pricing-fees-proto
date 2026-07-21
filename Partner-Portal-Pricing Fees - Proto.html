@@ -1166,16 +1166,7 @@ function renderPricingDetailsTab() {
             </div>
             <span class="plan-last-updated">Last updated at September 26, 2025.</span>
           </div>
-          <div class="plan-cols">
-            <div class="plan-col">
-              <div class="plan-col-hdr">
-                <span class="plan-col-title">Trade spread</span>
-                <span class="plan-chip green">+ ${partnerFee} bps</span>
-              </div>
-              <div class="plan-col-subhdr">Threshold tiers:</div>
-              ${tierThresholds.map((size, i) => `<div class="plan-tier-line">${i === 0 ? 'First' : 'Next'} ${fmtDollar(size)}</div>`).join('')}
-              <div class="plan-tier-line">Above ${fmtDollar(tierThresholds.reduce((a, b) => a + b, 0))}</div>
-            </div>
+          <div class="plan-cols" style="grid-template-columns:1fr 1fr">
             <div class="plan-col">
               <div class="plan-col-hdr">
                 <span class="plan-col-title">Deposits fee</span>

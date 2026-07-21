@@ -566,7 +566,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
 /* ── State ── */
 let screen = 'home'; // 'home' | 'pricing' | 'plan-details'
 let pricingTab = 'performance'; // 'performance' | 'pricing-details' | 'logs'
-let planTab = 'trade'; // 'trade' | 'deposits' | 'withdrawals'
+let planTab = 'deposits'; // 'deposits' | 'withdrawals'
 let assetFilter = 'All';
 let assetSearch = '';
 let partnerFee = 6;   // last saved value
@@ -778,7 +778,7 @@ function goPricingDetails() {
 }
 function goPlanDetails() {
   screen = 'plan-details';
-  planTab = 'trade';
+  planTab = 'deposits';
   fbPlanVisited = true;
   render();
   renderFeedback();
@@ -788,7 +788,6 @@ function setPlanTab(tab) {
   planTab = tab;
   render();
   renderFeedback();
-  if (tab === 'trade') fbMarkInteraction();
 }
 function fbMarkInteraction() {
   if (fbInteracted) return;
@@ -1287,7 +1286,6 @@ function renderPlanDetails() {
       </div>
 
       <div class="plan-tabs-bar">
-        <button class="tab-btn ${planTab==='trade'?'active':''}" onclick="setPlanTab('trade')">Trade</button>
         <button class="tab-btn ${planTab==='deposits'?'active':''}" onclick="setPlanTab('deposits')">Deposits</button>
         <button class="tab-btn ${planTab==='withdrawals'?'active':''}" onclick="setPlanTab('withdrawals')">Withdrawals</button>
       </div>
